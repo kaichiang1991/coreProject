@@ -6,7 +6,11 @@ const common = require('./webpack.common')
 module.exports = merge(common, {
     mode: 'development',
     devtool: "eval-cheap-source-map",
+
     watch: true,
+    watchOptions: {
+        ignored: ['node_modules/**']
+    },
 
     entry: {
         index: path.resolve(__dirname, 'index.ts'),
@@ -36,7 +40,7 @@ module.exports = merge(common, {
 
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, 'dist', 'Debug', 'index.html'),
+            filename: path.resolve(__dirname, 'dist/Debug/index.html'),
             template: 'template.cshtml'
         })
     ]

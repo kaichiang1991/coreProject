@@ -1,5 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const path = require('path')
+const ReplaceInFilePlugin = require('replace-in-file-webpack-plugin')
+const path = require('path');
 const {merge} = require("webpack-merge");
 const common = require("./webpack.common");
 
@@ -23,7 +24,7 @@ module.exports = merge(common, {
                 use: [{
                     loader: 'ts-loader',
                     options: {
-                        configFile: 'tsconfig.prod.json'
+                        configFile: 'tsconfig.json'
                     }
                 }]
             }
@@ -31,7 +32,22 @@ module.exports = merge(common, {
     },
 
     plugins: [
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        // 處理 .d.ts
+        new ReplaceInFilePlugin([{
+            dir: path.resolve(__dirname, 'dist'),
+            test: /\.d\.ts/,
+            rules: [
+                // 拿掉 export 詞綴
+                {
+                    search: /export /g, replace: ''
+                },
+                //拿掉 import 整行
+                {
+                    search: /import.*\r\n/g, replace: ''
+                }
+            ]
+        }])
     ],
 
     // 不要打包進 bundle 的 module, 會在 runtime 時引入
