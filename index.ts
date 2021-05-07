@@ -6,7 +6,7 @@ import gsap from 'gsap'
 window.gsap = gsap
 
 import pkg from './package.json'
-import logo from './assets/logo.png'
+import logo from './assets/img/logo.png'
 
 export module modSlotGame{
     export class LibExample{

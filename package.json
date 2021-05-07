@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build:dev": "webpack --config webpack.dev.js",
-    "serve": "live-server ./dist/Debug",
+    "serve": "live-server ./dist",
     "start": "concurrently 'npm:build:dev' 'npm:serve'",
     "build": "webpack --config webpack.prod.js"
   },

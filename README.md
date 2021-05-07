@@ -13,8 +13,8 @@
 - template.cshtml                               HtmlWebpackPlugin 產出的模板
 
 ### 發布方式
-- npm run build 把所有東西打包到 Release 資料夾
-- 整個 Release 資料夾放上 git，存自己一個位置 (自定義名稱)
+- npm run build 把所有東西打包到 Lib 資料夾
+- 整個 Lib 資料夾放上 git，存自己一個位置 (自定義名稱)
 
 ### ToDo
 #### package.json
@@ -23,8 +23,9 @@
 - config: 設定一些程式內會用到的設定檔  e.g. size, ...
 
 #### 模組開發
-- 定義 module 名稱
+- 定義 module 名稱 ( 不可與其他 module 名稱重複 )
 - 要供外部使用的 class, function 要使用 export 詞綴
+- 不要用 module，只用 class/function 也可以
 
 #### 開發注意事項
 - 入口都要有一個 init Function，要印出 Lib 名稱和版號

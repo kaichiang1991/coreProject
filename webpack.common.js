@@ -9,7 +9,9 @@ module.exports = {
     output: {
         library: {
             type: 'umd'
-        }
+        },
+        path: path.resolve(__dirname, 'dist/Lib'),
+        filename: '[name].js',
     },
 
     module: {

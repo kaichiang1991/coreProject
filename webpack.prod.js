@@ -8,12 +8,7 @@ module.exports = merge(common, {
     mode: 'production',
 
     entry: {
-        index: path.resolve(__dirname, 'index.ts')
-    },
-
-    output: {
-        path: path.resolve(__dirname, 'dist', 'Release'),
-        filename: '[name].js'
+        index: path.resolve(__dirname, 'main.ts')
     },
 
     module: {
@@ -32,7 +27,11 @@ module.exports = merge(common, {
     },
 
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            cleanAfterEveryBuildPatterns: [
+                './main.d.ts'
+            ]
+        }),
         // 處理 .d.ts
         new ReplaceInFilePlugin([{
             dir: path.resolve(__dirname, 'dist'),

@@ -13,13 +13,7 @@ module.exports = merge(common, {
     },
 
     entry: {
-        index: path.resolve(__dirname, 'index.ts'),
         test: path.resolve(__dirname, 'main.ts')
-    },
-
-    output: {
-        path: path.resolve(__dirname, 'dist', 'Debug'),
-        filename: '[name].js',
     },
 
     module: {
@@ -40,7 +34,7 @@ module.exports = merge(common, {
 
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, 'dist/Debug/index.html'),
+            filename: path.resolve(__dirname, 'dist/index.html'),
             template: 'template.cshtml'
         })
     ]
