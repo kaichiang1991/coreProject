@@ -30,3 +30,10 @@
 - 入口都要有一個 init Function，要印出 Lib 名稱和版號
 - 引用的 json 檔直接使用 import， webpack 會把他打包到 bundle 內
 - 提供外部使用的 API 要寫 JSDoc 文件
+
+#### 關於 gsap 引用
+- 統一從 'gsap' module 引用，就不用之前的 gsap/all 了
+- 打包時將 gsap 從 bundle 移出，所以使用時必須在 runtime 匯入 gsap
+- 要匯入的 lib 分別為 gsap, PixiPlugin, MotionPathPlugin, EasePack，這幾個為目前遊戲開發會用到的，有其他需要的再加
+- gsap 相關的引用就不再 import 了，減少打包的體積。 e.g. ease, plugin...
+

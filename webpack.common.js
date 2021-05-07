@@ -30,5 +30,11 @@ module.exports = {
         // new webpack.DefinePlugin({
             // assetsMd5: JSON.stringify(md5.sync('./assets'))
         // })
-    ]
+    ],
+
+    // 不要打包進 bundle 的 module, 會在 runtime 時引入
+    externals: {
+        'pixi.js-legacy': 'PIXI',
+        'gsap': 'gsap'
+    }
 }

@@ -48,11 +48,5 @@ module.exports = merge(common, {
                 }
             ]
         }])
-    ],
-
-    // 不要打包進 bundle 的 module, 會在 runtime 時引入
-    externals: {
-        'pixi.js-legacy': 'PIXI'
-        // ToDo gsap 的引用
-    }
+    ]
 })

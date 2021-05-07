@@ -1,5 +1,6 @@
 import {Application} from 'pixi.js-legacy'
 import pkg from './package.json'
+import {modSlotGame} from '.'
 
 const {size: {width, height}} = pkg.config
 const App: Application = new Application({      // 根據 package 內的設定，創建畫面
@@ -13,3 +14,6 @@ function initPixi(){
 }
 
 initPixi()
+const gp = modSlotGame.LibExample.init(App.stage)
+modSlotGame.LibExample.exampleFn1(gp, Back.easeInOut)
+modSlotGame.LibExample.exampleLoadImg(App.stage)
