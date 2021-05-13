@@ -5,8 +5,7 @@ window.PIXI = PIXI
 import gsap from 'gsap'
 window.gsap = gsap
 
-import pkg from './package.json'
-import logo from './assets/img/logo.png'
+import {name, version} from './package.json'
 
 export module modSlotGame{
     export class LibExample{
@@ -16,7 +15,7 @@ export module modSlotGame{
          */
         public static init(stage: PIXI.Container): PIXI.Graphics{
             gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
-            console.log(`%c${pkg.name} 版號: ${pkg.version}`, 'color:green; background-color:cyan; font-size:16px; padding:2px;')
+            console.log(`%c${name} 版號: ${version}`, 'color:green; background-color:cyan; font-size:16px; padding:2px;')
             return stage.addChild(new PIXI.Graphics().beginFill(0xFF0000).drawCircle(200, 200, 100).endFill())
         }
 
@@ -44,7 +43,7 @@ export module modSlotGame{
          * @returns 
          */
         public static exampleLoadImg(stage: PIXI.Container){
-            return stage.addChild(PIXI.Sprite.from(logo))
+            return stage.addChild(new PIXI.Sprite())
         }
     }
 

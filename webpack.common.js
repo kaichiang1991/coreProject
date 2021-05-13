@@ -1,8 +1,13 @@
 const path = require('path')
 const webpack = require('webpack')
+// const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
+// const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin')
 
 module.exports = {
     resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'assets')
+        },
         extensions: ['.ts', '.js']
     },
 
@@ -17,10 +22,32 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(png|jpe?g|gif)$/i,
+                test: /\.(jpe?g|gif|webp)$/i,
                 type: 'asset/resource',
                 generator: {
-                    filename: 'assets/img/[hash][ext]'
+                    filename: '[path][hash][ext]'
+                }
+            },
+            {
+                test: /\.png$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: '[path][name][ext]'
+                }
+            },
+            {
+                test: /\.atlas$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: '[path][name][ext]'
+                }
+            },
+            {
+                test: /\.json/i,
+                resourceQuery: { not: [/edit/] },   // 如果要直接 import 原檔內容的，在 query 的地方加上 eidt  e.g. import 'package.json?edit'
+                type: 'asset/resource',
+                generator: {
+                    filename: '[path][name][ext]'
                 }
             }
             // ToDo mp3/fnt
@@ -37,6 +64,7 @@ module.exports = {
     // 不要打包進 bundle 的 module, 會在 runtime 時引入
     externals: {
         'pixi.js-legacy': 'PIXI',
+        'pixi-spine': 'PIXI.spine',
         'gsap': 'gsap'
     }
 }

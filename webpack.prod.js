@@ -27,7 +27,15 @@ module.exports = merge(common, {
     },
 
     plugins: [
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: [
+                path.resolve(__dirname, 'dist')
+            ],
+            cleanAfterEveryBuildPatterns: [
+                path.resolve(__dirname, 'dist/types/main.d.ts')
+            ]
+        }),
+        
         // 處理 .d.ts
         new ReplaceInFilePlugin([{
             dir: path.resolve(__dirname, 'dist'),

@@ -23,7 +23,7 @@
 - config: 設定一些程式內會用到的設定檔  e.g. size, ...
 
 #### 模組開發
-- 定義 module 名稱 ( 不可與其他 module 名稱重複 )
+- 定義 module 名稱 ( 不可與其他 module 名稱重複 ) / 或使用 namespace 也可以
 - 要供外部使用的 class, function 要使用 export 詞綴
 - 不要用 module，只用 class/function 也可以
 
