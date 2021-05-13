@@ -5,7 +5,7 @@ window.PIXI = PIXI
 import gsap from 'gsap'
 window.gsap = gsap
 
-import {name, version} from './package.json'
+import {name, version} from './package.json?edit'
 
 export module modSlotGame{
     export class LibExample{

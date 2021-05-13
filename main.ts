@@ -1,8 +1,8 @@
 import { modSlotGame } from '.'
 import {Application} from 'pixi.js-legacy'
-import pkg from './package.json'
+import {config} from './package.json?edit'
 
-const {size: {width, height}} = pkg.config
+const {size: {width, height}} = config
 const App: Application = new Application({      // 根據 package 內的設定，創建畫面
     backgroundColor: 0xAAAAAA, width, height
 })
