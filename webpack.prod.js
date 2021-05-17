@@ -3,6 +3,7 @@ const ReplaceInFilePlugin = require('replace-in-file-webpack-plugin')
 const path = require('path');
 const {merge} = require("webpack-merge");
 const common = require("./webpack.common");
+const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
 
 module.exports = merge(common, {
     mode: 'production',
@@ -49,6 +50,15 @@ module.exports = merge(common, {
                     search: /import.*\r\n/g, replace: ''
                 }
             ]
-        }])
+        }]),
+
+        new ImageMinimizerPlugin({
+            test: /.png/,
+            minimizerOptions: {
+                plugins: [
+                    ['optipng', { optimizationLevel: 5 }]
+                ]
+            }
+        })
     ]
 })

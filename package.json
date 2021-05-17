@@ -18,6 +18,7 @@
     "concurrently": "^6.0.2",
     "copyfiles": "^2.4.1",
     "html-webpack-plugin": "^5.3.1",
+    "image-minimizer-webpack-plugin": "^2.2.0",
     "imagemin": "^8.0.0",
     "imagemin-webp": "^6.0.0",
     "live-server": "^1.2.1",
