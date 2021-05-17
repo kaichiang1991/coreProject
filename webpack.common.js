@@ -1,22 +1,16 @@
 const path = require('path')
 const webpack = require('webpack')
-// const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
-// const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin')
 
 module.exports = {
+    entry: {
+        app: path.resolve(__dirname, 'src/index.ts')
+    },
+
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'assets')
         },
         extensions: ['.ts', '.js']
-    },
-
-    output: {
-        library: {
-            type: 'umd'
-        },
-        path: path.resolve(__dirname, 'dist/Lib'),
-        filename: '[name].js',
     },
 
     module: {
@@ -57,7 +51,7 @@ module.exports = {
     plugins: [
         // 全域變數
         // new webpack.DefinePlugin({
-            // assetsMd5: JSON.stringify(md5.sync('./assets'))
+            // assetsMd5: JSON.stringify(md5.sync('./assets')),
         // })
     ],
 

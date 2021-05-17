@@ -2,15 +2,9 @@
   "name": "LibDev",
   "version": "1.0.0",
   "description": "",
-  "config": {
-    "size": {
-      "width": 720,
-      "height": 1280
-    }
-  },
   "scripts": {
     "build:dev": "webpack --config webpack.dev.js",
-    "serve": "live-server ./dist",
+    "serve": "live-server ./dist/Debug",
     "start": "concurrently 'npm:build:dev' 'npm:serve'",
     "build": "webpack --config webpack.prod.js"
   },
@@ -18,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/gsap": "^1.20.2",
     "@types/node": "^15.0.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "concurrently": "^6.0.2",

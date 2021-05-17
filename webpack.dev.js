@@ -12,8 +12,9 @@ module.exports = merge(common, {
         ignored: ['node_modules/**']
     },
 
-    entry: {
-        test: path.resolve(__dirname, 'main.ts')
+    output: {
+        path: path.resolve(__dirname, 'dist/Debug'),
+        filename: '[name].bundle.js'
     },
 
     module: {
@@ -34,7 +35,7 @@ module.exports = merge(common, {
 
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, 'dist/index.html'),
+            filename: path.resolve(__dirname, 'dist/Debug/index.html'),
             template: 'template.cshtml'
         })
     ]
