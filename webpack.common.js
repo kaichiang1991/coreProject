@@ -15,15 +15,16 @@ module.exports = {
 
     module: {
         rules: [
+            // 其他資源
             {
-                test: /\.(jpe?g|gif|webp)$/i,
+                test: /\.(jpe?g|gif)$/i,
                 type: 'asset/resource',
                 generator: {
                     filename: '[path][hash][ext]'
                 }
             },
             {
-                test: /\.png$/i,
+                test: /\.(png|webp)$/i,
                 type: 'asset/resource',
                 generator: {
                     filename: '[path][name][ext]'

@@ -1,6 +1,5 @@
 import { Application, Text, TextStyle } from 'pixi.js-legacy'
 import config from '../config'
-import A from './a'
 import supportWebp from './Tool/supportWebp'
 
 // 顯示專案資訊
@@ -27,9 +26,6 @@ stage.addChild(versionText)
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
-
-    console.log('config', config)
-    new A().init()
     EventHandler.init()     // 初始化事件管理
     Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)            // 初始化 Debug
 }
