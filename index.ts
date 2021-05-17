@@ -5,18 +5,22 @@ window.PIXI = PIXI
 import gsap from 'gsap'
 window.gsap = gsap
 
-import {name, version} from './package.json?edit'
+import config from './config'
+import supportWebp from './Tool/supportWebp'
+
+const {name, version} = config
 
 export module modSlotGame{
+
     export class LibExample{
         /**
          * 初始化 Lib
          * @param stage 
          */
-        public static init(stage: PIXI.Container): PIXI.Graphics{
-            gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
+        public static init(stage: PIXI.Container){
             console.log(`%c${name} 版號: ${version}`, 'color:green; background-color:cyan; font-size:16px; padding:2px;')
-            return stage.addChild(new PIXI.Graphics().beginFill(0xFF0000).drawCircle(200, 200, 100).endFill())
+            gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
+            // config.canUseWebp = await supportWebp()         // 判斷是否可以使用 Webp，Lib有使用到自己的資源再初始化就好
         }
 
         /**
@@ -45,16 +49,5 @@ export module modSlotGame{
         public static exampleLoadImg(stage: PIXI.Container){
             return stage.addChild(new PIXI.Sprite())
         }
-    }
-
-    /**
-     * 不在 class 內部的 function 範例
-     * @param stage 
-     * @param x 
-     * @param y 
-     * @returns 
-     */
-    export function exampleFn2(stage: PIXI.Container, x: number, y: number): PIXI.Graphics{
-        return stage.addChild(new PIXI.Graphics().beginFill(0x00AA00).drawStar(x, y, 8, 10))
     }
 }

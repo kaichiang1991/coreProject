@@ -1,7 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-// const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
-// const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin')
 
 module.exports = {
     resolve: {
@@ -21,6 +19,7 @@ module.exports = {
 
     module: {
         rules: [
+            // 其他資源
             {
                 test: /\.(jpe?g|gif|webp)$/i,
                 type: 'asset/resource',

@@ -1,8 +1,8 @@
 import { modSlotGame } from '.'
 import {Application} from 'pixi.js-legacy'
-import {config} from './package.json?edit'
+import config from './config'
 
-const {size: {width, height}} = config
+const {width, height} = config.size
 const App: Application = new Application({      // 根據 package 內的設定，創建畫面
     backgroundColor: 0xAAAAAA, width, height
 })
@@ -14,6 +14,6 @@ function initPixi(){
 }
 
 initPixi()
-const gp = modSlotGame.LibExample.init(App.stage)
-modSlotGame.LibExample.exampleFn1(gp, Back.easeInOut)
-modSlotGame.LibExample.exampleLoadImg(App.stage)
+// modSlotGame.LibExample.init(App.stage)
+// modSlotGame.LibExample.exampleFn1(gp, Back.easeInOut)
+// modSlotGame.LibExample.exampleLoadImg(App.stage)
