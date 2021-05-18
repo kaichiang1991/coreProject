@@ -33,7 +33,8 @@ module.exports = merge(common, {
                 path.resolve(__dirname, 'dist')
             ],
             cleanAfterEveryBuildPatterns: [
-                path.resolve(__dirname, 'dist/types/main.d.ts')
+                path.resolve(__dirname, 'dist/types/main.d.ts'),
+                path.resolve(__dirname, 'dist/types/Tool/**')
             ]
         }),
         // 處理 .d.ts
@@ -53,7 +54,7 @@ module.exports = merge(common, {
         }]),
 
         new ImageMinimizerPlugin({
-            test: /.png/,
+            test: /\.(png)$/i,
             minimizerOptions: {
                 plugins: [
                     ['optipng', { optimizationLevel: 5 }]

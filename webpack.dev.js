@@ -1,3 +1,4 @@
+const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const {merge} = require('webpack-merge')
@@ -36,6 +37,12 @@ module.exports = merge(common, {
         new HtmlWebpackPlugin({
             filename: path.resolve(__dirname, 'dist/index.html'),
             template: 'template.cshtml'
+        }),
+
+        new CopyPlugin({
+            patterns: [
+                {from: 'Lib/', toType: "dir"}
+            ]
         })
     ]
 })
