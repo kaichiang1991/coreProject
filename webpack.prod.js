@@ -1,5 +1,4 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ReplaceInFilePlugin = require('replace-in-file-webpack-plugin')
 const path = require('path');
 const {merge} = require("webpack-merge");
 const common = require("./webpack.common");
