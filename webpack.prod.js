@@ -25,7 +25,7 @@ module.exports = merge(common, {
     plugins: [
         new CleanWebpackPlugin(),
         new ImageMinimizerPlugin({
-            test: /.png/,
+            test: /\.(png)$/i,
             minimizerOptions: {
                 plugins: [
                     ['optipng', { optimizationLevel: 5 }]

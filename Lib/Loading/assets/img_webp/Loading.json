@@ -1,0 +1,127 @@
+{"frames": {
+
+"Bar.png":
+{
+	"frame": {"x":0,"y":0,"w":352,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":352,"h":10},
+	"sourceSize": {"w":352,"h":10}
+},
+"Bar_Bot.png":
+{
+	"frame": {"x":0,"y":10,"w":352,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":352,"h":10},
+	"sourceSize": {"w":352,"h":10}
+},
+"Bar_light.png":
+{
+	"frame": {"x":0,"y":20,"w":352,"h":10},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":352,"h":10},
+	"sourceSize": {"w":352,"h":10}
+},
+"Logo_00.png":
+{
+	"frame": {"x":0,"y":30,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_01.png":
+{
+	"frame": {"x":250,"y":30,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_02.png":
+{
+	"frame": {"x":0,"y":280,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_03.png":
+{
+	"frame": {"x":250,"y":280,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_04.png":
+{
+	"frame": {"x":0,"y":530,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_05.png":
+{
+	"frame": {"x":250,"y":530,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_06.png":
+{
+	"frame": {"x":0,"y":780,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_07.png":
+{
+	"frame": {"x":250,"y":780,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_08.png":
+{
+	"frame": {"x":0,"y":1030,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Logo_09.png":
+{
+	"frame": {"x":250,"y":1030,"w":250,"h":250},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":250},
+	"sourceSize": {"w":250,"h":250}
+},
+"Star_light.png":
+{
+	"frame": {"x":0,"y":1280,"w":188,"h":189},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":188,"h":189},
+	"sourceSize": {"w":188,"h":189}
+}},
+"animations": {
+	"Logo": ["Logo_00.png","Logo_01.png","Logo_02.png","Logo_03.png","Logo_04.png","Logo_05.png","Logo_06.png","Logo_07.png","Logo_08.png","Logo_09.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Loading.webp",
+	"format": "RGBA8888",
+	"size": {"w":500,"h":1469},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b9301ae248d94287a19064adf327bbad:8b1239652b24c960f85fa76832391f94:fe271f596f4ba58e18c824c5426e36e7$"
+}
+}
