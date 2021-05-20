@@ -10,7 +10,7 @@ module.exports = merge(common, {
 
     watch: true,
     watchOptions: {
-        ignored: ['node_modules/**']
+        ignored: ['node_modules/**', '**/*.json', '**/*.html']
     },
 
     output: {
@@ -42,7 +42,7 @@ module.exports = merge(common, {
 
         new CopyPlugin({
             patterns: [
-                {from: 'Lib/', to: "Lib/", toType: "dir"}
+                {from: 'Lib/', to: "Lib/", toType: "dir", noErrorOnMissing: true}
             ]
         })
     ]
