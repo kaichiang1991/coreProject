@@ -12,12 +12,12 @@ export default class GameAssetManager{
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
-        'Button': 'img/Button.json',
+        // 'Button': 'img/Button.json',
     }
 
     public static setLanguage(){
         this.pngList = {...this.pngList, 
-            'UITxt': 'img/' + LocalizationManager.getFolder() + '/UITxt.png', 
+            // 'UITxt': 'img/' + LocalizationManager.getFolder() + '/UITxt.png', 
         }
         this.spriteSheetList = {...this.spriteSheetList, 
         

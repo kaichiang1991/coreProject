@@ -24,6 +24,11 @@ export default class GameSceneManager{
     }
 
     public static switchGameScene(scene: eGameScene): Container{
+        // 把使用外的容器從畫面上移開
+        this.sceneContainerArr.forEach(cont =>{
+            if(cont != this.sceneContainerArr[scene])   cont.parent?.removeChild(cont)
+        })
+
         switch(scene){
             case eGameScene.loading:
             break

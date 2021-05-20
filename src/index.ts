@@ -37,6 +37,7 @@ const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     EventHandler.init()     // 初始化事件管理
     Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)            // 初始化 Debug
+    ParameterParse.init()
     GSAPManager.init()
     GameAssetManager.init()
     GameSceneManager.init()
@@ -48,8 +49,11 @@ const gameEntry: Function = async ()=>{
     await Loading.init(loadingCont)
     const loading: Promise<void> = Loading.startLoading()
     await GameAssetManager.loadAsset()
+    Loading.finishLoading()
     await loading
     //#endregion Loading
+
+    GameSceneManager.switchGameScene(eGameScene.normalGame)
 
     // 遊戲場景轉換
 }
