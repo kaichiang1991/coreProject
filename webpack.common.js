@@ -8,7 +8,8 @@ module.exports = {
 
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'assets')
+            '@': path.resolve(__dirname, 'assets'),
+            '@root': path.resolve(__dirname)
         },
         extensions: ['.ts', '.js']
     },

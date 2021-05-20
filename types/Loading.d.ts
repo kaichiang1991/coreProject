@@ -9,11 +9,14 @@ declare class Loading {
     /**
      * 初始化 Loading
      * @param stage
-     * @returns 整個讀取完成後會回傳
+     * @returns loading 圖載完
      */
     static init(container: PIXI.Container): Promise<void>;
-    /** 開始讀取條演出 */
-    private static startLoading;
+    /**
+     * 開始讀取條演出
+     * @returns 讀取條演完後回傳
+     */
+    static startLoading(): Promise<void>;
     /** 通知讀取條結束演出 */
     static finishLoading(): void;
     /**

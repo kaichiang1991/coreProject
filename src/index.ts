@@ -2,11 +2,12 @@ import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legac
 import gsap from 'gsap'
 window.gsap = gsap
 
-import config from '../config'
+import config from '@root/config'
 import GameSceneManager, { eGameScene } from './System/GameSceneController'
 import { eAppLayer } from './System/LayerDef'
 import supportWebp from './Tool/supportWebp'
 import GSAPManager from './System/GSAPManager'
+import GameAssetManager from './System/Assets/GameAssetManager'
 
 // 顯示專案資訊
 const {name, version, size} = config
@@ -33,18 +34,20 @@ stage.addChild(versionText)
 
 // 遊戲入口
 const gameEntry: Function = async ()=>{
-    const {AssetLoader} = PixiAsset
     config.canUseWebp = await supportWebp()
     EventHandler.init()     // 初始化事件管理
     Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)            // 初始化 Debug
     GSAPManager.init()
-    AssetLoader.init(App)
+    GameAssetManager.init()
     GameSceneManager.init()
-    // Loading
+    LocalizationManager.init()
+
+    GameAssetManager.setLanguage()
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
-    const loading: Promise<void> = Loading.init(loadingCont)
-
+    await Loading.init(loadingCont)
+    const loading: Promise<void> = Loading.startLoading()
+    await GameAssetManager.loadAsset()
     await loading
     //#endregion Loading
 
