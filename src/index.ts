@@ -1,3 +1,4 @@
+/// <reference types="pixi-spine"/>
 import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legacy'
 import gsap from 'gsap'
 window.gsap = gsap
