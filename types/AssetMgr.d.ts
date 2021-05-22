@@ -1,3 +1,4 @@
+/// <reference types="pixi-spine" />
 declare enum eAssetType {
     img = 0,
     spriteSheet = 1,
@@ -134,5 +135,77 @@ declare namespace PixiAsset {
          * @param name 載入的名稱
          */
         constructor(name: string);
+    }
+}
+interface ISoundList {
+    [key: string]: string;
+}
+declare namespace PixiAsset {
+    class PixiSound {
+        /**
+         * 初始化要使用到的音效
+         * @param {Object<string, string>} lists
+         */
+        static init(lists: ISoundList): Promise<void>;
+        /**
+         * 撥放音效
+         * @param alias
+         * @param {PlayOptions} option 撥放的選項
+         * @returns {IMediaInstance} 撥放的 instance
+         */
+        static play(alias: string, option?: PlayOptions): IMediaInstance;
+        /**
+         * 靜音所有音效
+         * @param flag 開關
+         */
+        static muteAll(flag: boolean): void;
+        /**
+         * 根據名稱暫停所有音效
+         * @param name
+         */
+        static pauseByName(name: string): void;
+        /**
+         * 根據名稱繼續所有音效
+         * @param name
+         */
+        static resumeByName(name: string): void;
+        /**
+         * 根據名稱停止所有音效
+         * 停止後就不能再使用 resume
+         * @param name
+         */
+        static stopByName(name: string): void;
+        /**
+         * 根據名稱修改音量
+         * @param name 名稱
+         * @param value 0-1
+         */
+        static setVolumeByName(name: string, value: number): void;
+        /**
+         * 暫停特定的音效 instance
+         * @param instance
+         */
+        static pauseByInstance(instance: IMediaInstance): void;
+        /**
+         * 繼續特定的音效 instance
+         * @param instance
+         */
+        static resumeByInstance(instance: IMediaInstance): void;
+        /**
+         * 停止特定的音效 instance
+         * 停止後要指定原本的 instance 為 null，否則stop 會摧毀 instance._media 造成錯誤
+         * @param instance
+         * @returns null
+         * @example
+         *      let a: IMediaInstance = PixiSound.play('sound-alias')
+         *      a = PixiSound.stopByInstance(a)
+         */
+        static stopByInstance(instance: IMediaInstance): any;
+        /**
+         * 調整單一音效的音量
+         * @param instance
+         * @param value 0-1
+         */
+        static setVolumeByInstance(instance: IMediaInstance, value: number): void;
     }
 }

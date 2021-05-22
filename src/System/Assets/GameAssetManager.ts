@@ -3,7 +3,7 @@ import lazyLoad from "../../Tool/lazyLoad";
 import config from '@root/config'
 import pathConvert from "@root/src/Tool/pathConvert";
 
-const {AssetLoader, Sprite} = PixiAsset
+const {AssetLoader, Sprite, PixiSound} = PixiAsset
 
 export default class GameAssetManager{
 
@@ -45,5 +45,9 @@ export default class GameAssetManager{
         // spine 的引入
         // font 的引入
         // audio 的引入
+        const [...audioSources] = await lazyLoad('audio/BB.mp3')
+        await PixiSound.init({
+            'aa': audioSources[0]
+        })
     }
 }
