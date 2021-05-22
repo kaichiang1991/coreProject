@@ -49,8 +49,15 @@ module.exports = {
                 generator: {
                     filename: '[path][name][ext]'
                 }
+            },
+            {
+                test: /\.mp3/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: '[path][hash][ext]'
+                }
             }
-            // ToDo mp3/fnt
+            // ToDo fnt
         ]
     },
 
@@ -62,9 +69,11 @@ module.exports = {
     ],
 
     // 不要打包進 bundle 的 module, 會在 runtime 時引入
+    externalsType: 'window',
     externals: {
         'pixi.js-legacy': 'PIXI',
-        'pixi-spine': 'PIXI.spine',
+        // 'pixi-spine',      // 只是引入 side-effect，runtime 有引入就好  ( ts error 問題只需要新增 triple slash)
+        '@pixi/sound': ['PIXI', 'sound'],
         'gsap': 'gsap'
     }
 }

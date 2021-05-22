@@ -1,3 +1,4 @@
+/// <reference types="pixi-spine"/>
 // PIXI 相關的 lib 需要讀取 window.PIXI
 import * as PIXI from 'pixi.js-legacy'
 window.PIXI = PIXI
