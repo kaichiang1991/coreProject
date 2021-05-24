@@ -1,4 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 const {merge} = require("webpack-merge");
 const common = require("./webpack.common");
@@ -6,6 +7,11 @@ const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
 
 module.exports = merge(common, {
     mode: 'production',
+
+    output: {
+        path: path.resolve(__dirname, 'dist/Release'),
+        filename: '[name].[fullhash].bundle.js'
+    },
 
     module: {
         rules: [
@@ -23,6 +29,10 @@ module.exports = merge(common, {
     },
 
     plugins: [
+        new HtmlWebpackPlugin({
+            filename: path.resolve(__dirname, 'dist/Release/index.html'),
+            template: 'template.cshtml'
+        }),
         new CleanWebpackPlugin(),
         new ImageMinimizerPlugin({
             test: /\.(png)$/i,

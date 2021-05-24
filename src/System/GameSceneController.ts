@@ -1,5 +1,6 @@
-import { Container } from "pixi.js-legacy";
+import { Container, Graphics } from "pixi.js-legacy";
 import { App } from "..";
+import NG_GameController from "../Game/GameController/NG_GameController";
 import { eAppLayer } from "./LayerDef";
 
 export enum eGameScene{
@@ -31,7 +32,11 @@ export default class GameSceneManager{
 
         switch(scene){
             case eGameScene.loading:
-            break
+                break
+            case eGameScene.normalGame:
+                new NormalGame().init(this.sceneContainerArr[scene])
+                NG_GameController.getInstance().init()
+                break
         }
 
         this.currentScene = scene
@@ -40,5 +45,24 @@ export default class GameSceneManager{
 
     public static getSceneContainer(): Container{
         return this.sceneContainerArr[this.currentScene]
+    }
+}
+
+class NormalGame{
+    public init(parent: Container){
+        let logo: PixiAsset.Sprite
+        parent.addChild(
+            // NG 場景
+            new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 1280)
+            .beginFill(0x00AA00).drawRect(360, 0, 360, 1280)
+            .endFill(),
+            // 滾輪框
+            new Graphics().lineStyle(2, 0x0000AA).beginFill(0x000033).drawRect(0, 350, 720, 300).endFill(),
+            // logo
+            logo = new PixiAsset.Sprite('logo')
+        )
+
+        logo.anchor.set(.5)
+        logo.position.set(360, 275)
     }
 }

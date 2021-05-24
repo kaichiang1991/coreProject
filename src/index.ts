@@ -43,8 +43,9 @@ const gameEntry: Function = async ()=>{
     GameAssetManager.init()
     GameSceneManager.init()
     LocalizationManager.init()
-
+    StateModule.init()
     GameAssetManager.setLanguage()
+
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
     await Loading.init(loadingCont)
@@ -54,8 +55,7 @@ const gameEntry: Function = async ()=>{
     await loading
     //#endregion Loading
 
-    GameSceneManager.switchGameScene(eGameScene.normalGame)
-
     // 遊戲場景轉換
+    GameSceneManager.switchGameScene(eGameScene.normalGame)
 }
 gameEntry()

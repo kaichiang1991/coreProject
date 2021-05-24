@@ -2,6 +2,7 @@ import { App } from "../..";
 import lazyLoad from "../../Tool/lazyLoad";
 import config from '@root/config'
 import pathConvert from "@root/src/Tool/pathConvert";
+import GameAudioManager from "./GameAudioManager";
 
 const {AssetLoader, Sprite, PixiSound} = PixiAsset
 
@@ -9,6 +10,7 @@ export default class GameAssetManager{
 
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
         'Button': 'img/Button.png',
+        'logo': 'img/logo.png'
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
@@ -44,10 +46,12 @@ export default class GameAssetManager{
 
         // spine 的引入
         // font 的引入
-        // audio 的引入
-        const [...audioSources] = await lazyLoad('audio/BB.mp3')
-        await PixiSound.init({
-            'aa': audioSources[0]
-        })
+        await GameAudioManager.init()               // audio 的引入
+
+        await this.loadDone()
+    }
+
+    private static async loadDone(){
+
     }
 }

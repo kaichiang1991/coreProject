@@ -72,10 +72,9 @@ interface IAnimSpriteConfig {
 declare namespace PixiAsset {
     class Sprite extends PIXI.Sprite {
         /**
-         *
          * @param key 存在 TextureCache 內的貼圖名稱
          */
-        constructor(key: string);
+        constructor(key?: string);
     }
     class AnimatedSprite extends PIXI.AnimatedSprite {
         private static animSpriteMap;
@@ -209,3 +208,59 @@ declare namespace PixiAsset {
         static setVolumeByInstance(instance: IMediaInstance, value: number): void;
     }
 }
+declare enum eButtonState {
+    normal = 0,
+    press = 1,
+    disable = 2
+}
+interface IButtonInfo {
+    [key: string]: Array<string>;
+}
+declare namespace PixiAsset {
+    class Button extends PIXI.Sprite {
+        private textureInfo;
+        private currentToggle;
+        private state;
+        constructor(name: string);
+        /**
+         * 初始化按鈕
+         * @param {IButtonInfo | Array<string>} info 按鈕的資訊 (對應 normal, press, disable 的圖片)
+         * @returns 按鈕本身
+         * @example
+         *      new Button('name').init(['SpinStop_00', 'SpinStop_01', 'SpinStop_02])       // 只有一種狀態，不會切換
+         *      new Button('name').init({                                                   // 可以有多種狀態，之後可以指定名稱切換
+         *          'toggle1': ['SpinStop_00', 'SpinStop_01', 'SpinStop_02],
+         *          'toggle2': ['SpinStart_00', 'SpinStart_01', 'SpinStart_02],
+         *          ...
+         *      })
+         */
+        init(info: IButtonInfo | Array<string>): Button;
+        /**
+         * 加上容器上
+         * @param parent 父容器
+         * @param x 座標
+         * @param y
+         * @param state 指定一開始的狀態
+         */
+        addTo(parent: PIXI.Container, x: number, y: number, state?: eButtonState): void;
+        /**
+         * 切換狀態
+         * @param name 要切換的狀態名稱  ( 如果只有兩態切換的話，則不用打參數 )
+         */
+        toggle(name?: string): void;
+        /**
+         * 設置按鈕的禁用狀態
+         * @param flag true/禁用  false/啟用
+         * @example
+         *      const btn = new Button().init(textureNameArr)
+         *      btn.on('pointertap', ()=> btn.setDisable(true))
+         */
+        setDisable(flag: boolean): void;
+        /**
+         * 設定按鈕使用的貼圖
+         * @param state
+         */
+        private setTexture;
+    }
+}
+{};
