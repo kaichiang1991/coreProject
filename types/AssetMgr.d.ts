@@ -295,5 +295,10 @@ declare namespace PixiAsset {
          */
         static drawFont(name: string, fontName: string, fontSize: number, pos?: number | PIXI.Point, anchor?: number | PIXI.Point, style?: IBitmapTextStyle): BitmapText;
         constructor(name: string, style: IBitmapTextStyle);
+        /**
+         * 利用字型名稱變換數字的貼圖
+         * @param fontName 字型名稱
+         */
+        setTexture(fontName: string): void;
     }
 }

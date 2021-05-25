@@ -30,6 +30,7 @@ export default class GameSceneManager{
             if(cont != this.sceneContainerArr[scene])   cont.parent?.removeChild(cont)
         })
 
+        this.currentScene = scene
         switch(scene){
             case eGameScene.loading:
                 break
@@ -39,7 +40,6 @@ export default class GameSceneManager{
                 break
         }
 
-        this.currentScene = scene
         return App.stage.addChild(this.sceneContainerArr[scene])
     }
 
