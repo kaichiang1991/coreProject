@@ -1,3 +1,7 @@
+import { App } from "@root/src"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
+import GameSceneManager from "@root/src/System/GameSceneController"
+
 export enum eNG_GameState{
     init = 'NG_Init',
 

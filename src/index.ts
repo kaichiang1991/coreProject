@@ -40,11 +40,10 @@ const gameEntry: Function = async ()=>{
     Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)            // 初始化 Debug
     ParameterParse.init()
     GSAPManager.init()
+    LocalizationManager.init()
     GameAssetManager.init()
     GameSceneManager.init()
-    LocalizationManager.init()
     StateModule.init()
-    GameAssetManager.setLanguage()
 
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)

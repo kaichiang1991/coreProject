@@ -125,16 +125,72 @@ declare namespace PixiAsset {
          */
         static init(lists: ISpineList): Promise<void>;
         /**
-         * 產生 spine
-         * ToDo 看撥放動畫要不要分開做
-         * @param name init時帶入的名稱
-         * @returns
+         * 播放 spine 動畫
+         * @param name init 時帶入的名稱
+         * @param animName 動畫名稱 ( 若沒有要播動畫，只是要創建spine，則不用帶)
+         * @param loop 循環
+         * @returns {[Spine, PIXI.spine.core.TrackEntry]}
          */
-        static playSpine(name: string): Spine;
+        static playSpine(name: string, animName?: string, loop?: boolean): [Spine, PIXI.spine.core.TrackEntry];
         /**
          * @param name 載入的名稱
          */
         constructor(name: string);
+        /**
+         * 設定第0軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimation(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 設定最新一軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimationWithLatestIndex(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 設定第 n 軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 在第 0 軌後接著播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @param delay 延遲時間
+         * @param mixDuration 交疊時間
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        addAnimation(animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        /**
+         * 在第 n 軌後接著播放動畫
+         * @param trackIndex 第幾軌
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @param delay 延遲時間
+         * @param mixDuration 交疊時間
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        addAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        /**
+         * 取得最新一軌沒有在播放動畫的軌道索引
+         * @returns {number} 索引值
+         */
+        private getLatestTrackIndex;
+        /**
+         * 設定動畫跳到結束
+         * @param trackIndex 第幾軌
+         */
+        setAnimationToEnd(trackIndex: number): void;
+        /**
+         * 設定動畫的 skin
+         * @param name skin 名稱
+         */
+        setNewSkinByName(name: string): void;
     }
 }
 interface ISoundList {

@@ -4,6 +4,7 @@ import config from '@root/config'
 import pathConvert from "@root/src/Tool/pathConvert";
 import GameAudioManager from "./GameAudioManager";
 import GameFontManager from "./GameFontManager";
+import GameSpineManager from "./GameSpineManager";
 
 const {AssetLoader, Sprite, PixiSound} = PixiAsset
 
@@ -29,6 +30,8 @@ export default class GameAssetManager{
 
     public static init(){
         AssetLoader.init(App)
+        this.setLanguage()
+        GameSpineManager.setLanguage()
     }
 
     public static async loadAsset(){
@@ -45,7 +48,7 @@ export default class GameAssetManager{
             name, type: eAssetType.spriteSheet, source: spriteSheetSources[index]
         })))
 
-        // spine 的引入
+        await GameSpineManager.init()               // spine 的引入
         await GameFontManager.init()                // font 的引入
         await GameAudioManager.init()               // audio 的引入
         await this.loadDone()

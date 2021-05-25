@@ -32,7 +32,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(json)$/i,
+                test: /\.(json|atlas)$/i,
                 resourceQuery: { not: [/edit/] },   // 如果要直接 import 原檔內容的，在 query 的地方加上 eidt  e.g. import 'package.json?edit'
                 type: 'asset/resource',
                 generator: {
