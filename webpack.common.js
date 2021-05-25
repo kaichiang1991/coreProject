@@ -36,14 +36,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.atlas$/i,
-                type: 'asset/resource',
-                generator: {
-                    filename: '[path][name][ext]'
-                }
-            },
-            {
-                test: /\.json/i,
+                test: /\.(json)$/i,
                 resourceQuery: { not: [/edit/] },   // 如果要直接 import 原檔內容的，在 query 的地方加上 eidt  e.g. import 'package.json?edit'
                 type: 'asset/resource',
                 generator: {
@@ -51,13 +44,19 @@ module.exports = {
                 }
             },
             {
-                test: /\.mp3/i,
+                test: /\.(mp3)$/i,
                 type: 'asset/resource',
                 generator: {
                     filename: '[path][hash][ext]'
                 }
+            },
+            {
+                test: /\.(fnt)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: '[path][name][ext]'
+                }
             }
-            // ToDo fnt
         ]
     },
 
