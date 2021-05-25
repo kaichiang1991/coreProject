@@ -1,5 +1,5 @@
 import lazyLoad from "@root/src/Tool/lazyLoad"
-import moduleName from '@pixi/sound'
+
 const {PixiSound} = PixiAsset
 export default class GameAudioManager{
 

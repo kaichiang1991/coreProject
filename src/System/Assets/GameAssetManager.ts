@@ -3,18 +3,19 @@ import lazyLoad from "../../Tool/lazyLoad";
 import config from '@root/config'
 import pathConvert from "@root/src/Tool/pathConvert";
 import GameAudioManager from "./GameAudioManager";
+import GameFontManager from "./GameFontManager";
 
 const {AssetLoader, Sprite, PixiSound} = PixiAsset
 
 export default class GameAssetManager{
 
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
-        'Button': 'img/Button.png',
+        // 'Button': 'img/Button.png',
         'logo': 'img/logo.png'
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
-        // 'Button': 'img/Button.json',
+        'Button': 'img/Button.json',
     }
 
     public static setLanguage(){
@@ -45,13 +46,12 @@ export default class GameAssetManager{
         })))
 
         // spine 的引入
-        // font 的引入
+        await GameFontManager.init()                // font 的引入
         await GameAudioManager.init()               // audio 的引入
-
         await this.loadDone()
     }
 
     private static async loadDone(){
-
+        
     }
 }

@@ -2,7 +2,8 @@
 declare enum eAssetType {
     img = 0,
     spriteSheet = 1,
-    spine = 2
+    spine = 2,
+    font = 3
 }
 interface IAssetStruct {
     name: string;
@@ -220,6 +221,7 @@ declare namespace PixiAsset {
     class Button extends PIXI.Sprite {
         private textureInfo;
         private currentToggle;
+        get ToggleState(): string;
         private state;
         constructor(name: string);
         /**
@@ -238,11 +240,11 @@ declare namespace PixiAsset {
         /**
          * 加上容器上
          * @param parent 父容器
-         * @param x 座標
-         * @param y
+         * @param {number | PIXI.Point} pos 數字的話則 x = y = pos, 座標的話則帶入座標
+         * @param {number | PIXI.Point} anchor 數字的話則 x = y = anchor, 座標的話則帶入座標
          * @param state 指定一開始的狀態
          */
-        addTo(parent: PIXI.Container, x: number, y: number, state?: eButtonState): void;
+        addTo(parent: PIXI.Container, pos: number | PIXI.Point, anchor?: number | PIXI.Point, state?: eButtonState): void;
         /**
          * 切換狀態
          * @param name 要切換的狀態名稱  ( 如果只有兩態切換的話，則不用打參數 )
@@ -263,4 +265,35 @@ declare namespace PixiAsset {
         private setTexture;
     }
 }
-{};
+interface IBitmapTextStyle {
+    fontName: string;
+    fontSize?: number;
+    align?: string;
+    tint?: number;
+    letterSpacing?: number;
+    maxWidth?: number;
+}
+interface IBitmapTextList {
+    [key: string]: string;
+}
+declare namespace PixiAsset {
+    class BitmapText extends PIXI.BitmapText {
+        /**
+         * 初始化字型
+         * @param list 要初始化的list
+         */
+        static init(list: IBitmapTextList): Promise<void>;
+        /**
+         * 畫字型
+         * @param name 字型容器名稱
+         * @param fontName 字型名稱
+         * @param fontSize 字型大小
+         * @param {number | PIXI.Point} pos
+         * @param {number | PIXI.Point} anchor
+         * @param style
+         * @returns
+         */
+        static drawFont(name: string, fontName: string, fontSize: number, pos?: number | PIXI.Point, anchor?: number | PIXI.Point, style?: IBitmapTextStyle): BitmapText;
+        constructor(name: string, style: IBitmapTextStyle);
+    }
+}
