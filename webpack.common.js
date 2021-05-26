@@ -1,4 +1,5 @@
 const path = require('path')
+const {name} = require('./package.json')
 const webpack = require('webpack')
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
         library: {
             type: 'umd'
         },
-        path: path.resolve(__dirname, 'dist/Lib'),
+        path: path.resolve(__dirname, 'dist', name),
         filename: '[name].js',
     },
 
