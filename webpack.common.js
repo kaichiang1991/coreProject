@@ -1,6 +1,6 @@
 const path = require('path')
-const {name} = require('./package.json')
 const webpack = require('webpack')
+const md5 = require('md5-dir')
 
 module.exports = {
     entry: {
@@ -59,9 +59,9 @@ module.exports = {
 
     plugins: [
         // 全域變數
-        // new webpack.DefinePlugin({
-            // assetsMd5: JSON.stringify(md5.sync('./assets')),
-        // })
+        new webpack.DefinePlugin({
+            assetsMd5: JSON.stringify(md5.sync('./assets')),
+        })
     ],
 
     // 不要打包進 bundle 的 module, 會在 runtime 時引入

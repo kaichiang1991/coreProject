@@ -9,3 +9,5 @@ declare module '*.tiff'
 declare module '*.webp'
 declare module '*.atlas'
 declare module '*.json?edit'
+
+declare const assetsMd5: string
