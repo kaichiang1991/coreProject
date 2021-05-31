@@ -11,7 +11,7 @@ module.exports = merge(common, {
 
     watch: true,
     watchOptions: {
-        ignored: ['node_modules/**', '**/*.json', '**/*.html']
+        ignored: ['node_modules/**', '**/*.html']
     },
 
     output: {

@@ -11,12 +11,12 @@ import GSAPManager from './System/GSAPManager'
 import GameAssetManager from './System/Assets/GameAssetManager'
 
 // 顯示專案資訊
-const {name, version, size} = config
+const {name, version, size, fps} = config
 console.log('Project', name, version)
 
 const {width, height} = size
 export const App: Application = new Application({
-    width, height, backgroundColor: 0xAAAAAA
+    width, height, backgroundColor: 0xAAAAAA, autoStart: false
 })
 
 // init Pixi Application
@@ -24,6 +24,8 @@ const {view, stage} = App
 const div: HTMLElement = document.querySelector('#div_pixi')
 div.appendChild(view)
 stage.sortableChildren = true
+gsap.ticker.fps(fps)
+gsap.ticker.add(()=> App.ticker.update())
 
 // 版號
 const versionText: Text = new Text(`v${version}`, new TextStyle({
