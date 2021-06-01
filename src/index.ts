@@ -9,6 +9,7 @@ import { eAppLayer } from './System/LayerDef'
 import supportWebp from './Tool/supportWebp'
 import GSAPManager from './System/GSAPManager'
 import GameAssetManager from './System/Assets/GameAssetManager'
+import AppDebug from './System/AppDebug'
 
 // 顯示專案資訊
 const {name, version, size, fps} = config
@@ -39,14 +40,14 @@ stage.addChild(versionText)
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     EventHandler.init()     // 初始化事件管理
-    Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)            // 初始化 Debug
+    AppDebug.init()
     ParameterParse.init()
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()
     GameSceneManager.init()
     StateModule.init()
-
+    
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
     await Loading.init(loadingCont)

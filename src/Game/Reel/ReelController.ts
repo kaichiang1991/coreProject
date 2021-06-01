@@ -3,7 +3,7 @@ import { Container, Graphics } from "pixi.js-legacy";
 import {size} from '@root/config'
 import Reel from "./Reel";
 import spinConfigUrl from './spinConfig.json'
-import { reelCount } from "./SymbolDef";
+import { reelCount, defaultStopOrder } from "./SymbolDef";
 import gsap from "gsap/all";
 
 interface ISpinConfig{
@@ -25,6 +25,8 @@ export default class ReelController{
     public static get ReelContainer(): Container {return this.reelContainer}
     private static reelArr: Array<Reel>
     private static mask: Graphics
+
+    private static stopOrder: Array<number>
 
     // 急停
     private static toStopNow: boolean
@@ -77,19 +79,27 @@ export default class ReelController{
         }
     }
 
+    //#region 控制滾輪
     /**
      * 開始滾動
+     * @param {Array<number>} stopOrder 指定的停輪順序，預設用 symbolDef 裡面，若要單輪可以直接指定
      * @returns 全部停輪後會回傳
+     * @example
+     *  ReelController.startSpin()          // 使用預設停輪順序
+     *  ReelController.startSpin([0, 1])    // 只滾 0, 1 軸
      */
-    public static async startSpin(){
-        this.toStopNow = false      // 是否急停
-        const [...setStartArr] = this.reelArr.map(reel => reel.setStartSpin())
+    public static async startSpin(stopOrder: Array<number> = defaultStopOrder){
+        this.toStopNow = false                  // 初始化急停參數
+        this.stopOrder = stopOrder.slice()      // 停輪順序
+
+        const spinReelArr: Array<Reel> = this.stopOrder.map(order => this.reelArr[order])
+        const [...setStartArr] = spinReelArr.map(reel => reel.setStartSpin())
         await Promise.all(setStartArr.map(arr => arr[0]))       // 等待都往上拉之後
 
         let detlaRatio: number
         const tickerEvent: gsap.TickerCallback = () =>{
             detlaRatio = gsap.ticker.deltaRatio()
-            this.reelArr.map(reel => reel.spinEvent(detlaRatio))
+            spinReelArr.map(reel => reel.spinEvent(detlaRatio))
         }
 
         gsap.ticker.add(tickerEvent)
@@ -110,7 +120,8 @@ export default class ReelController{
         if(this.toStopNow)  return
 
         const delayArr: Array<number> = this.calcDelay()        // 計算停輪延遲時間
-        this.delayCallArr = this.reelArr.map((reel, index) => gsap.delayedCall(delayArr[index], ()=> reel.stopSpin()))
+        console.log('delayArr', delayArr)
+        this.delayCallArr = this.stopOrder.map(order => this.reelArr[order]).map(reel => gsap.delayedCall(delayArr[reel.ReelIndex], ()=> reel.stopSpin()))
     }
 
     /**
@@ -118,16 +129,17 @@ export default class ReelController{
      * @returns {Array<number>} 時間陣列 (s)
      */
     private static calcDelay(): Array<number>{
-        return this.reelArr.map((reel, index) => index * spinConfig.eachReelStop)
+        return this.reelArr.map((reel, index) => this.stopOrder.indexOf(index) * spinConfig.eachReelStop)
     }
 
     /**
      * 判斷上一輪是否已經開始停輪
-     * @param index 
+     * @param index 要檢查的輪數
      * @returns 
      */
     public static isLastReelCanStop(index: number): boolean{
-        return index == 0? true: this.reelArr[index - 1].CanStop
+        index = this.stopOrder.indexOf(index)       // 計算在停輪順序裡面的第幾個
+        return index == 0? true: this.reelArr[this.stopOrder[index - 1]].CanStop
     }
 
     /**

@@ -8,6 +8,7 @@ export default class Reel{
 
     private symbolArr: Array<Symbol>        // 所有滾輪上的符號 (包含上下各一顆)
     private reelIndex: number               // 第幾軸
+    public get ReelIndex(): number  {return this.reelIndex}
 
     // 滾輪表
     private reelDatas: Array<number>

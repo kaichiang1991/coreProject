@@ -12,11 +12,11 @@ export default class GameAssetManager{
 
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
         // 'Button': 'img/Button.png',
-        'logo': 'img/logo.png'
+        'logo': 'img/logo.png',
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
-        // 'Button': 'img/Button.json',
+        'Button': 'img/Button.json',
     }
 
     public static setLanguage(){
@@ -26,6 +26,8 @@ export default class GameAssetManager{
         this.spriteSheetList = {...this.spriteSheetList, 
         
         }
+        
+        Array(6).fill(1).map((_, index) => this.pngList['N' + (index+1)] = `img/N${index+1}.png`)
     }
 
     public static init(){

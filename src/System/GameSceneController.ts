@@ -56,8 +56,6 @@ class NormalGame{
             new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 1280)
             .beginFill(0x00AA00).drawRect(360, 0, 360, 1280)
             .endFill(),
-            // 滾輪框
-            new Graphics().lineStyle(2, 0x0000AA).beginFill(0x000033).drawRect(0, 350, 720, 300).endFill(),
             // logo
             logo = new PixiAsset.Sprite('logo')
         )
