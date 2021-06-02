@@ -56,6 +56,22 @@ declare namespace PixiAsset {
         private static checkLoadArg;
     }
 }
+declare namespace PixiAsset {
+    class JSON {
+        /**
+         * 讀取 json 檔
+         * @param path 路徑
+         * @returns {any} 回傳 JSON 物件 ( 可以用 interface 接，方便使用)
+         * @example
+         *      interface IObj{
+         *          a
+         *      }
+         *
+         *      const obj: IObj = PixiAsset.JSON.getJson(path)
+         */
+        static getJson(path: string): Promise<any>;
+    }
+}
 /** 動畫讀取的列表型態 */
 interface IAnimSpriteList {
     [key: string]: {
