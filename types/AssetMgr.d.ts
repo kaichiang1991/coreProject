@@ -2,7 +2,8 @@
 declare enum eAssetType {
     img = 0,
     spriteSheet = 1,
-    spine = 2
+    spine = 2,
+    font = 3
 }
 interface IAssetStruct {
     name: string;
@@ -53,6 +54,22 @@ declare namespace PixiAsset {
          * @returns
          */
         private static checkLoadArg;
+    }
+}
+declare namespace PixiAsset {
+    class JSON {
+        /**
+         * 讀取 json 檔
+         * @param path 路徑
+         * @returns {any} 回傳 JSON 物件 ( 可以用 interface 接，方便使用)
+         * @example
+         *      interface IObj{
+         *          a
+         *      }
+         *
+         *      const obj: IObj = PixiAsset.JSON.getJson(path)
+         */
+        static getJson(path: string): Promise<any>;
     }
 }
 /** 動畫讀取的列表型態 */
@@ -124,16 +141,72 @@ declare namespace PixiAsset {
          */
         static init(lists: ISpineList): Promise<void>;
         /**
-         * 產生 spine
-         * ToDo 看撥放動畫要不要分開做
-         * @param name init時帶入的名稱
-         * @returns
+         * 播放 spine 動畫
+         * @param name init 時帶入的名稱
+         * @param animName 動畫名稱 ( 若沒有要播動畫，只是要創建spine，則不用帶)
+         * @param loop 循環
+         * @returns {[Spine, PIXI.spine.core.TrackEntry]}
          */
-        static playSpine(name: string): Spine;
+        static playSpine(name: string, animName?: string, loop?: boolean): [Spine, PIXI.spine.core.TrackEntry];
         /**
          * @param name 載入的名稱
          */
         constructor(name: string);
+        /**
+         * 設定第0軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimation(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 設定最新一軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimationWithLatestIndex(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 設定第 n 軌播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        setAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
+        /**
+         * 在第 0 軌後接著播放動畫
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @param delay 延遲時間
+         * @param mixDuration 交疊時間
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        addAnimation(animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        /**
+         * 在第 n 軌後接著播放動畫
+         * @param trackIndex 第幾軌
+         * @param animName 動畫名稱
+         * @param loop 循環
+         * @param delay 延遲時間
+         * @param mixDuration 交疊時間
+         * @returns {PIXI.spine.core.TrackEntry}
+         */
+        addAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        /**
+         * 取得最新一軌沒有在播放動畫的軌道索引
+         * @returns {number} 索引值
+         */
+        private getLatestTrackIndex;
+        /**
+         * 設定動畫跳到結束
+         * @param trackIndex 第幾軌
+         */
+        setAnimationToEnd(trackIndex: number): void;
+        /**
+         * 設定動畫的 skin
+         * @param name skin 名稱
+         */
+        setNewSkinByName(name: string): void;
     }
 }
 interface ISoundList {
@@ -220,6 +293,7 @@ declare namespace PixiAsset {
     class Button extends PIXI.Sprite {
         private textureInfo;
         private currentToggle;
+        get ToggleState(): string;
         private state;
         constructor(name: string);
         /**
@@ -238,11 +312,11 @@ declare namespace PixiAsset {
         /**
          * 加上容器上
          * @param parent 父容器
-         * @param x 座標
-         * @param y
+         * @param {number | PIXI.Point} pos 數字的話則 x = y = pos, 座標的話則帶入座標
+         * @param {number | PIXI.Point} anchor 數字的話則 x = y = anchor, 座標的話則帶入座標
          * @param state 指定一開始的狀態
          */
-        addTo(parent: PIXI.Container, x: number, y: number, state?: eButtonState): void;
+        addTo(parent: PIXI.Container, pos: number | PIXI.Point, anchor?: number | PIXI.Point, state?: eButtonState): void;
         /**
          * 切換狀態
          * @param name 要切換的狀態名稱  ( 如果只有兩態切換的話，則不用打參數 )
@@ -263,4 +337,40 @@ declare namespace PixiAsset {
         private setTexture;
     }
 }
-{};
+interface IBitmapTextStyle {
+    fontName: string;
+    fontSize?: number;
+    align?: string;
+    tint?: number;
+    letterSpacing?: number;
+    maxWidth?: number;
+}
+interface IBitmapTextList {
+    [key: string]: string;
+}
+declare namespace PixiAsset {
+    class BitmapText extends PIXI.BitmapText {
+        /**
+         * 初始化字型
+         * @param list 要初始化的list
+         */
+        static init(list: IBitmapTextList): Promise<void>;
+        /**
+         * 畫字型
+         * @param name 字型容器名稱
+         * @param fontName 字型名稱
+         * @param fontSize 字型大小
+         * @param {number | PIXI.Point} pos
+         * @param {number | PIXI.Point} anchor
+         * @param style
+         * @returns
+         */
+        static drawFont(name: string, fontName: string, fontSize: number, pos?: number | PIXI.Point, anchor?: number | PIXI.Point, style?: IBitmapTextStyle): BitmapText;
+        constructor(name: string, style: IBitmapTextStyle);
+        /**
+         * 利用字型名稱變換數字的貼圖
+         * @param fontName 字型名稱
+         */
+        setTexture(fontName: string): void;
+    }
+}
