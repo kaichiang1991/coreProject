@@ -7,13 +7,15 @@ import { reelCount, defaultStopOrder } from "./SymbolDef";
 import gsap from "gsap/all";
 
 interface ISpinConfig{
-    upDistance: number
-    upDuration: number
-    spinSpeed: number
-    forceStopSpeed: number      // 急停的速度
-    bounceDistance: number
+    upDistance: number          // 上移的距離
+    upDuration: number          // 上移的時間
+    spinSpeed: number           // 一般的滾動速度
+    forceStopSpeed: number      // 急停的滾動速度
+    listeningSpeed: number      // 聽牌的滾動速度  (最終的速度，漸慢)
+    listeningDelay: number      // 聽牌的延遲時間  (s)
+    bounceDistance: number      // 回彈的距離
     bounceBackDuration: number  // 回拉的時間
-    eachReelStop: number
+    eachReelStop: number        // 每輪的間隔
     extraSymbolCount: number    // 結尾要接回去的滾輪表個數
 }
 
@@ -32,8 +34,6 @@ export default class ReelController{
     private static toStopNow: boolean
     private static stopNowEvent: Function
     public static get StopNowEvent(): Function {return this.stopNowEvent}       // 急停事件
-
-    private static delayCallArr: Array<gsap.core.Tween>
 
     /** 初始化滾輪控制 */
     public static async init(){
@@ -54,20 +54,15 @@ export default class ReelController{
         this.reelContainer.pivot.set(250, 150)
         this.reelContainer.position.set(size.width / 2, 525)
 
-        this.reelContainer.mask = this.mask
-        GameSceneManager.getSceneContainer().addChild(this.reelContainer)
-
         this.reelArr = Array(reelCount).fill(1).map((_, index) => new Reel().init(index))
-        this.setReelData()
-        this.reelArr.map(reel => reel.reset())
 
         this.stopNowEvent = ()=>{
-            if(this.toStopNow)  return
+            if(this.toStopNow)  
+                return
             
             this.toStopNow = true
-            this.delayCallArr?.forEach(tween => tween.kill())
             
-            this.reelArr.map((reel, index) =>{
+            this.stopOrder.map(order => this.reelArr[order]).map(reel =>{
                 reel.ForceStop = true
                 reel.stopSpin()
             })
@@ -77,6 +72,14 @@ export default class ReelController{
             //     reel.stopSpin()
             // })
         }
+    }
+
+    public static reset(){
+        this.setReelData()
+        this.reelArr.map(reel => reel.reset())
+
+        this.reelContainer.mask = this.mask
+        GameSceneManager.getSceneContainer().addChild(this.reelContainer)
     }
 
     //#region 控制滾輪
@@ -92,7 +95,7 @@ export default class ReelController{
         this.toStopNow = false                  // 初始化急停參數
         this.stopOrder = stopOrder.slice()      // 停輪順序
 
-        const spinReelArr: Array<Reel> = this.stopOrder.map(order => this.reelArr[order])
+        const spinReelArr: Array<Reel> = this.stopOrder.map(order => this.reelArr[order])       // 要轉動的輪
         const [...setStartArr] = spinReelArr.map(reel => reel.setStartSpin())
         await Promise.all(setStartArr.map(arr => arr[0]))       // 等待都往上拉之後
 
@@ -119,17 +122,7 @@ export default class ReelController{
     public static stopSpin(){
         if(this.toStopNow)  return
 
-        const delayArr: Array<number> = this.calcDelay()        // 計算停輪延遲時間
-        console.log('delayArr', delayArr)
-        this.delayCallArr = this.stopOrder.map(order => this.reelArr[order]).map(reel => gsap.delayedCall(delayArr[reel.ReelIndex], ()=> reel.stopSpin()))
-    }
-
-    /**
-     * 計算每一輪停輪的延遲時間
-     * @returns {Array<number>} 時間陣列 (s)
-     */
-    private static calcDelay(): Array<number>{
-        return this.reelArr.map((reel, index) => this.stopOrder.indexOf(index) * spinConfig.eachReelStop)
+        this.stopOrder.map(order => this.reelArr[order].stopSpin())
     }
 
     /**
@@ -137,10 +130,25 @@ export default class ReelController{
      * @param index 要檢查的輪數
      * @returns 
      */
-    public static isLastReelCanStop(index: number): boolean{
+    public static isLastReelCanStop(index: number): boolean{  
         index = this.stopOrder.indexOf(index)       // 計算在停輪順序裡面的第幾個
-        return index == 0? true: this.reelArr[this.stopOrder[index - 1]].CanStop
+        return index == 0? true: this.reelArr[this.stopOrder[index - 1]].NextReelCanStop
     }
+
+    /**
+     * 判斷上一輪聽牌停止的狀態
+     * @param index 要檢查的輪數
+     * @returns 上一輪是否聽牌效果停止
+     */
+    public static isLastReelListeningDone(index: number): boolean{
+        index = this.stopOrder.indexOf(index)
+        if(index == 0)
+            return true
+        
+        const lastReel: Reel = this.reelArr[this.stopOrder[index - 1]]
+        return !lastReel.Listening? true: lastReel.ListeningDone
+    }
+
 
     /**
      * 設定滾輪表
@@ -148,4 +156,22 @@ export default class ReelController{
     public static setReelData(){
         this.reelArr.map(reel => reel.setReelData())
     }
+
+    //#region 聽牌
+    public static setListening(...indexArr: Array<number>){
+        indexArr.map(index => this.reelArr[index].setListening())
+    }
+
+    /**
+     * 通知下一輪開始演聽牌
+     * @param index 第幾輪
+     */
+    public static setListeningEffect(index: number){
+        index = this.stopOrder.indexOf(index)
+        if(index >= this.stopOrder.length - 1)      // 最後一輪
+            return
+        const nextIndex: number = this.stopOrder[index + 1]
+        this.reelArr[nextIndex].Listening && this.reelArr[nextIndex].setListeningEffect()
+    }
+    //#endregion
 }

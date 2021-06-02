@@ -7,8 +7,7 @@ export default class AppDebug{
         const debugLevel: number = process.env.NODE_ENV == 'production'? eDebugLevel.Error: (eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)
         Debug.init(App, debugLevel)            // 初始化 Debug
 
-        const debugPanel: HTMLElement = document.querySelector('#div_debug')
-        debugPanel.onclick = ()=>{
+        Debug.divPanel.onclick = ()=>{
             this.getAllLog()
             debugger
         }

@@ -8,7 +8,7 @@ interface IPanelInfo {
 }
 declare class Debug {
     static DebugLevel: number;
-    private static divPanel;
+    static divPanel: HTMLElement;
     private static App;
     /**
      * 初始化 Debug 功能

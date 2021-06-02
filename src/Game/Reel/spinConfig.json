@@ -3,6 +3,8 @@
     "upDuration": 0.5,
     "spinSpeed": 20,
     "forceStopSpeed": 30,
+    "listeningSpeed": 5,
+    "listeningDelay": 3,
     "bounceDistance": 20,
     "bounceBackDuration": 0.5,
     "eachReelStop": 0.5,

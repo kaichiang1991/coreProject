@@ -27,25 +27,37 @@ class GameInit extends GameState{
     enter(){
         const parent = GameSceneManager.getSceneContainer()
         // 做測試的 UI  ( 正式要拔掉 )
-        const startspin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('SpinStart_00.png'))
-        startspin.position.set(100, 750)
+        const startspin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('startSpin'))
+        startspin.position.set(279, 914)
 
-        const stopSpin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('SpinStop_00.png'))
-        stopSpin.position.set(400, 750)
+        const stopSpin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('stopSpin'))
+        stopSpin.position.set(450, 914)
         
         startspin.interactive = stopSpin.interactive = true
+
+        const speedSpin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('speedSpin'))
+        speedSpin.position.set(163, 999)
+        console.log(speedSpin)
 
         // 綁事件
         startspin.on('pointerdown', ()=>{
             ReelController.startSpin()
             setTimeout(() => {
                 ReelController.setResult([
-                    [5, 1, 2],
-                    [1, 2, 3],
-                    [5, 1, 2],
-                    [1, 2, 3],
-                    [5, 1, 2],
+                    [3, 3, 3],
+                    [3, 3, 3],
+                    [3, 3, 3],
+                    [3, 3, 3],
+                    [3, 3, 3],
+                    // [5, 1, 2],
+                    // [5, 1, 2],
+                    // [1, 2, 3],
+                    // [5, 1, 2],
                 ])
+
+                // ReelController.setListening(0)
+                // ReelController.setListeningEffect(-1)
+                window['arr'] && ReelController.setListening(...window['arr'])
                 ReelController.stopSpin()
             }, 1000)
         })
@@ -53,7 +65,8 @@ class GameInit extends GameState{
         stopSpin.on('pointerdown', ()=>{
             ReelController.StopNowEvent()
         })
+
         // 初始化滾輪
-        ReelController.init()
+        ReelController.reset()
     }
 }

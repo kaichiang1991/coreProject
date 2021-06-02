@@ -1,7 +1,6 @@
 import Symbol from "./Symbol"
 import { eSymbolConfig, reelSymbolCount, yOffsetArr } from "./SymbolDef"
 import ReelController, { spinConfig } from "./ReelController"
-import gsap from "gsap/all"
 import {fps} from '@root/config'
 
 export default class Reel{
@@ -21,28 +20,39 @@ export default class Reel{
     private checkPointY: number         // 檢查到底的值
     private toStop: boolean             // 是否通知要開始停輪
     private toBounce: boolean           // 開始 bounce
+
     private toForceStop: boolean        // 是否急停
     public set ForceStop(flag: boolean){ this.toForceStop = flag}
-    private toSetStop: boolean          // 是否已經設定結果的參數
-    private canStop: boolean            // 通知下一輪可否開始停輪
-    public get CanStop(): boolean { return this.canStop }
+
+    private setNextReelCanStopTween: gsap.core.Tween    // 設定下一輪可否停輪的tween
+    private nextReelCanStop: boolean    // 下一輪是否可以開始停輪
+    public get NextReelCanStop(): boolean { return this.nextReelCanStop }
+
+    private toSetStop: boolean          // 是否已經設定下一輪
+
+    // 聽牌
+    private isListening: boolean            // 該輪有沒有聽牌
+    public get Listening(): boolean { return this.isListening }
+    private isListeningDone: boolean        // 聽牌是否進到bounce
+    public get ListeningDone(): boolean { return this.isListeningDone }
+    private listeningSpeedUpDone: boolean   // 聽牌加速完
+    private listeningSpeed: number          // 聽牌時速度
+    private listeningTween: gsap.core.Tween // 設定聽牌速度的 tween
 
     // 結果
     private resultArr: Array<number>    // 結果陣列
-    private resultIndex: number         // 結果的index，用來判斷停輪
     private correctIndex: number        // 校正的index，用來判斷結果前的滾輪表symbol的個數
     private stopSpinEvent: Function     // 停止事件，通知呼叫 startSpin 的地方，已經停輪
 
     /**
      * 初始化滾輪
-     * @param parent 
      * @param index 
      * @returns 滾輪
      */
     public init(index: number): Reel{
         this.reelIndex = index
         // 初始化滾輪表裡面的symbol
-        this.symbolArr = Array(reelSymbolCount[this.reelIndex] + spinConfig.extraSymbolCount).fill(1).map((_, index) => new Symbol().init(this.reelIndex, index))
+        this.symbolArr = Array(reelSymbolCount[this.reelIndex] + 2).fill(1).map((_, index) => new Symbol().init(this.reelIndex, index))
         
         // 檢查是否到底部的相關參數
         this.checkIndex = this.symbolArr.length - 2
@@ -67,8 +77,16 @@ export default class Reel{
 
     /** 重設滾動參數 */
     private resetSpin(){
-        this.toSetStop = this.toForceStop = this.canStop = this.toBounce = this.toStop = false
-        this.correctIndex = this.resultIndex = 0
+        this.nextReelCanStop = this.toSetStop = false
+        this.setNextReelCanStopTween?.kill()
+
+        this.toSetStop = this.toForceStop = this.toBounce = this.toStop = false
+        this.correctIndex = 0
+
+        // 聽牌重設
+        this.listeningSpeedUpDone = this.isListening = this.isListeningDone = false
+        this.listeningSpeed = spinConfig.spinSpeed
+        this.listeningTween?.kill()
     }
 
     /**
@@ -97,33 +115,37 @@ export default class Reel{
         
         if(this.toBounce)   return      // 已經進到bounce就先不執行
 
-        this.dy = deltaRatio * (this.toForceStop? spinConfig.forceStopSpeed: spinConfig.spinSpeed)        // 計算每幀位移量
+        this.dy = deltaRatio * (this.toForceStop? spinConfig.forceStopSpeed: this.isListening? this.listeningSpeed: spinConfig.spinSpeed)        // 計算每幀位移量
 
         if(this.updateSymbolPos()){
-
-            this.canStop = this.correctIndex != 0   // 掉一顆下來後，讓下一軸可以停輪
             this.swapSymbol()                       // 交換 symbol 位置
             this.setNextSymbol()                    // 設定掉下來的下顆符號
 
-            if(this.toStop && ( this.toForceStop || ReelController.isLastReelCanStop(this.reelIndex))){     // 判斷停輪條件
+            if(!this.toStop)        // 還沒有要停止
+                return
                 
-                if(this.resultIndex == this.resultArr.length + 1){
+            if(!this.toForceStop && this.isListening && !this.listeningSpeedUpDone){    // 聽牌時先跳過停止階段
+                return
+            }
+
+            if(this.toForceStop || (ReelController.isLastReelCanStop(this.reelIndex) && ReelController.isLastReelListeningDone(this.reelIndex))){     // 判斷停輪條件
+
+                if(this.correctIndex == this.resultArr.length + spinConfig.extraSymbolCount){   // 換到最後一顆，準備進bounce
+                    ReelController.setListeningEffect(this.reelIndex)       // 設定下一輪的聽牌效果
+                    this.isListeningDone = true                             // 讓下一輪判斷，前一輪聽牌結束 ReelController.isPreviousListeningDone()
                     this.spinBounce()
                     return
                 }
 
-                if(!this.toSetStop){        // 設定落下的symbol接在滾輪表上
-                    this.toSetStop = true
+                if(!this.toSetStop){          
+                    this.toSetStop = true     
+                    // 設定下一輪可以停輪的時間
+                    this.setNextReelCanStopTween = gsap.delayedCall(this.isListening? 0: spinConfig.eachReelStop, ()=> this.nextReelCanStop = true)
+                    // 接回正確的滾輪表
                     this.getCorrectDataIndex(this.resultArr)
                     this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()])
-                    // this.symbolArr[0].setCorrectReelData(this.correctIndex)
-                // }else if(++this.correctIndex < spinConfig.extraSymbolCount){        
-                //     this.symbolArr[0].setCorrectReelData(this.correctIndex)
-                // }else{
-                //     this.symbolArr[0].setResult('Result' + this.resultArr[this.resultIndex++])
-                // }
-                }else if(++this.correctIndex >= spinConfig.extraSymbolCount){
-                    this.symbolArr[0].setResult('Result' + this.resultArr[this.resultIndex++])
+                }else{
+                    this.correctIndex++
                 }
             }
         }
@@ -169,10 +191,21 @@ export default class Reel{
 
     /** 停止滾輪 */
     public stopSpin(){
-        if(this.toStop) return
-
         this.toStop = true
     }
+
+    //#region 聽牌
+    /** 設定聽牌 */
+    public setListening(){
+        this.isListening = true
+    }
+    
+    /** 設定聽牌效果(減速) */
+    public setListeningEffect(){
+        this.listeningTween = gsap.to(this, {ease: Power2.easeOut, duration: spinConfig.listeningDelay, listeningSpeed: spinConfig.listeningSpeed})
+        .eventCallback('onComplete', ()=> this.listeningSpeedUpDone = true)
+    }
+    //#endregion
 
     /**
      * 更新每一顆symbol的位置

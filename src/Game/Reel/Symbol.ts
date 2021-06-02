@@ -46,11 +46,9 @@ export default class Symbol extends Container{
         .drawRect(-eSymbolConfig.width / 2, -eSymbolConfig.height / 2, eSymbolConfig.width, eSymbolConfig.height)
         .endFill()
 
-        this.sprite.texture = AssetLoader.getTexture('N' + (symbolIndex + 1))
         this.setIndex(symbolIndex)
         this.position.set(xOffsetArr[reelIndex], yOffsetArr[symbolIndex])
 
-        this.isResult = false
         return this
     }
 

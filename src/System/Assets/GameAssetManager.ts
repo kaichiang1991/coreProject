@@ -5,6 +5,7 @@ import pathConvert from "@root/src/Tool/pathConvert";
 import GameAudioManager from "./GameAudioManager";
 import GameFontManager from "./GameFontManager";
 import GameSpineManager from "./GameSpineManager";
+import ReelController from "@root/src/Game/Reel/ReelController";
 
 const {AssetLoader, Sprite, PixiSound} = PixiAsset
 
@@ -13,6 +14,9 @@ export default class GameAssetManager{
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
         // 'Button': 'img/Button.png',
         'logo': 'img/logo.png',
+        'startSpin': 'img/SpinStart00.png',
+        'speedSpin': 'img/SpeedSpin00.png',
+        'stopSpin': 'img/SpinStop00.png',
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
@@ -57,6 +61,6 @@ export default class GameAssetManager{
     }
 
     private static async loadDone(){
-        
+        await ReelController.init()
     }
 }
