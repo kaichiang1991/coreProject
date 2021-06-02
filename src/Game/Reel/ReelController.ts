@@ -4,7 +4,6 @@ import {size} from '@root/config'
 import Reel from "./Reel";
 import spinConfigUrl from './spinConfig.json'
 import { reelCount, defaultStopOrder } from "./SymbolDef";
-import gsap from "gsap/all";
 
 interface ISpinConfig{
     upDistance: number          // 上移的距離

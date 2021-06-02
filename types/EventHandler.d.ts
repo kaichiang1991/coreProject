@@ -1,3 +1,14 @@
+declare enum eCommonEvent {
+    orientationChange = "orientationChange",
+    startSpin = "startSpin",
+    stopSpin = "stopSpin"
+}
+declare const eEventName: {
+    orientationChange: eCommonEvent.orientationChange;
+    startSpin: eCommonEvent.startSpin;
+    stopSpin: eCommonEvent.stopSpin;
+    stateChange: eGameStateEvent.stateChange;
+};
 declare class EventHandler {
     private static instance;
     /**

@@ -40,30 +40,36 @@ class GameInit extends GameState{
         console.log(speedSpin)
 
         // 綁事件
-        startspin.on('pointerdown', ()=>{
+        EventHandler.on(eEventName.startSpin, ()=>{
             ReelController.startSpin()
-            setTimeout(() => {
-                ReelController.setResult([
-                    [3, 3, 3],
-                    [3, 3, 3],
-                    [3, 3, 3],
-                    [3, 3, 3],
-                    [3, 3, 3],
-                    // [5, 1, 2],
-                    // [5, 1, 2],
-                    // [1, 2, 3],
-                    // [5, 1, 2],
-                ])
+            ReelController.setResult([
+                [3, 3, 3],
+                [3, 3, 3],
+                [3, 3, 3],
+                [3, 3, 3],
+                [3, 3, 3],
+                // [5, 1, 2],
+                // [5, 1, 2],
+                // [1, 2, 3],
+                // [5, 1, 2],
+            ])
 
-                // ReelController.setListening(0)
-                // ReelController.setListeningEffect(-1)
-                window['arr'] && ReelController.setListening(...window['arr'])
-                ReelController.stopSpin()
-            }, 1000)
+            // ReelController.setListening(0)
+            // ReelController.setListeningEffect(-1)
+            window['arr'] && ReelController.setListening(...window['arr'])
+            ReelController.stopSpin()
+        })
+
+        EventHandler.on(eEventName.stopSpin, ()=>{
+            ReelController.StopNowEvent()
+        })
+
+        startspin.on('pointerdown', ()=>{
+            EventHandler.dispatch(eEventName.startSpin)
         })
 
         stopSpin.on('pointerdown', ()=>{
-            ReelController.StopNowEvent()
+            EventHandler.dispatch(eEventName.stopSpin)
         })
 
         // 初始化滾輪
