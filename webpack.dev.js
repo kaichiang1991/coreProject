@@ -48,7 +48,7 @@ module.exports = merge(common, {
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/PixiPlugin.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
-                ].concat(['/AssetManager/index.js', '/Debug/index.js', '/Tool/index.js', '/EventHandler/index.js'].map(file => name + file))
+                ].concat(['/AssetManager/index.js', '/Debug/index.js', '/Tool/index.js', '/EventHandler/index.js', '/EventName.js'].map(file => name + file))
             }
         }),
 
