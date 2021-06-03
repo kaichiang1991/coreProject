@@ -1,3 +1,14 @@
+declare enum eCommonEvent {
+    orientationChange = "orientationChange",
+    startSpin = "startSpin",
+    stopSpin = "stopSpin"
+}
+declare const eEventName: {
+    orientationChange: eCommonEvent.orientationChange;
+    startSpin: eCommonEvent.startSpin;
+    stopSpin: eCommonEvent.stopSpin;
+    stateChange: eGameStateEvent.stateChange;
+};
 declare class EventHandler {
     private static instance;
     /**
@@ -17,13 +28,13 @@ declare class EventHandler {
      * @param name 事件名稱
      * @param callback
      */
-    static on(name: string, callback: Function): void;
+    static on(name: string, callback: Function): Function;
     /**
      * 註冊單次事件，觸發後取消
      * @param name 事件名稱
      * @param callback
      */
-    static once(name: string, callback: Function): void;
+    static once(name: string, callback: Function): Function;
     /**
      * 取消註冊指定事件
      * 不存在的話會印出警告，並跳出
@@ -38,4 +49,15 @@ declare class EventHandler {
     static removeListener(name: string): void;
     /** 取消所有註冊事件 */
     static removeAllListeners(): void;
+    /**
+     * 取得所有目前註冊的事件名稱
+     * @returns 事件名稱陣列
+     */
+    static getEventNames(): Array<string | symbol>;
+    /**
+     * 取得該名稱的所有事件
+     * @param name 事件名稱
+     * @returns 註冊的callback array
+     */
+    static getListeners(name: string): Array<Function>;
 }

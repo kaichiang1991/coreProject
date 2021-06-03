@@ -7,7 +7,6 @@ import gsap from 'gsap'
 window.gsap = gsap
 
 import config from './config'
-import supportWebp from './Tool/supportWebp'
 
 const {name, version} = config
 
