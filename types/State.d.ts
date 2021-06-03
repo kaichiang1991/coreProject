@@ -67,6 +67,3 @@ declare module StateModule {
         changeState(type: string): GameStateContext;
     }
 }
-declare enum eGameStateEvent {
-    stateChange = "gameStateChange"
-}
