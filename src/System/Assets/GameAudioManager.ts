@@ -4,7 +4,7 @@ const {PixiSound} = PixiAsset
 export default class GameAudioManager{
 
     private static audioList: ISoundList = {
-        'aa': 'audio/BB'
+        // 'aa': 'audio/BB'
     }
 
     public static async init(){

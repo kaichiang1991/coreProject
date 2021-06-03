@@ -6,6 +6,7 @@ declare class Loading {
     private static barWidth;
     private static barTween;
     private static logo;
+    private static resizeFn;
     /**
      * 初始化 Loading
      * @param stage

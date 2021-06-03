@@ -16,6 +16,5 @@
         "IdleForceClose": "You have been idle for too long. Your session is closed.",
         "ConnectClose": "Connect Close.",
         "TokenInvalid": "Token Invalid."
-    
     }
 }

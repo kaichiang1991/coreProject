@@ -39,14 +39,14 @@ declare module StateModule {
          * 註冊一個狀態
          * @param state
          */
-        regState(state: IState): void;
+        regState(state: IState): StateContext;
         /**
          * 取消註冊一個狀態
          * @param state
          */
-        unRegState(state: IState): void;
+        unRegState(state: IState): StateContext;
         /** 取消註冊全部狀態 */
-        unRegAll(): void;
+        unRegAll(): StateContext;
         /**
          * 取得狀態
          * @param type 狀態名稱
@@ -61,10 +61,10 @@ declare module StateModule {
          * 變更狀態
          * @param type 要變更的狀態
          */
-        changeState(type: string): void;
+        changeState(type: string): StateContext;
     }
     class GameStateContext extends StateContext {
-        changeState(type: string): void;
+        changeState(type: string): GameStateContext;
     }
 }
 declare enum eGameStateEvent {
