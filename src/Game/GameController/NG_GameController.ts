@@ -1,3 +1,4 @@
+import { App } from "@root/src"
 import GameSceneManager from "@root/src/System/GameSceneController"
 import ReelController from "../Reel/ReelController"
 
@@ -32,27 +33,11 @@ export default class NG_GameController{
 class GameInit extends GameState{
     enter(){
 
+        UIManager.init(App.stage, {line: 9, moneyFractionMultiple: 1000, languageData: {AutoSpinListTitle: 'auto spin', BetListTitle: 'bet list'}, denom: 10})
+
         EventHandler.on(eEventName.gameStateChange, (ctx)=>{
             const {type} = ctx
             console.log('change state', type)
-        })
-
-        const parent = GameSceneManager.getSceneContainer()
-        // 做測試的 UI  ( 正式要拔掉 )
-        const startspin: Sprite = parent.addChild(new PixiAsset.Sprite('startSpin'))
-        startspin.position.set(279, 914)
-
-        const stopSpin: Sprite = parent.addChild(new PixiAsset.Sprite('stopSpin'))
-        stopSpin.position.set(450, 914)
-        stopSpin.name = 'stop'
-        
-        startspin.interactive = stopSpin.interactive = true
-
-        const speedSpin: Sprite = parent.addChild(new PixiAsset.Sprite('speedSpin'))
-        speedSpin.position.set(163, 999)
-
-        startspin.on('pointerdown', ()=>{
-            EventHandler.dispatch(eEventName.startSpin)
         })
 
         // 初始化滾輪
@@ -100,8 +85,7 @@ class StartSpin extends GameState{
             [3, 3, 3]
         ])
 
-        this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> {console.log('stop');ReelController.StopNowEvent()})
-        GameSceneManager.getSceneContainer().getChildByName('stop').on('pointerdown', ()=> console.log('dispatch stop', EventHandler.dispatch(eEventName.stopSpin)))
+        this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> ReelController.StopNowEvent())
 
         setTimeout(() => {
             // ReelController.setListening(0)
@@ -120,9 +104,6 @@ class StartSpin extends GameState{
     }
 
     exit(){
-        console.log('exit ', this, EventHandler.getListeners(eEventName.stopSpin))
-        GameSceneManager.getSceneContainer().getChildByName('stop').removeAllListeners()
-        // off eventHandler
         EventHandler.getListeners(eEventName.stopSpin).length && EventHandler.off(eEventName.stopSpin, this.stopEvent)
     }
 }

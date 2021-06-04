@@ -41,6 +41,8 @@ export default class GameAssetManager{
     }
 
     public static async loadAsset(){
+        BetModel.init(10, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 3)
+
         const {canUseWebp} = config
         // 圖片的引入
         const [...sources] = await lazyLoad(Object.values(this.pngList).map(path => canUseWebp? pathConvert(path): path))

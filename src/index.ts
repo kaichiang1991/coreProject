@@ -40,6 +40,7 @@ const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     EventHandler.init()     // 初始化事件管理
     AppDebug.init()
+    MathTool.init()
     ParameterParse.init()
     GSAPManager.init()
     LocalizationManager.init()
