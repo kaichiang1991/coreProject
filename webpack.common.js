@@ -70,6 +70,7 @@ module.exports = {
     externals: {
         'pixi.js-legacy': 'PIXI',
         // 'pixi-spine',      // 只是引入 side-effect，runtime 有引入就好  ( ts error 問題只需要新增 triple slash)
+        // 'pixi-particles',      // 只是引入 side-effect，runtime 有引入就好  ( ts error 問題只需要新增 triple slash)
         '@pixi/sound': ['PIXI', 'sound'],
         'gsap': 'gsap',
         'number-precision': 'NP'

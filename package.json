@@ -37,6 +37,7 @@
     "@pixi/sound": "4.0.2",
     "gsap": "3.6.0",
     "number-precision": "^1.5.0",
+    "pixi-particles": "4.3.0",
     "pixi-spine": "2.1.14",
     "pixi.js-legacy": "5.3.9"
   }
