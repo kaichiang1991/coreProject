@@ -43,6 +43,7 @@ module.exports = merge(common, {
                     'https://cdn.jsdelivr.net/npm/pixi.js-legacy@5.3.9/dist/pixi-legacy.min.js',
                     'https://cdn.jsdelivr.net/npm/pixi-spine@2.1.14/dist/pixi-spine.min.js',
                     'https://cdn.jsdelivr.net/npm/@pixi/sound@4.0.2/dist/pixi-sound.js',
+                    'https://cdn.jsdelivr.net/npm/pixi-particles@4.3.0/dist/pixi-particles.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/EasePack.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/PixiPlugin.min.js',

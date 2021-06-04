@@ -1,9 +1,11 @@
 /// <reference types="pixi-spine" />
+/// <reference types="pixi-particles/ambient" />
 declare enum eAssetType {
     img = 0,
     spriteSheet = 1,
     spine = 2,
-    font = 3
+    font = 3,
+    particle = 4
 }
 interface IAssetStruct {
     name: string;
@@ -372,5 +374,64 @@ declare namespace PixiAsset {
          * @param fontName 字型名稱
          */
         setTexture(fontName: string): void;
+    }
+}
+/** particle 的相關設定 */
+interface IParticleConfig {
+    pos?: PIXI.Point;
+    emitterLifeTime?: number;
+    complete?: Function;
+    framerate?: number;
+}
+/** 要傳入 init 的 list */
+interface IParticleList {
+    [key: string]: string;
+}
+declare namespace PixiAsset {
+    class ParticleEmitter extends PIXI.particles.Emitter {
+        private static fps;
+        /**
+         * 初始化 particles
+         * 要使用的圖要另外載入
+         * @param fps 遊戲的 fps
+         * @param {IParticleList} list 粒子emitter的list
+         */
+        static init(fps: number, list: IParticleList): Promise<void>;
+        /**
+         * 播放單圖的粒子
+         * @param parent 父節點
+         * @param emitterName 粒子名稱
+         * @param textureName 貼圖名稱
+         * @param {IParticleConfig} config 相關設定
+         * @returns 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
+         */
+        static playParticle(parent: PIXI.Container, emitterName: string, textureName: string, config?: IParticleConfig): ParticleEmitter;
+        /**
+         * 播放序列圖的粒子
+         * @param parent 父節點
+         * @param emitterName 粒子名稱
+         * @param spritesheetName 序列圖在 loader 裡面的名稱
+         * @param {IParticleConfig} config 相關設定
+         * @returns 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
+         */
+        static playAnimatedParticle(parent: PIXI.Container, emitterName: string, spritesheetName: string, config?: IParticleConfig): ParticleEmitter;
+        /**
+         * 取得複數的粒子美術資源
+         * 用隨機的序列圖順序
+         * @param count 要幾組隨機順序
+         * @param {Array<string | PIXI.Texture>} textures 貼圖/貼圖名稱 陣列
+         * @param framerate 貼圖的 framerate
+         * @param loop
+         * @returns 序列圖美術陣列
+         */
+        private static getMultAnimatedParticleArt;
+        /**
+         * 取得粒子美術資源
+         * @param {Array<string | PIXI.Texture>} textures 貼圖/貼圖名稱 陣列
+         * @param framerate 貼圖的 framerate
+         * @param loop
+         * @returns 序列圖美術
+         */
+        private static getAnimatedParticleArt;
     }
 }
