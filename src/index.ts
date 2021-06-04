@@ -6,7 +6,6 @@ window.gsap = gsap
 import config from '@root/config'
 import GameSceneManager, { eGameScene } from './System/GameSceneController'
 import { eAppLayer } from './System/LayerDef'
-import supportWebp from './Tool/supportWebp'
 import GSAPManager from './System/GSAPManager'
 import GameAssetManager from './System/Assets/GameAssetManager'
 import AppDebug from './System/AppDebug'

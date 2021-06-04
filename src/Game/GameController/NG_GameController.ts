@@ -32,23 +32,23 @@ export default class NG_GameController{
 class GameInit extends GameState{
     enter(){
 
-        EventHandler.on(eEventName.stateChange, (ctx)=>{
+        EventHandler.on(eEventName.gameStateChange, (ctx)=>{
             const {type} = ctx
             console.log('change state', type)
         })
 
         const parent = GameSceneManager.getSceneContainer()
         // 做測試的 UI  ( 正式要拔掉 )
-        const startspin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('startSpin'))
+        const startspin: Sprite = parent.addChild(new PixiAsset.Sprite('startSpin'))
         startspin.position.set(279, 914)
 
-        const stopSpin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('stopSpin'))
+        const stopSpin: Sprite = parent.addChild(new PixiAsset.Sprite('stopSpin'))
         stopSpin.position.set(450, 914)
         stopSpin.name = 'stop'
         
         startspin.interactive = stopSpin.interactive = true
 
-        const speedSpin: PixiAsset.Sprite = parent.addChild(new PixiAsset.Sprite('speedSpin'))
+        const speedSpin: Sprite = parent.addChild(new PixiAsset.Sprite('speedSpin'))
         speedSpin.position.set(163, 999)
 
         startspin.on('pointerdown', ()=>{

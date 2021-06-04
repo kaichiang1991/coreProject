@@ -1,6 +1,5 @@
 import lazyLoad from "@root/src/Tool/lazyLoad"
 import config from '@root/config'
-import pathConvert from "@root/src/Tool/pathConvert"
 import { App } from "@root/src"
 import { Container } from "pixi.js-legacy"
 
@@ -38,7 +37,7 @@ export default class GameSpineManager{
         return parent.addChild(Spine.playSpine(eSpineName.line)[0])
     }
 
-    public static playSymbol(parent: Container): [PixiAsset.Spine, PIXI.spine.core.TrackEntry]{
+    public static playSymbol(parent: Container): [Spine, TrackEntry]{
         const [spine, track] = Spine.playSpine(eSpineName.symbol, 'Symbol_O1_03', true)
         spine.name = 'symbol'
         parent.addChild(spine)

@@ -50,7 +50,7 @@ export default class GameSceneManager{
 
 class NormalGame{
     public init(parent: Container){
-        let logo: PixiAsset.Sprite
+        let logo: Sprite
         parent.addChild(
             // NG 場景
             new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 1280)

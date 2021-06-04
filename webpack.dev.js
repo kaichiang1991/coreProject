@@ -3,7 +3,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const {merge} = require('webpack-merge')
 const common = require('./webpack.common')
-const {name} = require('./package.json')
 
 module.exports = merge(common, {
     mode: 'development',
@@ -53,7 +52,7 @@ module.exports = merge(common, {
                 ].concat([
                     '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/EventHandler', 
                 ].map(dir => 'Lib' + dir + '/index.js'))
-                // .concat([])
+                .concat('Lib/EventName.js')
             }
         }),
 

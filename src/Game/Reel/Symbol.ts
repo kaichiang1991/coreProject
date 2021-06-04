@@ -12,7 +12,7 @@ export default class Symbol extends Container{
 
     private text: Text
     private rstText: Text
-    private sprite: PixiAsset.Sprite
+    private sprite: Sprite
     private graphic: Graphics
     private isResult: boolean
 

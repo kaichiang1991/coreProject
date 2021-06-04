@@ -1,13 +1,13 @@
 import { App } from "../..";
 import lazyLoad from "../../Tool/lazyLoad";
 import config from '@root/config'
-import pathConvert from "@root/src/Tool/pathConvert";
 import GameAudioManager from "./GameAudioManager";
 import GameFontManager from "./GameFontManager";
 import GameSpineManager from "./GameSpineManager";
 import ReelController from "@root/src/Game/Reel/ReelController";
+import GameParticleManager from "./GameParticleManager";
 
-const {AssetLoader, Sprite, PixiSound} = PixiAsset
+const {AssetLoader} = PixiAsset
 
 export default class GameAssetManager{
 
@@ -57,6 +57,7 @@ export default class GameAssetManager{
         await GameSpineManager.init()               // spine 的引入
         await GameFontManager.init()                // font 的引入
         await GameAudioManager.init()               // audio 的引入
+        await GameParticleManager.init()            // particles 的引入
         await this.loadDone()
     }
 

@@ -11,3 +11,10 @@ declare module '*.atlas'
 declare module '*.json?edit'
 
 declare const assetsMd5: string
+
+type Sprite = PixiAsset.Sprite
+type BitmapText = PixiAsset.BitmapText
+type Spine = PixiAsset.Spine
+type ParticleEmitter = PixiAsset.ParticleEmitter
+
+type TrackEntry = PIXI.spine.core.TrackEntry

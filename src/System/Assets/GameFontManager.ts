@@ -32,8 +32,8 @@ export default class GameFontManager{
      * @param size 大小
      * @returns 
      */
-    public static drawSGWinNumber(name: string, text: string, pos: number | Point, parent?: Container, size: number = 32): PixiAsset.BitmapText{
-        const font: PixiAsset.BitmapText = BitmapText.drawFont(name, eFontName.SG_Win, size)
+    public static drawSGWinNumber(name: string, text: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.SG_Win, size)
         font.text = text
         if(typeof pos == 'number')  font.position.set(pos)
         else                        font.position.copyFrom(pos)
