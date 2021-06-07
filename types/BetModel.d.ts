@@ -2,8 +2,12 @@ declare class BetModel {
     private static instance;
     static getInstance(): BetModel;
     private static line;
+    static get Line(): number;
     private static moneyFractionMultiple;
-    static init(betUnit: number, betInterval: Array<number>, credit: number, moneyFractionMultiple: number, line?: number): void;
+    static get MoneyFractionMultiple(): number;
+    private static denom;
+    static get Denom(): number;
+    static init(betUnit: number, betInterval: Array<number>, credit: number, moneyFractionMultiple: number, denom: number, line?: number): void;
     constructor(betUnit: number, betInterval: Array<number>, credit: number);
     private betIndex;
     private betUnit;

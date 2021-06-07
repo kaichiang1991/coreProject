@@ -6,6 +6,7 @@ import GameFontManager from "./GameFontManager";
 import GameSpineManager from "./GameSpineManager";
 import ReelController from "@root/src/Game/Reel/ReelController";
 import GameParticleManager from "./GameParticleManager";
+import LineNumberManager from "@root/src/Game/Number/LineNumberManager";
 
 const {AssetLoader} = PixiAsset
 
@@ -41,7 +42,7 @@ export default class GameAssetManager{
     }
 
     public static async loadAsset(){
-        BetModel.init(10, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 3)
+        BetModel.init(10, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
 
         const {canUseWebp} = config
         // 圖片的引入
@@ -65,5 +66,7 @@ export default class GameAssetManager{
 
     private static async loadDone(){
         await ReelController.init()
+
+        await LineNumberManager.init()
     }
 }

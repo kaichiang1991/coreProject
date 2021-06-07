@@ -2,8 +2,8 @@ import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics } from "pixi.js-legacy";
 import {size} from '@root/config'
 import Reel from "./Reel";
-import spinConfigUrl from './spinConfig.json'
 import { reelCount, defaultStopOrder } from "./SymbolDef";
+import { editConfig } from "@root/src";
 
 interface ISpinConfig{
     upDistance: number          // 上移的距離
@@ -18,7 +18,7 @@ interface ISpinConfig{
     extraSymbolCount: number    // 結尾要接回去的滾輪表個數
 }
 
-export let spinConfig: ISpinConfig 
+export let spinConfig: ISpinConfig
 
 export default class ReelController{
 
@@ -38,12 +38,7 @@ export default class ReelController{
     public static async init(){
 
         // 讀取滾輪參數的 json 檔
-        await new Promise<void>(res =>{
-            PIXI.Loader.shared.add('spinConfig', spinConfigUrl).load((_, resource) =>{
-                spinConfig = resource['spinConfig'].data
-                res()
-            })
-        }) 
+        spinConfig = editConfig['spin']
         
         this.reelContainer = new Container()
         this.mask = this.reelContainer.addChild(new Graphics()

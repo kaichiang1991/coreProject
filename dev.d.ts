@@ -12,9 +12,18 @@ declare module '*.json?edit'
 
 declare const assetsMd5: string
 
+// PixiAsset
 type Sprite = PixiAsset.Sprite
 type BitmapText = PixiAsset.BitmapText
 type Spine = PixiAsset.Spine
 type ParticleEmitter = PixiAsset.ParticleEmitter
 
+// spine
 type TrackEntry = PIXI.spine.core.TrackEntry
+
+// State
+type GameStateContext = StateModule.StateContext
+
+// gsap
+type Timeline = gsap.core.Timeline
+type gsapAnimation = gsap.core.Animation

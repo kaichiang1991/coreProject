@@ -10,6 +10,8 @@ import GSAPManager from './System/GSAPManager'
 import GameAssetManager from './System/Assets/GameAssetManager'
 import AppDebug from './System/AppDebug'
 
+import editJson from '@root/editConfig.json'
+
 // 顯示專案資訊
 const {name, version, size, fps} = config
 console.log('Project', name, version)
@@ -35,9 +37,13 @@ versionText.zIndex = eAppLayer.version
 versionText.anchor.set(-.2, -.1)
 stage.addChild(versionText)
 
+export let editConfig: JSON
+
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
+    editConfig = await PixiAsset.JSON.getJson(editJson.toString())
+
     EventHandler.init()     // 初始化事件管理
     AppDebug.init()
     MathTool.init()
@@ -49,7 +55,7 @@ const gameEntry: Function = async ()=>{
     StateModule.init()
     
     //#region Loading
-    const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
+    const loadingCont: Container = await GameSceneManager.switchGameScene(eGameScene.loading)
     await Loading.init(loadingCont)
     const loading: Promise<void> = Loading.startLoading()
     await GameAssetManager.loadAsset()

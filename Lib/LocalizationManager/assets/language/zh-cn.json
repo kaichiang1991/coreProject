@@ -1,6 +1,7 @@
 {
     "game": {
         "BetLevelTitle" : "押注乘数",
+        "AutoSpinTitle": "Auto Spin(代翻)",
         "Line": "线",
         "GetWin": "得分",
         "SymbolWin": "符号得分",

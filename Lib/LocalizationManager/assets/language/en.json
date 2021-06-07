@@ -1,6 +1,7 @@
 {
     "game": {
         "BetLevelTitle" : "Bet Level",
+        "AutoSpinTitle": "Auto Spin",
         "Line": "Line",
         "GetWin": "Win",
         "SymbolWin": "Symbol Win",
