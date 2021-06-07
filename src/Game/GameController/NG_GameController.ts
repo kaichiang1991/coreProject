@@ -3,6 +3,7 @@ import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneControll
 import ReelController from "../Reel/ReelController"
 import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
+import FG_GameController from "./FG_GameController"
 
 export enum eNG_GameState{
     init    = 'NG_Init',
@@ -36,8 +37,6 @@ export default class NG_GameController{
 
 class GameInit extends GameState{
     enter(){
-
-        UIManager.init(App.stage, {line: 9, moneyFractionMultiple: 1000, languageData: {AutoSpinListTitle: 'auto spin', BetListTitle: 'bet list'}, denom: 10})
 
         EventHandler.on(eEventName.gameStateChange, (ctx)=>{
             const {type} = ctx
@@ -126,7 +125,10 @@ class EndSpin extends GameState{
 
         if(isFreeGame){
             await this.playSpecialSymbol()
-            await GameSceneManager.switchGameScene(eGameScene.freeGame)
+            GameSceneManager.switchGameScene(eGameScene.freeGame)
+            await FG_GameController.getInstance().init()
+            GameSceneManager.switchGameScene(eGameScene.normalGame)
+            ReelController.reset()
         }
         await LotteryController.init()
         this.change()

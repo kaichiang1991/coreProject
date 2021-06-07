@@ -1,51 +1,123 @@
 import { Container, Graphics } from "pixi.js-legacy";
 import { App } from "..";
-import FG_GameController from "../Game/GameController/FG_GameController";
-import NG_GameController from "../Game/GameController/NG_GameController";
 import { eAppLayer } from "./LayerDef";
 
 export enum eGameScene{
-    loading,
-    normalGame,
-    freeGame,
-    systemError,
-
-    totalCount
+    loading     = 'loading',
+    normalGame  = 'normalGame',
+    freeGame    = 'freeGame',
+    systemError = 'systemError',
 }
 
-export default class GameSceneManager{
-    private static sceneContainerArr: Array<Container>
-    private static currentScene: eGameScene
+//#region 場景的狀態機
+interface IScene{
+    type: string
+    context: SceneContext
+    cont: Container
 
-    public static init(){
-        this.sceneContainerArr = Array(eGameScene.totalCount).fill(1).map((_, index) => {
-            const cont: Container = new Container()
-            cont.zIndex = eAppLayer.sceneContainer
-            cont.name = eGameScene[index]
-            return cont
-        })
+    pre()
+    enter()
+    exit()
+}
+
+interface ISceneConstructor{
+    new (type: string, context: SceneContext)
+}
+
+function createScene(ctor: ISceneConstructor, type: string, context: SceneContext){
+    return new ctor(type, context)    
+}
+
+class SceneContext{
+
+    private sceneArr: Array<IScene>
+    private currentScene: IScene
+
+    constructor(){
+        this.sceneArr = new Array<IScene>()
+        this.currentScene = null
     }
 
-    public static async switchGameScene(scene: eGameScene): Promise<Container>{
-        // 把使用外的容器從畫面上移開
-        this.sceneContainerArr.forEach(cont =>{
-            if(cont != this.sceneContainerArr[scene])   cont.parent?.removeChild(cont)
+    public regScene(scene: IScene): SceneContext{
+        this.sceneArr[scene.type] = scene
+        return this
+    }
+
+    public setScene(type: string): SceneContext{
+        this.sceneArr[type]?.pre()
+        return this
+    }
+
+    public changeScene(type: string): SceneContext{
+        this.currentScene?.exit()
+
+        this.currentScene = this.sceneArr[type]
+        this.currentScene.enter()
+        return this
+    }
+}
+
+class GameScene implements IScene{
+
+    type: string
+    context: SceneContext
+    cont: Container 
+
+    constructor(type: string, context: SceneContext){
+        this.type = type
+        this.context = context
+    }
+
+    pre(){}
+    enter(){}
+    exit(){}
+}
+//#endregion
+
+const {Sprite, Spine} = PixiAsset
+
+export default class GameSceneManager{
+    private static sceneContainerArr: {[key: string]: Container} = {}
+    private static currentScene: eGameScene
+    private static context: SceneContext
+
+    /** 初始化所有場景 */
+    public static init(){
+
+        Object.keys(eGameScene).map(key => {
+            const cont: Container = new Container()
+            cont.zIndex = eAppLayer.sceneContainer
+            cont.name = key
+            this.sceneContainerArr[key] = cont
         })
 
+        this.context = new SceneContext()
+        this.context
+        .regScene(createScene(LoadingScene, eGameScene.loading, this.context))
+        .regScene(createScene(NormalGame, eGameScene.normalGame, this.context))
+        .regScene(createScene(FreeGame, eGameScene.freeGame, this.context))
+    }
+
+    /**
+     * 切換遊戲場景
+     * @param scene 場景名稱 
+     * @returns 該場景的 container
+     */
+    public static switchGameScene(scene: eGameScene): Container{
+        
         this.currentScene = scene
         switch(scene){
             case eGameScene.loading:
-                App.stage.addChild(this.sceneContainerArr[scene])
+                this.context.changeScene(scene)
                 break
             case eGameScene.normalGame:
-                App.stage.addChild(this.sceneContainerArr[scene])
-                new NormalGame().init(this.sceneContainerArr[scene])
-                NG_GameController.getInstance().init()
+                this.context.setScene(scene)
+                this.context.changeScene(scene)
                 break
             case eGameScene.freeGame:
-                App.stage.addChild(this.sceneContainerArr[scene])
-                new FreeGame().init(this.sceneContainerArr[scene])
-                await FG_GameController.getInstance().init()
+                this.context.setScene(scene)
+                // 等轉場完再換
+                EventHandler.once('transitionDone', ()=> this.context.changeScene(scene))
                 break
         }
 
@@ -57,36 +129,74 @@ export default class GameSceneManager{
     }
 }
 
-class NormalGame{
-    
-    public init(parent: Container){
-        let logo: Sprite
-        parent.addChild(
-            // NG 場景
-            new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 1280)
-            .beginFill(0x00AA00).drawRect(360, 0, 360, 1280)
-            .endFill(),
-            // logo
-            logo = new PixiAsset.Sprite('logo')
-        )
+/** loading 場景 */
+class LoadingScene extends GameScene{
 
-        logo.anchor.set(.5)
-        logo.position.set(360, 275)
+    enter(){
+        this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
+    }
 
-        const black = new Graphics().beginFill(0x333333, .7).drawRect(110, 375, 500, 300).endFill()
-        EventHandler.on(eEventName.activeBlack, (ctx) => {
-            const {flag} = ctx
-            if(flag){
-                parent.addChild(black)
-            }else{
-                black.parent?.removeChild(black)
-            }
-        })
+    exit(){
+        this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
     }
 }
 
-class FreeGame{
-    public async init(parent: Container){
-        const bg: Graphics = parent.addChild(new Graphics().beginFill(0xAAAA00).drawRect(0, 0, 720, 1280).endFill())
+/** Normal Game 場景 */
+class NormalGame extends GameScene{
+    
+    private logo: Sprite
+    private bg: Graphics
+    private black: Graphics
+    private blackEvent: Function
+
+    pre(){
+        this.logo = new Sprite('logo')
+        this.logo.anchor.set(.5)
+        this.logo.position.set(360, 275)
+
+        this.bg = new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 800)
+        .beginFill(0x00AA00).drawRect(360, 0, 360, 800)
+        .endFill()
+
+        this.black = new Graphics().beginFill(0, .9).drawRect(110, 375, 500, 300).endFill()
+        this.blackEvent = (ctx) =>{
+            const {flag} = ctx
+            if(flag){
+                this.cont.addChild(this.black)
+            }else{
+                this.black.parent?.removeChild(this.black)
+            }
+        }
+    }
+
+    enter(){
+        this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
+        this.cont.addChild(this.bg, this.logo)
+
+        EventHandler.on(eEventName.activeBlack, this.blackEvent)
+    }
+
+    exit(){
+        this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
+        EventHandler.off(eEventName.activeBlack, this.blackEvent)
+    }
+}
+
+/** FreeGame 場景 */
+class FreeGame extends GameScene{
+
+    private bg: Graphics
+
+    pre(){
+        this.bg = new Graphics().beginFill(0xAAAA00).drawRect(0, 0, 720, 800).endFill()   
+    }
+
+    enter(){
+        this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
+        this.cont.addChild(this.bg)
+    }
+
+    exit(){
+        this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
     }
 }

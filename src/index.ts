@@ -11,6 +11,7 @@ import GameAssetManager from './System/Assets/GameAssetManager'
 import AppDebug from './System/AppDebug'
 
 import editJson from '@root/editConfig.json'
+import NG_GameController from './Game/GameController/NG_GameController'
 
 // 顯示專案資訊
 const {name, version, size, fps} = config
@@ -55,7 +56,7 @@ const gameEntry: Function = async ()=>{
     StateModule.init()
     
     //#region Loading
-    const loadingCont: Container = await GameSceneManager.switchGameScene(eGameScene.loading)
+    const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
     await Loading.init(loadingCont)
     const loading: Promise<void> = Loading.startLoading()
     await GameAssetManager.loadAsset()
@@ -64,6 +65,8 @@ const gameEntry: Function = async ()=>{
     //#endregion Loading
 
     // 遊戲場景轉換
+    UIManager.init(App.stage, {line: 9, moneyFractionMultiple: 1000, languageData: {AutoSpinListTitle: 'auto spin', BetListTitle: 'bet list'}, denom: 10})
     GameSceneManager.switchGameScene(eGameScene.normalGame)
+    NG_GameController.getInstance().init()
 }
 gameEntry()
