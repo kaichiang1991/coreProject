@@ -8,4 +8,8 @@ var eEventName;
     eEventName["FG_lotteryEnd"] = "FG_lotteryEnd";
     eEventName["activeBlack"] = "activeBlack";
     eEventName["FG_End"] = "FG_End";
+    eEventName["creditChange"] = "creditChange";
+    eEventName["openGameInfo"] = "openGameInfo";
+    eEventName["openHistory"] = "openHistory";
+    eEventName["exitGame"] = "exitGame";
 })(eEventName || (eEventName = {}));
