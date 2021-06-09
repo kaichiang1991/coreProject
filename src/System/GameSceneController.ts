@@ -1,6 +1,7 @@
 import { Container, Graphics } from "pixi.js-legacy";
 import { App } from "..";
-import { eAppLayer } from "./LayerDef";
+import { eAppLayer, eNGLayer } from "./LayerDef";
+import config from '@root/config'
 
 export enum eGameScene{
     loading     = 'loading',
@@ -152,33 +153,39 @@ class NormalGame extends GameScene{
     pre(){
         this.logo = new Sprite('logo')
         this.logo.anchor.set(.5)
-        this.logo.position.set(360, 275)
+        this.logo.zIndex = eNGLayer.logo
 
-        this.bg = new Graphics().beginFill(0xAA0000).drawRect(0, 0, 360, 800)
-        .beginFill(0x00AA00).drawRect(360, 0, 360, 800)
-        .endFill()
-
-        this.black = new Graphics().beginFill(0, .9).drawRect(110, 375, 500, 300).endFill()
-        this.blackEvent = (ctx) =>{
-            const {flag} = ctx
-            if(flag){
-                this.cont.addChild(this.black)
-            }else{
-                this.black.parent?.removeChild(this.black)
-            }
-        }
+        this.bg = new Graphics()
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
         this.cont.addChild(this.bg, this.logo)
+        this.cont.sortableChildren = true
 
-        EventHandler.on(eEventName.activeBlack, this.blackEvent)
+        EventHandler.on(eEventName.orientationChange, this.resize)
+        this.resize()
     }
 
     exit(){
+        // 子元件移除
+        this.logo.destroy()
+        this.bg.destroy()
+        this.black.destroy()
+
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
-        EventHandler.off(eEventName.activeBlack, this.blackEvent)
+        EventHandler.off(eEventName.orientationChange, this.resize)
+    }
+
+    resize = ()=>{
+        const {portrait, size: {width, height}} = config
+        if(portrait){
+            this.logo.position.set(360, 420)
+            this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, width, height).endFill()
+        }else{
+            this.logo.position.set(660, 95)
+            this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, height, width).endFill()
+        }
     }
 }
 
@@ -188,15 +195,29 @@ class FreeGame extends GameScene{
     private bg: Graphics
 
     pre(){
-        this.bg = new Graphics().beginFill(0xAAAA00).drawRect(0, 0, 720, 800).endFill()   
+        this.bg = new Graphics()
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
         this.cont.addChild(this.bg)
+        
+        EventHandler.on(eEventName.orientationChange, this.resize)
+        this.resize()
     }
 
     exit(){
+        this.bg.destroy()
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
+        EventHandler.off(eEventName.orientationChange, this.resize)
+    }
+
+    resize = ()=>{
+        const {portrait, size: {width, height}} = config
+        if(portrait){
+            this.bg.clear().beginFill(0x91C7FF).drawRect(0, 0, width, height)
+        }else{
+            this.bg.clear().beginFill(0x91C7FF).drawRect(0, 0, height, width)
+        }
     }
 }

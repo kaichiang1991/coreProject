@@ -1,6 +1,7 @@
 import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
-import ReelController from "../Reel/ReelController"
+import GameSlotData from "../GameSlotData"
+import ReelController, { eReelGameType } from "../Reel/ReelController"
 import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
 import FG_GameController from "./FG_GameController"
@@ -44,7 +45,7 @@ class GameInit extends GameState{
         })
 
         // 初始化滾輪
-        ReelController.reset()
+        ReelController.reset(eReelGameType.normalGame)
         
         this.change()
     }
@@ -85,13 +86,16 @@ class StartSpin extends GameState{
 
         const allSpin: Promise<void> = ReelController.startSpin()
 
-        ReelController.setResult([
-            [3, 3, 3],
-            [3, 3, 3],
-            [3, 3, 3],
-            [3, 3, 3],
-            [3, 3, 3]
-        ])
+        // 接受server 資料 先寫假資料
+        GameSlotData.NGSpinData = {...GameSlotData.NGSpinData, result: [
+            [3, 4, 4],
+            [3, 4, 4],
+            [3, 4, 4],
+            [3, 4, 4],
+            [3, 4, 4]
+        ]}
+
+        ReelController.setResult(GameSlotData.NGSpinData.result)
 
         this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> ReelController.StopNowEvent())
         EventHandler.on(eEventName.startSpin, ()=> EventHandler.dispatch(eEventName.stopSpin))          // UI好了要改
@@ -128,7 +132,7 @@ class EndSpin extends GameState{
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)
-            ReelController.reset()
+            ReelController.reset(eReelGameType.normalGame)
         }
         await LotteryController.init()
         this.change()

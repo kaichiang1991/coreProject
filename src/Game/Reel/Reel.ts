@@ -1,7 +1,8 @@
 import Symbol from "./Symbol"
 import { eSymbolConfig, reelSymbolCount, yOffsetArr } from "./SymbolDef"
-import ReelController, { spinConfig } from "./ReelController"
+import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
+import GameSlotData from "../GameSlotData"
 
 export default class Reel{
 
@@ -57,9 +58,6 @@ export default class Reel{
         // 檢查是否到底部的相關參數
         this.checkIndex = this.symbolArr.length - 2
         this.checkPointY = this.symbolArr[this.checkIndex].y
-
-        this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
-
         return this
     }
 
@@ -239,10 +237,25 @@ export default class Reel{
     }
 
     //#region 滾輪表
-    public setReelData(){
+    public setReelData(type: eReelGameType){
         // ToDo 讀json滾輪表
-        // ToDo 回 NG 要回復盤面
-        this.reelDatas = [5, 1, 2, 3, 4, 4, 5, 1, 2, 3, 4, 5, 1, 6, 3, 3, 3]
+        switch(type){
+            case eReelGameType.normalGame:
+                this.reelDatas = [5, 1, 2, 3, 4, 4, 5, 1, 2, 3, 4, 5, 1, 6, 3, 3, 3, 5, 5]
+                if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
+                    this.getCorrectDataIndex(GameSlotData.NGSpinData.result[this.reelIndex])
+                    this.nextDataIndex()
+                }else{
+                    this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
+                }
+
+            break
+
+            case eReelGameType.freeGame:
+                this.reelDatas = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 6, 6]
+                this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
+            break
+        }
     }
 
     /**

@@ -1,7 +1,8 @@
 import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import { Container, Graphics, Text } from "pixi.js-legacy"
-import ReelController from "../Reel/ReelController"
+import GameSlotData from "../GameSlotData"
+import ReelController, { eReelGameType } from "../Reel/ReelController"
 
 export enum eFG_GameState{
     init    = 'FG_Init',
@@ -48,7 +49,7 @@ class GameInit extends GameState{
         await waitTweenComplete(gsap.from(tr, {y: -1280}))
         tr.destroy()
         EventHandler.dispatch('transitionDone')
-        ReelController.reset()
+        ReelController.reset(eReelGameType.freeGame)
         this.change()
     }
 
@@ -73,6 +74,15 @@ class StartSpin extends GameState{
     async enter(){
         const allSpin: Promise<void> = ReelController.startSpin()
 
+        GameSlotData.FGSpinData = {...GameSlotData.FGSpinData, result: [
+            [6, 6, 1],
+            [6, 6, 1],
+            [6, 6, 1],
+            [6, 6, 1],
+            [6, 6, 1],
+        ]}
+        ReelController.setResult(GameSlotData.FGSpinData.result)
+        ReelController.StopNowEvent()
         ReelController.stopSpin()
         await allSpin
         this.change()
@@ -87,6 +97,7 @@ class EndSpin extends GameState{
 
     async enter(){
 
+        await Sleep(1)
         this.change()
     }
 

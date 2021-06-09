@@ -1,3 +1,4 @@
+/// <reference types="pixi-particles/ambient" />
 declare class Loading {
     private static finishEvent;
     private static parentContainer;
@@ -12,7 +13,7 @@ declare class Loading {
      * @param stage
      * @returns loading 圖載完
      */
-    static init(container: PIXI.Container): Promise<void>;
+    static init(container: PIXI.Container, portrait: boolean): Promise<void>;
     /**
      * 開始讀取條演出
      * @returns 讀取條演完後回傳
@@ -22,7 +23,6 @@ declare class Loading {
     static finishLoading(): void;
     /**
      * 配合直橫式自適應
-     * @param {{portrait: boolean}} config 傳入的設定檔案
      */
     private static resize;
 }

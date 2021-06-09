@@ -1,9 +1,10 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics } from "pixi.js-legacy";
-import {size} from '@root/config'
 import Reel from "./Reel";
-import { reelCount, defaultStopOrder } from "./SymbolDef";
+import { reelCount, defaultStopOrder, reelContPivot } from "./SymbolDef";
 import { editConfig } from "@root/src";
+import config from '@root/config'
+import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 
 interface ISpinConfig{
     upDistance: number          // 上移的距離
@@ -18,14 +19,22 @@ interface ISpinConfig{
     extraSymbolCount: number    // 結尾要接回去的滾輪表個數
 }
 
+export enum eReelGameType{
+    normalGame,
+    freeGame
+}
+
 export let spinConfig: ISpinConfig
 
 export default class ReelController{
+
+    private static gameType: eReelGameType      // 目前遊戲的型態
 
     private static reelContainer: Container
     public static get ReelContainer(): Container {return this.reelContainer}
     private static reelArr: Array<Reel>
     private static mask: Graphics
+    private static blackCover: Graphics
 
     private static stopOrder: Array<number>
 
@@ -34,22 +43,20 @@ export default class ReelController{
     private static stopNowEvent: Function
     public static get StopNowEvent(): Function {return this.stopNowEvent}       // 急停事件
 
+    private static resizeFn: Function
+
     /** 初始化滾輪控制 */
     public static async init(){
+        spinConfig = editConfig['spin']        // 讀取滾輪參數的 json 檔
 
-        // 讀取滾輪參數的 json 檔
-        spinConfig = editConfig['spin']
-        
-        this.reelContainer = new Container()
-        this.mask = this.reelContainer.addChild(new Graphics()
-            .beginFill(0x333333, .5).drawRect(-110, 0, 720, 300).endFill()
-        )
-        this.reelContainer.name = 'reel container'
-        this.reelContainer.pivot.set(250, 150)
-        this.reelContainer.position.set(size.width / 2, 525)
+        this.initReelContainer()
+        this.initMask()
+        this.initBlackCover()
 
+        // 初始化滾輪
         this.reelArr = Array(reelCount).fill(1).map((_, index) => new Reel().init(index))
 
+        // 初始化急停事件
         this.stopNowEvent = ()=>{
             if(this.toStopNow)  
                 return
@@ -66,14 +73,69 @@ export default class ReelController{
             //     reel.stopSpin()
             // })
         }
+
+        // 初始化旋轉 resize 事件
+        this.resizeFn = ()=> this.resize()
     }
 
-    public static reset(){
-        this.setReelData()
+    /** 初始化滾輪的容器，方便之後縮放 */
+    private static initReelContainer(){
+        this.reelContainer = new Container()
+        this.reelContainer.name = 'reel container'
+        this.reelContainer.pivot.copyFrom(reelContPivot)
+        this.reelContainer.zIndex = eNGLayer.reelContainer        
+        this.reelContainer.interactive = this.reelContainer.buttonMode = true
+        this.reelContainer.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
+    }
+
+    /** 初始化滾輪的遮罩 */
+    private static initMask(){
+        // ToDo 之後會直接拿滾輪底圖做遮罩大小
+        this.mask = this.reelContainer.addChild(new Graphics()
+            .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
+        )
+    }
+
+    /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */
+    private static initBlackCover(){
+        // ToDo 之後會由美術出圖
+        this.blackCover = this.reelContainer.addChild(new Graphics()
+            .beginFill(0x000000, .5).drawRect(-85, 165, 860, 480).endFill()
+        )
+        this.blackCover.zIndex = eReelContainerLayer.black
+        EventHandler.on(eEventName.activeBlack, (ctx) =>{
+            if(ctx.flag){
+                this.reelContainer.addChild(this.blackCover)
+            }else{
+                this.blackCover.parent?.removeChild(this.blackCover)
+            }
+        })
+        EventHandler.dispatch(eEventName.activeBlack, {flag: false})        // 一開始先隱藏
+    }
+
+    public static reset(type: eReelGameType){
+        this.gameType = type
+        this.setReelData(type)
         this.reelArr.map(reel => reel.reset())
 
-        this.reelContainer.mask = this.mask
+        // this.reelContainer.mask = this.mask
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
+        this.reelContainer.addChild(this.mask)
+
+        this.reelContainer.sortChildren()
+        EventHandler.on(eEventName.orientationChange, this.resizeFn)
+        this.resizeFn()
+    }
+
+    private static resize(){
+        const {portrait} = config
+        if(portrait){
+            this.reelContainer.position.set(360, 640)
+            this.reelContainer.scale.set(.8)
+        }else{
+            this.reelContainer.position.set(640, 360)
+            this.reelContainer.scale.set(1)
+        }
     }
 
     //#region 控制滾輪
@@ -147,8 +209,8 @@ export default class ReelController{
     /**
      * 設定滾輪表
      */
-    public static setReelData(){
-        this.reelArr.map(reel => reel.setReelData())
+    public static setReelData(type: eReelGameType){
+        this.reelArr.map(reel => reel.setReelData(type))
     }
 
     //#region 聽牌

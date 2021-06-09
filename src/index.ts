@@ -13,6 +13,8 @@ import AppDebug from './System/AppDebug'
 import editJson from '@root/editConfig.json'
 import NG_GameController from './Game/GameController/NG_GameController'
 
+EventHandler.init()     // 初始化事件管理
+
 // 顯示專案資訊
 const {name, version, size, fps} = config
 console.log('Project', name, version)
@@ -40,12 +42,39 @@ stage.addChild(versionText)
 
 export let editConfig: JSON
 
+const resizeFn: Function = ()=>{
+    const {clientWidth: width, clientHeight: height} = document.documentElement
+    const portrait: boolean = height > width
+    const {style} = App.view
+
+    let ratio: number
+    if(portrait){
+        ratio = height / 1280
+        // 自適應縮放 (先註解
+        // style.width = ratio * 720 + 'px'
+        // style.height = ratio * 1280 + 'px'
+        App.renderer.resize(720, 1280)
+
+    }else{
+        ratio = width / 1280
+        // 自適應縮放 (先註解
+        // style.width = ratio * 1280 + 'px'
+        // style.height = ratio * 720 + 'px'
+        App.renderer.resize(1280, 720)
+    }
+
+    config.portrait = portrait
+    EventHandler.dispatch(eEventName.orientationChange, config)
+}
+
+window.addEventListener('resize', ()=> resizeFn())
+resizeFn()
+
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     editConfig = await PixiAsset.JSON.getJson(editJson.toString())
 
-    EventHandler.init()     // 初始化事件管理
     AppDebug.init()
     MathTool.init()
     ParameterParse.init()
@@ -57,7 +86,7 @@ const gameEntry: Function = async ()=>{
     
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
-    await Loading.init(loadingCont)
+    await Loading.init(loadingCont, config.portrait)
     const loading: Promise<void> = Loading.startLoading()
     await GameAssetManager.loadAsset()
     Loading.finishLoading()

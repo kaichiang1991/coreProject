@@ -3,4 +3,14 @@ enum eAppLayer{
     version
 }
 
-export {eAppLayer}
+enum eNGLayer{
+    reelContainer,
+    logo
+}
+
+enum eReelContainerLayer{
+
+    black = 1000
+}
+
+export {eAppLayer, eNGLayer, eReelContainerLayer}
