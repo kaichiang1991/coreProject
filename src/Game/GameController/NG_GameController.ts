@@ -100,13 +100,12 @@ class StartSpin extends GameState{
         this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> ReelController.StopNowEvent())
         EventHandler.on(eEventName.startSpin, ()=> EventHandler.dispatch(eEventName.stopSpin))          // UI好了要改
 
-        setTimeout(() => {
-            // ReelController.setListening(0)
-            // ReelController.setListeningEffect(-1)
-            window['arr'] && ReelController.setListening(...window['arr'])
-            ReelController.stopSpin()
-        }, 1000)
-
+        // setTimeout(() => {
+        //     // ReelController.setListening(0)
+        //     // ReelController.setListeningEffect(-1)
+        //     window['arr'] && ReelController.setListening(...window['arr'])
+        //     ReelController.stopSpin()
+        // }, 1000)
 
         await allSpin
         this.change()
@@ -125,7 +124,7 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const isFreeGame: boolean = true        // 之後判斷server資料
+        const isFreeGame: boolean = false        // 之後判斷server資料
 
         if(isFreeGame){
             await this.playSpecialSymbol()

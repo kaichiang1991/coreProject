@@ -1,11 +1,18 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
+import config from '@root/config'
+import { editConfig } from "@root/src";
 
 const lineDef: {[key: number]: {y: number, win: number}} = {
-    0: {y: 425, win: 100},
-    1: {y: 525, win: 200},
-    2: {y: 625, win: 300}
+    0: {y: 520, win: 100},
+    1: {y: 637, win: 200},
+    2: {y: 765, win: 300}
+}
+
+interface ILineConfig{
+    eachLineLight: number       // 逐縣時每條線亮的時間
+    eachLineDark: number        // 逐縣時每條線暗的時間
 }
 
 /** 管理線獎演出 */
@@ -16,12 +23,29 @@ export class LineManager{
     private static stopEachLineFn: Function
     public static get StopEachLineFn(): Function { return this.stopEachLineFn }
 
+    private static lineConfig: ILineConfig
+    private static resizeFn: Function
+
+    public static init(){
+        this.lineConfig = editConfig['line']
+
+        this.resizeFn = ()=>{
+            // Line 的動畫改變
+            if(config.protrait){
+
+            }else{
+
+            }
+        }
+    }
+
     public static async playAllLineWin(){
         this.winlineArr = Object.assign({}, lineDef)
 
         const lineArr: Array<Graphics> = Object.keys(this.winlineArr).map(key => this.playLine(+key))
             
         LineNumberManager.playLineNumber(9999)
+        // 註冊旋轉事件
 
         // 播放 symbol 動畫  (await)
 
@@ -35,8 +59,9 @@ export class LineManager{
     }
 
     public static playEachLine(){
+        const {eachLineLight, eachLineDark} = this.lineConfig
         let index: number = 0, line: Graphics
-        this.eachLineTimeline = gsap.timeline().repeat(-1).repeatDelay(.5)
+        this.eachLineTimeline = gsap.timeline().repeat(-1).repeatDelay(eachLineDark)
         .call(()=>{
             line = this.playLine(+Object.keys(this.winlineArr)[index])       // 撥放縣
             LineNumberManager.playLineNumber(this.winlineArr[index].win)
@@ -47,11 +72,12 @@ export class LineManager{
             line = null
             LineNumberManager.clearLineNumber()
             index = ++index % Object.keys(this.winlineArr).length
-        }, '+=1.5')
+        }, `+=${eachLineLight}`)
 
         .eventCallback('onComplete', ()=>{
             line?.destroy()
             LineNumberManager.clearLineNumber()
+            // 取消旋轉事件
         })
 
         this.stopEachLineFn = ()=>{

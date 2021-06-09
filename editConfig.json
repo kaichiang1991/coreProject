@@ -3,7 +3,7 @@
         "upDistance": 50,
         "upDuration": 0.5,
         "spinSpeed": 20,
-        "forceStopSpeed": 40,
+        "forceStopSpeed": 50,
         "listeningSpeed": 5,
         "listeningDelay": 3,
         "bounceDistance": 20,
@@ -11,6 +11,8 @@
         "eachReelStop": 0.5,
         "extraSymbolCount": 2
     },
-    "lottery": {
+    "line": {
+        "eachLineLight": 0.6,
+        "eachLineDark": 0.3
     }
 }

@@ -147,8 +147,6 @@ class NormalGame extends GameScene{
     
     private logo: Sprite
     private bg: Graphics
-    private black: Graphics
-    private blackEvent: Function
 
     pre(){
         this.logo = new Sprite('logo')
@@ -171,7 +169,6 @@ class NormalGame extends GameScene{
         // 子元件移除
         this.logo.destroy()
         this.bg.destroy()
-        this.black.destroy()
 
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
         EventHandler.off(eEventName.orientationChange, this.resize)

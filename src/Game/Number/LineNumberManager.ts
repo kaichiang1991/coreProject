@@ -9,7 +9,7 @@ export default class LineNumberManager{
 
     /** 初始化數字 */
     public static init(){
-        this.lineNumber = GameFontManager.drawSGWinNumber('lineNumber', '999', new Point(360, 500))
+        this.lineNumber = GameFontManager.drawSGWinNumber('lineNumber', '999', new Point(360, 610))
     }
 
     public static playLineNumber(value: number){

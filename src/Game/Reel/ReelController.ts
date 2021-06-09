@@ -118,7 +118,7 @@ export default class ReelController{
         this.setReelData(type)
         this.reelArr.map(reel => reel.reset())
 
-        // this.reelContainer.mask = this.mask
+        this.reelContainer.mask = this.mask
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
         this.reelContainer.addChild(this.mask)
 
