@@ -87,10 +87,10 @@ class StartSpin extends GameState{
         const allSpin: Promise<void> = ReelController.startSpin()
 
         // 接受server 資料 先寫假資料
-        const winlineArr = GameSlotData.NGSpinData? [
-            {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
-            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
-            {SymbolID: eSymbolName.WD, WinPosition: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]], Win: 2000, lineNo: 3},
+        const winlineArr = !GameSlotData.NGSpinData? [
+            // {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
+            // {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
+            // {SymbolID: eSymbolName.WD, WinPosition: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]], Win: 2000, lineNo: 3},
         ]: [
             {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2}
         ]

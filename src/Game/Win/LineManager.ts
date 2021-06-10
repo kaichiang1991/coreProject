@@ -3,13 +3,14 @@ import { Container, Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import config from '@root/config'
 import { editConfig } from "@root/src";
-import { SymbolController } from "../Reel/ReelController";
+import ReelController, { SymbolController } from "../Reel/ReelController";
 import {plus} from 'number-precision'
+import { eReelContainerLayer } from "@root/src/System/LayerDef";
 
 const lineDef: {[key: number]: {y: number}} = {
-    1: {y: 520},
-    2: {y: 637},
-    3: {y: 765}
+    1: {y: 240},
+    2: {y: 405},
+    3: {y: 570}
 }
 
 interface ISSlotWinLineInfo{        // 之後統一跟server格式
@@ -125,6 +126,8 @@ export class LineManager{
     }
 
     private static playLine(lineNo: number){
-        return GameSceneManager.getSceneContainer().addChild(new Graphics().lineStyle(5, 0xFF0000).moveTo(0, lineDef[lineNo].y).lineTo(720, lineDef[lineNo].y))
+        const line: Graphics = ReelController.ReelContainer.addChild(new Graphics().lineStyle(5, 0xFF0000).moveTo(-100, lineDef[lineNo].y).lineTo(800, lineDef[lineNo].y))
+        line.zIndex = eReelContainerLayer.line
+        return line
     }
 }

@@ -12,7 +12,12 @@ enum eReelContainerLayer{
 
     normalSymbol,
     black = 1000,
-    winAnimation
+    logo,
+    endSpinAnim,
+    winAnimation,
+
+    line,
+    lineNumber
 }
 
 export {eAppLayer, eNGLayer, eReelContainerLayer}

@@ -1,6 +1,8 @@
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
 import GameSceneManager from "@root/src/System/GameSceneController"
+import { eReelContainerLayer } from "@root/src/System/LayerDef"
 import { Point } from "pixi.js-legacy"
+import ReelController from "../Reel/ReelController"
 
 export default class LineNumberManager{
 
@@ -8,7 +10,8 @@ export default class LineNumberManager{
 
     /** 初始化數字 */
     public static init(){
-        this.lineNumber = GameFontManager.drawSGWinNumber('lineNumber', '999', new Point(360, 610))
+        this.lineNumber = GameFontManager.drawSGWinNumber('lineNumber', '999', new Point(360, 380))
+        this.lineNumber.zIndex = eReelContainerLayer.lineNumber
     }
 
     /**
@@ -16,7 +19,7 @@ export default class LineNumberManager{
      * @param value 要跑的分數
      */
     public static async playLineNumberAnim(value: number){
-        GameSceneManager.getSceneContainer().addChild(this.lineNumber)
+        ReelController.ReelContainer.addChild(this.lineNumber)
         const duration: number = 1 // 跑分時間
         this.lineNumber.text = '0'
         await waitTweenComplete(

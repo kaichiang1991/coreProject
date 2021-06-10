@@ -1,7 +1,7 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { Container, Graphics, Text, TextStyle } from "pixi.js-legacy";
-import { eSymbolConfig, eSymbolName, eSymbolState, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { endSpinSymbolArr, eSymbolConfig, eSymbolName, eSymbolState, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
 
 const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
@@ -93,6 +93,7 @@ export default class Symbol extends Container{
         this.sprite.texture = AssetLoader.getTexture(this.getTextureName(this.symbolId, state))
     }
 
+    //#region 得獎動畫
     /**
      * 播放得獎動畫
      * @param times 次書
@@ -124,6 +125,37 @@ export default class Symbol extends Container{
         this.zIndex = eReelContainerLayer.normalSymbol
         this.activeMask(true)
     }
+
+    //#endregion
+
+    //#region 落定動畫
+    /**
+     * 播放落定動畫
+     * 若沒有落定動畫，則自動跳過
+     */
+    public async playEndSpinAnim(){
+        if(!endSpinSymbolArr.includes(this.symbolId))
+            return
+
+        this.zIndex = eReelContainerLayer.endSpinAnim
+        this.sprite.visible = false         // 隱藏底下的 symbol 單圖
+        this.activeMask(false)
+        this.addChild(this.animSpine)
+        await waitTrackComplete(this.animSpine.setAnimation(this.getAnimName(this.symbolId, eSymbolState.EndSpin), false))      
+        this.clearEndSpinAnim()
+    }
+
+    /**
+     * 清除落定動畫，播一次落定動畫後自動呼叫
+     */
+    public clearEndSpinAnim(){
+        this.animSpine.setEmptyAnimations()
+        this.animSpine.parent?.removeChild(this.animSpine)
+        this.sprite.visible = true      // 顯示底下的 symbol
+        // this.zIndex = eReelContainerLayer.normalSymbol          // 結束後圖層先不拉回來，等下一次開始轉動在拉
+        // this.activeMask(true)                                   // 結束後遮罩先不蓋回來，等下一次開始轉動在蓋
+    }
+    //#endregion
 
     public setIndex(index: number){
         this.text.text = index + ''

@@ -1,7 +1,8 @@
 import { Container, Graphics } from "pixi.js-legacy";
 import { App } from "..";
-import { eAppLayer, eNGLayer } from "./LayerDef";
+import { eAppLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
 import config from '@root/config'
+import ReelController from "../Game/Reel/ReelController";
 
 export enum eGameScene{
     loading     = 'loading',
@@ -151,16 +152,18 @@ class NormalGame extends GameScene{
     pre(){
         this.logo = new Sprite('logo')
         this.logo.anchor.set(.5)
-        this.logo.zIndex = eNGLayer.logo
+        this.logo.zIndex = eReelContainerLayer.logo
+        this.logo.position.set(360, 160)
 
         this.bg = new Graphics()
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
-        this.cont.addChild(this.bg, this.logo)
+        this.cont.addChild(this.bg)
         this.cont.sortableChildren = true
 
+        ReelController.ReelContainer.addChild(this.logo)
         EventHandler.on(eEventName.orientationChange, this.resize)
         this.resize()
     }
@@ -177,10 +180,8 @@ class NormalGame extends GameScene{
     resize = ()=>{
         const {portrait, size: {width, height}} = config
         if(portrait){
-            this.logo.position.set(360, 420)
             this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, width, height).endFill()
         }else{
-            this.logo.position.set(660, 95)
             this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, height, width).endFill()
         }
     }

@@ -174,11 +174,13 @@ export default class Reel{
             // 到底部
         })
         .to(this.symbolArr, {duration: spinConfig.bounceBackDuration, y: `-=${upDistance}`})        // 上移
-        .call(()=>{
-            // 演完後歸位，不放這裡
-            this.resetSymbol()
-            this.stopSpinEvent()
-        })
+
+        await waitTweenComplete(bounceTimeline)
+
+        this.resetSymbol()            // 演完後歸位
+        const allEndSpin: Array<Promise<void>> = this.DownSymbol.map(symbol => symbol.playEndSpinAnim())        // 演出落定動畫
+        await Promise.all(allEndSpin)
+        this.stopSpinEvent()
     }
 
     /** 設定下一顆符號，並記錄目前最下面的符號 */

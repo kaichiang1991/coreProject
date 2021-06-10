@@ -36,13 +36,12 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        // LotteryController.win = GameSlotData.NGSpinData
+        LotteryController.win = GameSlotData.NGSpinData.winlinArr?.reduce((pre, curr) => pre + curr.Win, 0)
         this.change()
     }
 
     change(){
-        // this.context.changeState(Math.random() > .5? eNG_LotteryState.anim: eNG_LotteryState.end)
-        this.context.changeState(eNG_LotteryState.anim)
+        this.context.changeState(LotteryController.win? eNG_LotteryState.anim: eNG_LotteryState.end)
     }
 }
 
