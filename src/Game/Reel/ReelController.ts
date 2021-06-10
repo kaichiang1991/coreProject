@@ -34,6 +34,7 @@ export default class ReelController{
     public static get ReelContainer(): Container {return this.reelContainer}
     private static reelArr: Array<Reel>
     private static mask: Graphics
+    public static get Mask(): Graphics {return this.mask}
     private static blackCover: Graphics
 
     private static stopOrder: Array<number>
@@ -55,6 +56,7 @@ export default class ReelController{
 
         // 初始化滾輪
         this.reelArr = Array(reelCount).fill(1).map((_, index) => new Reel().init(index))
+        SymbolController.init(this.reelArr)
 
         // 初始化急停事件
         this.stopNowEvent = ()=>{
@@ -82,6 +84,7 @@ export default class ReelController{
     private static initReelContainer(){
         this.reelContainer = new Container()
         this.reelContainer.name = 'reel container'
+        this.reelContainer.sortableChildren = true
         this.reelContainer.pivot.copyFrom(reelContPivot)
         this.reelContainer.zIndex = eNGLayer.reelContainer        
         this.reelContainer.interactive = this.reelContainer.buttonMode = true
@@ -118,11 +121,9 @@ export default class ReelController{
         this.setReelData(type)
         this.reelArr.map(reel => reel.reset())
 
-        this.reelContainer.mask = this.mask
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
         this.reelContainer.addChild(this.mask)
 
-        this.reelContainer.sortChildren()
         EventHandler.on(eEventName.orientationChange, this.resizeFn)
         this.resizeFn()
     }
@@ -154,7 +155,8 @@ export default class ReelController{
         const spinReelArr: Array<Reel> = this.stopOrder.map(order => this.reelArr[order])       // 要轉動的輪
         const [...setStartArr] = spinReelArr.map(reel => reel.setStartSpin())
         await Promise.all(setStartArr.map(arr => arr[0]))       // 等待都往上拉之後
-
+        this.reelArr.map(reel => reel.setAllBlur())
+        
         let detlaRatio: number
         const tickerEvent: gsap.TickerCallback = () =>{
             detlaRatio = gsap.ticker.deltaRatio()
@@ -230,4 +232,25 @@ export default class ReelController{
         this.reelArr[nextIndex].Listening && this.reelArr[nextIndex].setListeningEffect()
     }
     //#endregion
+}
+
+export class SymbolController{
+
+    private static reelArr: Array<Reel>
+
+    public static init(reelArr: Array<Reel>){
+        this.reelArr = reelArr
+    }
+
+    public static async playWinAnimation(reelIndex: number, symbolIndex: number, times: number = 1){
+        await this.reelArr[reelIndex].DownSymbol[symbolIndex].playWinAnimation(times)
+    }
+
+    public static clearWinAnimation(reelIndex: number, symbolIndex: number){
+        this.reelArr[reelIndex].DownSymbol[symbolIndex].clearWinAnimation()
+    }
+
+    public static clearAllWinAnimation(){
+        this.reelArr.map(reel => reel.DownSymbol.map(symbol => symbol.clearWinAnimation()))
+    }
 }

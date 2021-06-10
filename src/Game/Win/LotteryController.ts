@@ -1,5 +1,6 @@
 import GameSceneManager from "@root/src/System/GameSceneController"
 import { Container, Graphics } from "pixi.js-legacy"
+import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
 enum eNG_LotteryState{
@@ -11,6 +12,8 @@ enum eNG_LotteryState{
 const {GameStateContext, createState, GameState} = StateModule
 
 export default class LotteryController{
+
+    public static win: number
 
     public static async init(){
         return new Promise<void>(res =>{
@@ -33,12 +36,13 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-
+        // LotteryController.win = GameSlotData.NGSpinData
         this.change()
     }
 
     change(){
-        this.context.changeState(Math.random() > .5? eNG_LotteryState.anim: eNG_LotteryState.end)
+        // this.context.changeState(Math.random() > .5? eNG_LotteryState.anim: eNG_LotteryState.end)
+        this.context.changeState(eNG_LotteryState.anim)
     }
 }
 
@@ -48,9 +52,8 @@ class LotteryAnim extends GameState{
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
-        await LineManager.playAllLineWin()
+        await LineManager.playAllLineWin(GameSlotData.NGSpinData.winlineArr)
         LineManager.playEachLine()
-        await Sleep(3)
         this.change()
     }
 

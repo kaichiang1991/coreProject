@@ -6,19 +6,18 @@ import { Container } from "pixi.js-legacy"
 const {Spine} = PixiAsset
 
 export enum eSpineName{
-    line = 'Line',
     symbol = 'Symbol'
 }
 
 export default class GameSpineManager{
 
     private static spineList: ISpineList = {
-        [eSpineName.line]: 'img/Line',
+        [eSpineName.symbol]: 'img/SymbolAnim'
     }
 
     public static setLanguage(){
         this.spineList = {...this.spineList,
-            [eSpineName.symbol]: 'img/' + LocalizationManager.getFolder() + '/Symbol'
+            // [eSpineName.symbol]: 'img/' + LocalizationManager.getFolder() + '/Symbol'
         }
     }
 
@@ -31,10 +30,6 @@ export default class GameSpineManager{
 
         Object.keys(this.spineList).map((key, index) => this.spineList[key] = sources[index])
         await Spine.init(this.spineList)
-    }
-
-    public static playLine(parent: Container){
-        return parent.addChild(Spine.playSpine(eSpineName.line)[0])
     }
 
     public static playSymbol(parent: Container): [Spine, TrackEntry]{

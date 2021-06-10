@@ -10,7 +10,9 @@ enum eNGLayer{
 
 enum eReelContainerLayer{
 
-    black = 1000
+    normalSymbol,
+    black = 1000,
+    winAnimation
 }
 
 export {eAppLayer, eNGLayer, eReelContainerLayer}

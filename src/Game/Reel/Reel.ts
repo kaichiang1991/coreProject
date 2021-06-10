@@ -1,5 +1,5 @@
 import Symbol from "./Symbol"
-import { eSymbolConfig, reelSymbolCount, yOffsetArr } from "./SymbolDef"
+import { eSymbolConfig, eSymbolState, reelSymbolCount, yOffsetArr } from "./SymbolDef"
 import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
@@ -7,6 +7,7 @@ import GameSlotData from "../GameSlotData"
 export default class Reel{
 
     private symbolArr: Array<Symbol>        // 所有滾輪上的符號 (包含上下各一顆)
+    public get DownSymbol(): Array<Symbol> {return this.symbolArr.slice(1, reelSymbolCount[this.reelIndex] + 1)}
     private reelIndex: number               // 第幾軸
     public get ReelIndex(): number  {return this.reelIndex}
 
@@ -68,6 +69,8 @@ export default class Reel{
         // 滾輪表由下至上
         this.symbolArr.slice().reverse().map(symbol =>{
             symbol.setTexture(this.reelDatas[this.nextDataIndex()])
+            symbol.setUseMask(ReelController.Mask)
+            symbol.activeMask(true)
         })
 
         ReelController.ReelContainer.addChild(...this.symbolArr)
@@ -103,6 +106,11 @@ export default class Reel{
                 this.stopSpinEvent = res
             })
         ]
+    }
+
+    /** 設定全部 symbol 模糊 */
+    public setAllBlur(){
+        this.symbolArr.map(symbol => symbol.setTexture(null, eSymbolState.Blur))
     }
 
     /**
@@ -176,7 +184,7 @@ export default class Reel{
     /** 設定下一顆符號，並記錄目前最下面的符號 */
     private setNextSymbol(){
         this.lastBottomSymbolId = this.symbolArr[0].SymbolID
-        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()])
+        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop? eSymbolState.Normal: eSymbolState.Blur)
     }
 
     /**
@@ -241,7 +249,7 @@ export default class Reel{
         // ToDo 讀json滾輪表
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = [5, 1, 2, 3, 4, 4, 5, 1, 2, 3, 4, 5, 1, 6, 3, 3, 3, 5, 5]
+                this.reelDatas = [1, 2, 3, 4, 11, 12, 13, 14, 21]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.result[this.reelIndex])
                     this.nextDataIndex()
@@ -252,7 +260,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 6, 6]
+                this.reelDatas = [21, 21, 21, 4, 3, 2, 1, 14, 13, 12, 11]
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }

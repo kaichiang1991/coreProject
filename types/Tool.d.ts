@@ -21,7 +21,7 @@ declare function safe_kill_tween(tween: gsap.core.Animation, suppressEvents?: bo
  * 如果有 complete 事件，結束後會一起執行
  * @param tween 要等待的 tween
  */
-declare function waitTweenComplete(tween: gsap.core.Tween): Promise<void>;
+declare function waitTweenComplete(tween: gsap.core.Animation): Promise<void>;
 /**
  * 等待 spine track 撥放完畢
  * @param track 要等待的 track

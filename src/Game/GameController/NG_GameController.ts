@@ -2,6 +2,7 @@ import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
 import ReelController, { eReelGameType } from "../Reel/ReelController"
+import { eSymbolName } from "../Reel/SymbolDef"
 import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
 import FG_GameController from "./FG_GameController"
@@ -46,7 +47,6 @@ class GameInit extends GameState{
 
         // 初始化滾輪
         ReelController.reset(eReelGameType.normalGame)
-        
         this.change()
     }
 
@@ -63,7 +63,7 @@ class GameStart extends GameState{
         // if Auto( > 0) : EventHandler.dispatch(eEventName.startSpin)
     }
 
-    change(){
+    async change(){
         // 檢查狀態
 
         // 檢查餘額
@@ -73,7 +73,7 @@ class GameStart extends GameState{
 
     exit(){
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
-        LineManager.StopEachLineFn && LineManager.StopEachLineFn()
+        LineManager.StopEachLineFn()
     }
 }
 
@@ -87,25 +87,35 @@ class StartSpin extends GameState{
         const allSpin: Promise<void> = ReelController.startSpin()
 
         // 接受server 資料 先寫假資料
-        GameSlotData.NGSpinData = {...GameSlotData.NGSpinData, result: [
-            [3, 4, 4],
-            [3, 4, 4],
-            [3, 4, 4],
-            [3, 4, 4],
-            [3, 4, 4]
-        ]}
+        const winlineArr = GameSlotData.NGSpinData? [
+            {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
+            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
+            {SymbolID: eSymbolName.WD, WinPosition: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]], Win: 2000, lineNo: 3},
+        ]: [
+            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2}
+        ]
+        GameSlotData.NGSpinData = {...GameSlotData.NGSpinData, 
+            result: [
+                [14, 21, 1],
+                [14, 21, 1],
+                [14, 21, 1],
+                [14, 21, 1],
+                [14, 21, 1]
+            ],
+            winlineArr
+        }
 
         ReelController.setResult(GameSlotData.NGSpinData.result)
 
         this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> ReelController.StopNowEvent())
         EventHandler.on(eEventName.startSpin, ()=> EventHandler.dispatch(eEventName.stopSpin))          // UI好了要改
 
-        // setTimeout(() => {
-        //     // ReelController.setListening(0)
-        //     // ReelController.setListeningEffect(-1)
-        //     window['arr'] && ReelController.setListening(...window['arr'])
-        //     ReelController.stopSpin()
-        // }, 1000)
+        setTimeout(() => {
+            // ReelController.setListening(0)
+            // ReelController.setListeningEffect(-1)
+            window['arr'] && ReelController.setListening(...window['arr'])
+            ReelController.stopSpin()
+        }, 1000)
 
         await allSpin
         this.change()

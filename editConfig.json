@@ -12,7 +12,7 @@
         "extraSymbolCount": 2
     },
     "line": {
-        "eachLineLight": 0.6,
-        "eachLineDark": 0.3
+        "leastAllLineDuration": 1,
+        "eachLineLight": 0.6
     }
 }

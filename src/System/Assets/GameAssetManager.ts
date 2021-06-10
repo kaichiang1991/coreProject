@@ -16,13 +16,10 @@ export default class GameAssetManager{
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
         // 'Button': 'img/Button.png',
         'logo': 'img/logo.png',
-        'startSpin': 'img/SpinStart00.png',
-        'speedSpin': 'img/SpeedSpin00.png',
-        'stopSpin': 'img/SpinStop00.png',
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
-        'Button': 'img/Button.json',
+        'symbolSprite': 'img/Symbol.json'
     }
 
     public static setLanguage(){
