@@ -3,6 +3,7 @@ import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneControll
 import { Container, Graphics, Text } from "pixi.js-legacy"
 import GameSlotData from "../GameSlotData"
 import ReelController, { eReelGameType } from "../Reel/ReelController"
+import { eSymbolName } from "../Reel/SymbolDef"
 
 export enum eFG_GameState{
     init    = 'FG_Init',
@@ -50,6 +51,7 @@ class GameInit extends GameState{
         tr.destroy()
         EventHandler.dispatch('transitionDone')
         ReelController.reset(eReelGameType.freeGame)
+        await Sleep(1)
         this.change()
     }
 
@@ -71,25 +73,47 @@ class GameStart extends GameState{
 
 class StartSpin extends GameState{
 
+    private stopEvent: Function
+
     async enter(){
         const allSpin: Promise<void> = ReelController.startSpin()
 
-        GameSlotData.FGSpinData = {...GameSlotData.FGSpinData, result: [
-            [6, 6, 1],
-            [6, 6, 1],
-            [6, 6, 1],
-            [6, 6, 1],
-            [6, 6, 1],
-        ]}
+        // 接受server 資料 先寫假資料
+        const winlineArr = [
+            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2}
+        ]
+        
+        GameSlotData.FGSpinData = {...GameSlotData.FGSpinData, 
+            result: [
+                [11, 21, 21],
+                [11, 21, 21],
+                [11, 21, 21],
+                [11, 21, 21],
+                [11, 21, 21],
+            ],
+            winlineArr
+        }
+
         ReelController.setResult(GameSlotData.FGSpinData.result)
-        ReelController.StopNowEvent()
+
+        this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
+        if(SlotUIManager.IsAutoSpeed){
+            this.stopEvent()
+        }
+
+        await Sleep(1)
         ReelController.stopSpin()
+
         await allSpin
         this.change()
     }
 
     change(){
         this.context.changeState(eFG_GameState.endSpin)
+    }
+
+    exit(){
+        EventHandler.getListeners(eEventName.startSpin).length && EventHandler.off(eEventName.startSpin, this.stopEvent)
     }
 }
 

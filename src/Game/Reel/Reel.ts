@@ -251,7 +251,7 @@ export default class Reel{
         // ToDo 讀json滾輪表
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = [1, 2, 3, 4, 11, 12, 13, 14, 21]
+                this.reelDatas = [1, 2, 3, 4, 11, 12, 13, 14, 21, 31]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.result[this.reelIndex])
                     this.nextDataIndex()
@@ -262,7 +262,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = [21, 21, 21, 4, 3, 2, 1, 14, 13, 12, 11]
+                this.reelDatas = [21, 21, 21, 31, 4, 3, 2, 1, 14, 13, 12, 11]
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }

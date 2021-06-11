@@ -11,7 +11,8 @@ enum eSymbolName{
     N3 = 13,
     N4 = 14,
 
-    WD = 21
+    WD = 21,
+    FG = 31
 }
 
 enum eSymbolState{

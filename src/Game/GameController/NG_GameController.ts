@@ -1,9 +1,9 @@
 import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
-import ReelController, { eReelGameType } from "../Reel/ReelController"
+import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
-import { LineManager } from "../Win/LineManager"
+import { ISSlotWinLineInfo, LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
 import FG_GameController from "./FG_GameController"
 
@@ -73,6 +73,7 @@ class GameStart extends GameState{
 
     exit(){
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
+        console.log('stop each line', LineManager.StopEachLineFn)
         LineManager.StopEachLineFn()
     }
 }
@@ -88,34 +89,34 @@ class StartSpin extends GameState{
 
         // 接受server 資料 先寫假資料
         const winlineArr = !GameSlotData.NGSpinData? [
-            // {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
-            // {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
-            // {SymbolID: eSymbolName.WD, WinPosition: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]], Win: 2000, lineNo: 3},
-        ]: [
+            {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
+            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
+            {SymbolID: eSymbolName.FG, WinPosition: [[0, 2], [1, 2], [2, 2], [3, 2], [4, 2]], Win: 2000, lineNo: 3},
+        ]: 
+        [
             {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2}
         ]
         GameSlotData.NGSpinData = {...GameSlotData.NGSpinData, 
             result: [
-                [14, 21, 1],
-                [14, 21, 1],
-                [14, 21, 1],
-                [14, 21, 1],
-                [14, 21, 1]
+                [14, 21, 31],
+                [14, 21, 31],
+                [14, 21, 31],
+                [14, 21, 31],
+                [14, 21, 31]
             ],
             winlineArr
         }
 
         ReelController.setResult(GameSlotData.NGSpinData.result)
 
-        this.stopEvent = EventHandler.once(eEventName.stopSpin, ()=> ReelController.StopNowEvent())
-        EventHandler.on(eEventName.startSpin, ()=> EventHandler.dispatch(eEventName.stopSpin))          // UI好了要改
+        this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
+        if(SlotUIManager.IsAutoSpeed){
+            this.stopEvent()
+        }
 
-        setTimeout(() => {
-            // ReelController.setListening(0)
-            // ReelController.setListeningEffect(-1)
-            window['arr'] && ReelController.setListening(...window['arr'])
-            ReelController.stopSpin()
-        }, 1000)
+        await Sleep(1)
+        window['arr'] && ReelController.setListening(...window['arr'])
+        ReelController.stopSpin()
 
         await allSpin
         this.change()
@@ -126,7 +127,7 @@ class StartSpin extends GameState{
     }
 
     exit(){
-        EventHandler.getListeners(eEventName.stopSpin).length && EventHandler.off(eEventName.stopSpin, this.stopEvent)
+        EventHandler.getListeners(eEventName.startSpin).length && EventHandler.off(eEventName.startSpin, this.stopEvent)
     }
 }
 
@@ -134,10 +135,10 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const isFreeGame: boolean = false        // 之後判斷server資料
+        const isFreeGame: boolean = this.getWinlineBySymbol(eSymbolName.FG).length != 0        // 之後判斷server資料
 
         if(isFreeGame){
-            await this.playSpecialSymbol()
+            await this.playSpecialSymbol(this.getWinlineBySymbol(eSymbolName.FG)[0])
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)
@@ -152,15 +153,24 @@ class EndSpin extends GameState{
     }
 
     /**
+     * 取得包含某個symbol的winline
+     * @param symbol 要包含的symbol
+     * @returns {ISSlotWinLineInfo}
+     */
+    private getWinlineBySymbol(symbol: eSymbolName): Array<ISSlotWinLineInfo>{
+        return GameSlotData.NGSpinData.winlineArr?.filter(winline => winline.SymbolID == symbol)
+    }
+
+    /**
      * 播放 FG 或 BG 得獎符號
      */
-    private async playSpecialSymbol(){
+    private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})        // 壓黑
         // 播放 symbol 得獎
-        
-        await Sleep(2)
-
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))
+        await Promise.all(allPromise)
         // 清除 symbol 得獎
+        SymbolController.clearAllWinAnimation()
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
     }
 }

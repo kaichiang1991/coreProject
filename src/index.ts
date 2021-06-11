@@ -94,7 +94,7 @@ const gameEntry: Function = async ()=>{
     //#endregion Loading
 
     // 遊戲場景轉換
-    UIManager.init(App.stage, {line: 9, moneyFractionMultiple: 1000, languageData: {AutoSpinListTitle: 'auto spin', BetListTitle: 'bet list'}, denom: 10})
+    UIManager.init(App.stage)
     GameSceneManager.switchGameScene(eGameScene.normalGame)
     NG_GameController.getInstance().init()
 }

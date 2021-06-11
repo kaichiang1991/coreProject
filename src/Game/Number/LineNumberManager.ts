@@ -1,5 +1,4 @@
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
-import GameSceneManager from "@root/src/System/GameSceneController"
 import { eReelContainerLayer } from "@root/src/System/LayerDef"
 import { Point } from "pixi.js-legacy"
 import ReelController from "../Reel/ReelController"
@@ -34,11 +33,11 @@ export default class LineNumberManager{
      * @param value 
      */
     public static playLineNumber(value: number){
-        GameSceneManager.getSceneContainer().addChild(this.lineNumber)
+        ReelController.ReelContainer.addChild(this.lineNumber)
         this.lineNumber.text = value + ''
     }
 
-    /** 清除線講數字 */
+    /** 清除線獎數字 */
     public static clearLineNumber(){
         this.lineNumber?.parent?.removeChild(this.lineNumber)
     }

@@ -36,7 +36,7 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        LotteryController.win = GameSlotData.NGSpinData.winlinArr?.reduce((pre, curr) => pre + curr.Win, 0)
+        LotteryController.win = GameSlotData.NGSpinData.winlineArr?.reduce((pre, curr) => pre + curr.Win, 0)
         this.change()
     }
 

@@ -13,7 +13,7 @@ const lineDef: {[key: number]: {y: number}} = {
     3: {y: 570}
 }
 
-interface ISSlotWinLineInfo{        // 之後統一跟server格式
+export interface ISSlotWinLineInfo{        // 之後統一跟server格式
     WinPosition: Array<Array<number>>
     lineNo: number
     Win: number
@@ -87,6 +87,7 @@ export class LineManager{
 
     /** 播放逐縣動畫 */
     public static playEachLine(){
+        this.stopEachLineFn = null
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
             return
         }
