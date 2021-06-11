@@ -1,5 +1,6 @@
 import { Point } from "pixi.js-legacy"
 
+/** 定義 symbol */
 enum eSymbolName{
     H1 = 1,
     H2 = 2,
@@ -15,11 +16,28 @@ enum eSymbolName{
     FG = 31
 }
 
+/** 定義 symbol 圖層 */
+enum eSymbolLayer{
+    N1,
+    N2,
+    N3,
+    N4,
+
+    H1,
+    H2,
+    H3,
+    H4,
+
+    FG,
+    WD,
+}
+
+/** 定義 symbol 狀態 */
 enum eSymbolState{
     Normal,
     Blur,
+    EndSpin,
     Win,
-    EndSpin
 }
 
 enum eSymbolConfig{
@@ -45,4 +63,4 @@ const yOffsetArr: Array<number> = Array(reelSymbolCount[0] + 2).fill(1).map((_, 
 // reelContainer 的中心點
 const reelContPivot: Point = new Point((xOffsetArr[0] + xOffsetArr[xOffsetArr.length - 1]) / 2, eSymbolConfig.height * (reelSymbolCount[0] + 2) / 2)
 
-export {eSymbolName, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot}
+export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot}

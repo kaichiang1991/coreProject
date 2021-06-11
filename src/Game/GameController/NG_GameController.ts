@@ -73,7 +73,6 @@ class GameStart extends GameState{
 
     exit(){
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
-        console.log('stop each line', LineManager.StopEachLineFn)
         LineManager.StopEachLineFn()
     }
 }

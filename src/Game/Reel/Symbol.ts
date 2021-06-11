@@ -1,7 +1,7 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { Container, Graphics, Text, TextStyle } from "pixi.js-legacy";
-import { endSpinSymbolArr, eSymbolConfig, eSymbolName, eSymbolState, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
 
 const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
@@ -13,20 +13,18 @@ const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
 export default class Symbol extends Container{
 
     private text: Text
-    private rstText: Text
     private sprite: Sprite
     private animSpine: Spine
-    // private graphic: Graphics
 
     private symbolId: eSymbolName
     public get SymbolID(): number {return this.symbolId}
+    private state: eSymbolState         // 紀錄目前 symbol 的狀態
 
-    private useMask: Container
+    private useMask: Container          // 使用的遮罩
 
     constructor(){
         super()
        
-        // this.graphic = this.addChild(new Graphics())
         this.sprite = this.addChild(new Sprite('N1'))
         this.sprite.anchor.set(.5)
 
@@ -41,30 +39,33 @@ export default class Symbol extends Container{
         this.text = this.addChild(new Text('1', style))
         this.text.anchor.set(.5)
 
-        this.rstText = this.addChild(new Text('', {...style, fill: 'yellow'}))
-        this.rstText.y = 25
-        this.rstText.anchor.set(.5)
-
         this.animSpine = Spine.playSpine(eSpineName.symbol)[0]
     }
 
+    /**
+     * 初始化 symbol
+     * @param reelIndex 第幾軸
+     * @param symbolIndex 第幾顆
+     * @returns 
+     */
     public init(reelIndex: number, symbolIndex: number): Symbol{
-        const {border, inner} = colorDef[symbolIndex % 3]
-        // this.graphic.clear()
-        // .lineStyle(2, border).beginFill(inner)
-        // .drawRect(-eSymbolConfig.width / 2, -eSymbolConfig.height / 2, eSymbolConfig.width, eSymbolConfig.height)
-        // .endFill()
-
         this.setIndex(symbolIndex)
         this.position.set(xOffsetArr[reelIndex], yOffsetArr[symbolIndex])
-        this.zIndex = eReelContainerLayer.normalSymbol
         return this
     }
 
+    /**
+     * 設定該 symbol 要使用的遮罩
+     * @param mask 遮罩
+     */
     public setUseMask(mask: Container){
         this.useMask = mask
     }
 
+    /**
+     * 啟用遮罩
+     * @param flag 開關
+     */
     public activeMask(flag: boolean){
         if(!this.useMask){
             Debug.warn('activeMask, no mask', flag)
@@ -87,10 +88,25 @@ export default class Symbol extends Container{
      * @param {eSymbolState} [state = eSymbolState.Normal] 貼圖狀態
      */
     public setTexture(symbolId: eSymbolName, state: eSymbolState.Normal | eSymbolState.Blur = eSymbolState.Normal){
-        if(symbolId != null){
+        if(symbolId != null){          
             this.symbolId = symbolId
         }
-        this.sprite.texture = AssetLoader.getTexture(this.getTextureName(this.symbolId, state))
+
+        this.state = state
+        this.sprite.texture = AssetLoader.getTexture(this.getTextureName(this.symbolId, this.state))
+        this.setLayer()
+    }
+
+    /** 根據狀態設定圖層 */
+    private setLayer(){
+        this.zIndex = 
+            this.state == eSymbolState.Win? eReelContainerLayer.winAnimation:                   // 得獎演出
+            this.state == eSymbolState.EndSpin? eReelContainerLayer.endSpinAnim:                // 落定演出
+            eReelContainerLayer.normalSymbol + eSymbolLayer[eSymbolName[this.symbolId]]         // 一般 / 模糊 
+    }
+
+    public setIndex(index: number){
+        this.text.text = index + ''
     }
 
     //#region 得獎動畫
@@ -101,11 +117,12 @@ export default class Symbol extends Container{
     public async playWinAnimation(times: number){
         return new Promise<void>(res =>{
 
-            this.zIndex = eReelContainerLayer.winAnimation
+            this.state = eSymbolState.Win
+            this.setLayer()
             this.sprite.visible = false         // 隱藏底下的 symbol 單圖
             this.activeMask(false)
             this.addChild(this.animSpine)
-            const track = this.animSpine.setAnimation(this.getAnimName(this.symbolId), true)
+            const track = this.animSpine.setAnimation(this.getAnimName(this.symbolId, this.state), true)
             let count: number = 0
             track.listener = { ...track.listener, 
                 complete: ()=>{
@@ -122,7 +139,7 @@ export default class Symbol extends Container{
         this.animSpine.setEmptyAnimations()
         this.animSpine.parent?.removeChild(this.animSpine)
         this.sprite.visible = true      // 顯示底下的 symbol
-        this.zIndex = eReelContainerLayer.normalSymbol
+        this.setLayer()
         this.activeMask(true)
     }
 
@@ -138,11 +155,12 @@ export default class Symbol extends Container{
             return
 
         // 之後再考慮會不會有 沒有落定動畫，卻 要顯示在上層的symbol
-        this.zIndex = eReelContainerLayer.endSpinAnim
+        this.state = eSymbolState.EndSpin
+        this.setLayer()
         this.sprite.visible = false         // 隱藏底下的 symbol 單圖
         this.activeMask(false)
         this.addChild(this.animSpine)
-        await waitTrackComplete(this.animSpine.setAnimation(this.getAnimName(this.symbolId, eSymbolState.EndSpin), false))      
+        await waitTrackComplete(this.animSpine.setAnimation(this.getAnimName(this.symbolId, this.state), false))      
         this.clearEndSpinAnim()
     }
 
@@ -150,26 +168,16 @@ export default class Symbol extends Container{
      * 清除落定動畫，播一次落定動畫後自動呼叫
      */
     public clearEndSpinAnim(){
+        this.state = eSymbolState.Normal
         this.animSpine.setEmptyAnimations()
         this.animSpine.parent?.removeChild(this.animSpine)
         this.sprite.visible = true      // 顯示底下的 symbol
-        // this.zIndex = eReelContainerLayer.normalSymbol          // 結束後圖層先不拉回來，等下一次開始轉動在拉
-        // this.activeMask(true)                                   // 結束後遮罩先不蓋回來，等下一次開始轉動在蓋
+        // this.setLayer()              // 結束後圖層先不拉回來，等下一次開始轉動在拉
+        // this.activeMask(true)        // 結束後遮罩先不蓋回來，等下一次開始轉動在蓋
     }
     //#endregion
 
-    public setIndex(index: number){
-        this.text.text = index + ''
-    }
-
-    public setCorrectReelData(index: number){
-        this.rstText.text = 'correct_' + index
-    }
-
-    public setResult(res: string){
-        this.rstText.text = res
-    }
-
+    //#region 其他功能
     /**
      * 取得一般滾輪貼圖名稱
      * @param symbolId symbol ID
@@ -186,7 +194,8 @@ export default class Symbol extends Container{
      * @param {eSymbolState} [state = eSymbolState.Win] 狀態
      * @returns {string}
      */
-    private getAnimName(symbolId: eSymbolName, state: eSymbolState = eSymbolState.Win): string{
+    private getAnimName(symbolId: eSymbolName, state: eSymbolState): string{
         return eSymbolName[symbolId] + '_' + eSymbolState[state]
     }
+    //#endregion
 }
