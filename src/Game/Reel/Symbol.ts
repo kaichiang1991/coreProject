@@ -1,7 +1,7 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { Container, Graphics, Text, TextStyle } from "pixi.js-legacy";
-import { endSpinSymbolArr, eSymbolConfig, eSymbolName, eSymbolState, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { endSpinSymbolArr, eSymbolConfig, eSymbolName, eSymbolState, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
 
 const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
@@ -137,6 +137,7 @@ export default class Symbol extends Container{
         if(!endSpinSymbolArr.includes(this.symbolId))
             return
 
+        // 之後再考慮會不會有 沒有落定動畫，卻 要顯示在上層的symbol
         this.zIndex = eReelContainerLayer.endSpinAnim
         this.sprite.visible = false         // 隱藏底下的 symbol 單圖
         this.activeMask(false)
@@ -176,7 +177,7 @@ export default class Symbol extends Container{
      * @returns {string}
      */
     private getTextureName(symbolId: eSymbolName, state: eSymbolState): string{
-        return eSymbolName[symbolId] + '_0' + state + '.png'
+        return eSymbolName[symbolId] + ((state == eSymbolState.Blur && !noBlurSymbolArr.includes(symbolId))? '_01': '_00') + '.png'
     }
 
     /**

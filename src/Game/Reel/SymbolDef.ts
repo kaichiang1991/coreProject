@@ -28,6 +28,8 @@ enum eSymbolConfig{
 
 // 有落定動畫的 symbol
 const endSpinSymbolArr: Array<eSymbolName> = []
+// 不要模糊的 symbol
+const noBlurSymbolArr: Array<eSymbolName> = []
 
 // 輪數
 const reelCount: number = 5
@@ -42,4 +44,4 @@ const yOffsetArr: Array<number> = Array(reelSymbolCount[0] + 2).fill(1).map((_, 
 // reelContainer 的中心點
 const reelContPivot: Point = new Point((xOffsetArr[0] + xOffsetArr[xOffsetArr.length - 1]) / 2, eSymbolConfig.height * (reelSymbolCount[0] + 2) / 2)
 
-export {eSymbolName, eSymbolState, eSymbolConfig, endSpinSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot}
+export {eSymbolName, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot}
