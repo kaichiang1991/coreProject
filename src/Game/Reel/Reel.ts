@@ -1,8 +1,9 @@
 import Symbol from "./Symbol"
-import { eSymbolConfig, eSymbolState, reelSymbolCount, yOffsetArr } from "./SymbolDef"
+import { eSymbolConfig, eSymbolState, mapRowIndex, reelSymbolCount, yOffsetArr } from "./SymbolDef"
 import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
+import { Graphics } from "pixi.js-legacy"
 
 export default class Reel{
 
@@ -66,10 +67,14 @@ export default class Reel{
      * 重設滾輪(位置、貼圖)，並放到畫面上
      */
     public reset(){
-        // 滾輪表由下至上
         this.symbolArr.slice().reverse().map(symbol =>{
-            symbol.setTexture(this.reelDatas[this.nextDataIndex()])
-            symbol.setUseMask(ReelController.Mask)
+            symbol.setTexture(this.reelDatas[this.nextDataIndex()])        // 滾輪表由下至上
+        })
+        
+        const maskArr: Array<Graphics> = Array.isArray(ReelController.Mask)? ReelController.Mask: [ReelController.Mask]
+        this.symbolArr.map(symbol =>{
+            const maskIndex: number = !Array.isArray(ReelController.Mask)? 0: ~~(this.reelIndex / 5)
+            symbol.setUseMask(maskArr[maskIndex])
             symbol.activeMask(true)
         })
 
@@ -162,7 +167,7 @@ export default class Reel{
         this.toBounce = true
 
         const lastIndex: number = this.symbolArr.length - 1                                         // bounce 時最下面那顆的index
-        const overDistance: number = this.symbolArr[lastIndex].y - yOffsetArr[lastIndex - 1]        // 超出規定的座標多少
+        const overDistance: number = this.symbolArr[lastIndex].y - yOffsetArr[mapRowIndex(this.reelIndex)][lastIndex - 1]        // 超出規定的座標多少
 
         const downDistance: number = spinConfig.bounceDistance - overDistance                       // 實際要bounce 下移的距離 (小於0就是 lag 或是 加速太快了，導致一幀就超過了 bounce 距離)
         const downDuration: number = downDistance >= 0? (downDistance / this.dy / fps): 0           // 根據上一個spinEvent 決定這次要下移的時間
@@ -241,7 +246,8 @@ export default class Reel{
     private resetSymbol(){
         // 把最上面那一顆拉到最下面
         this.symbolArr[0].setTexture(this.lastBottomSymbolId)
-        this.symbolArr[0].y = yOffsetArr[yOffsetArr.length - 1]
+        const yOffset: Array<number> = yOffsetArr[mapRowIndex(this.reelIndex)]
+        this.symbolArr[0].y = yOffset[yOffset.length - 1]
         this.symbolArr.push(this.symbolArr.shift())
         this.symbolArr.forEach((symbol, index) => symbol.setIndex(index))
     }
@@ -251,7 +257,7 @@ export default class Reel{
         // ToDo 讀json滾輪表
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = [1, 2, 3, 4, 11, 12, 13, 14, 21, 31]
+                this.reelDatas = window['NGReelData'][this.reelIndex]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.result[this.reelIndex])
                     this.nextDataIndex()
@@ -262,7 +268,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = [21, 21, 21, 31, 4, 3, 2, 1, 14, 13, 12, 11]
+                this.reelDatas = window['FGReelData'][this.reelIndex]
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }

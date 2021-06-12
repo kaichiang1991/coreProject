@@ -2,6 +2,7 @@
 import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legacy'
 import gsap from 'gsap'
 window.gsap = gsap
+import '@root/globalDef.ts'
 
 import config from '@root/config'
 import GameSceneManager, { eGameScene } from './System/GameSceneController'

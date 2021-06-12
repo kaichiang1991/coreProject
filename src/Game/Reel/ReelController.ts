@@ -5,6 +5,7 @@ import { reelCount, defaultStopOrder, reelContPivot } from "./SymbolDef";
 import { editConfig } from "@root/src";
 import config from '@root/config'
 import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
+import { eReelType } from "@root/globalDef";
 
 interface ISpinConfig{
     upDistance: number          // 上移的距離
@@ -33,8 +34,8 @@ export default class ReelController{
     private static reelContainer: Container
     public static get ReelContainer(): Container {return this.reelContainer}
     private static reelArr: Array<Reel>
-    private static mask: Graphics
-    public static get Mask(): Graphics {return this.mask}
+    private static mask: Graphics | Array<Graphics>
+    public static get Mask(): Graphics | Array<Graphics> {return this.mask}
     private static blackCover: Graphics
 
     private static stopOrder: Array<number>
@@ -94,9 +95,21 @@ export default class ReelController{
     /** 初始化滾輪的遮罩 */
     private static initMask(){
         // ToDo 之後會直接拿滾輪底圖做遮罩大小
-        this.mask = this.reelContainer.addChild(new Graphics()
-            .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
-        )
+        switch(window['reelType']){
+            case eReelType._3x5_reel:
+                this.mask = this.reelContainer.addChild(new Graphics()
+                    .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
+                )
+            break
+
+            case eReelType._3x5_single:
+                this.mask = [
+                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-130, 164, 950, 160).endFill(),      // 第一列
+                    new Graphics().beginFill(0xFF3333, .5).drawRect(-130, 324, 950, 160).endFill(),     // 第二列
+                    new Graphics().beginFill(0x33FF33, .5).drawRect(-130, 484, 950, 160).endFill(),     // 第三列
+                ]
+            break
+        } 
     }
 
     /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */
@@ -122,7 +135,8 @@ export default class ReelController{
         this.reelArr.map(reel => reel.reset())
 
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
-        this.reelContainer.addChild(this.mask)
+        const maskArr: Array<Graphics> = !Array.isArray(this.mask)? [this.mask]: this.mask
+        this.reelContainer.addChild(...maskArr)
 
         EventHandler.on(eEventName.orientationChange, this.resizeFn)
         this.resizeFn()

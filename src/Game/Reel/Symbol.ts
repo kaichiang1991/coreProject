@@ -1,7 +1,7 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { Container, Graphics, Text, TextStyle } from "pixi.js-legacy";
-import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, mapColumnIndex, mapRowIndex, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
 
 const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
@@ -50,7 +50,7 @@ export default class Symbol extends Container{
      */
     public init(reelIndex: number, symbolIndex: number): Symbol{
         this.setIndex(symbolIndex)
-        this.position.set(xOffsetArr[reelIndex], yOffsetArr[symbolIndex])
+        this.position.set(xOffsetArr[mapColumnIndex(reelIndex)], yOffsetArr[mapRowIndex(reelIndex)][symbolIndex])
         return this
     }
 
