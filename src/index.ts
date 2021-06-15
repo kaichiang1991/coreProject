@@ -95,7 +95,7 @@ const gameEntry: Function = async ()=>{
     //#endregion Loading
 
     // 遊戲場景轉換
-    UIManager.init(App.stage)
+    UIManager.init(App.stage, config)
     GameSceneManager.switchGameScene(eGameScene.normalGame)
     NG_GameController.getInstance().init()
 }

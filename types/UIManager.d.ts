@@ -2,18 +2,19 @@
 /**UI總管理 */
 declare class UIManager {
     static stage: PIXI.Container;
-    static blackMask: PIXI.Graphics;
+    private static blackMask;
     static useMoney: boolean;
+    static externalConfig: any;
     /**
      * 初始化
      * @param stage 場景
      */
-    static init(stage: PIXI.Container): Promise<void>;
+    static init(stage: PIXI.Container, externalConfig: any): Promise<void>;
     /**
      * 開關黑色遮罩
      * @param flag 開關狀態
      */
-    static activeBlackMask(flag?: boolean): void;
+    static activeBlackMask(flag?: boolean, maskAlpha?: number): void;
     /**
      * 註冊黑色遮罩的事件
      * @param fn 要註冊的功能
@@ -30,12 +31,16 @@ declare class SlotUIManager {
     private static uiArr;
     /**目前急停的設定 */
     static get IsAutoSpeed(): boolean;
+    private static autoInfinity;
+    private static spinRoundTimes;
+    static get IsAuto(): boolean;
     /**初始化 */
     static init(): Promise<void>;
     /**重置設定 */
-    static reset(): void;
+    static reset(portrait: boolean): void;
     /**註冊事件 */
     private static registerEvent;
+    private static disableIconAtSpin;
     /**
      * 開關設定選單的按鈕
      * @param flag 開關狀態
@@ -46,17 +51,17 @@ declare class SlotUIManager {
      * @param flag 開關狀態
      */
     static activeSpinRound(flag: boolean): void;
-    private static spinRoundTimes;
     /**
      * 重置旋轉次數
-     * @param times 指定次數
+     * @param index 自動旋轉次數陣列索引
      */
-    static resetSpinRoundTime(times: number): void;
+    static resetSpinRoundTime(index: number): void;
     /**
      * 更新旋轉次數
-     * @param perTime 每次更新的變化次數，ex: 1(遞增) or -1(遞減)
+     * @param flag 更新次數正負狀態，true: 1(遞增)；false: -1(遞減)
      */
-    static updateSpinRound(perTime: number): void;
+    static updateSpinRound(flag: boolean): void;
+    private static showSpinRound;
     /**更新押注 */
     static updateBet(): void;
     /**更新總分/幣 */
@@ -83,7 +88,7 @@ declare class SettingUIManager {
      */
     static activeUI(flag: boolean): void;
     /**重置設定 */
-    static reset(): void;
+    static reset(portrait: boolean): void;
     /**註冊事件 */
     private static registerEvent;
 }
@@ -105,7 +110,7 @@ declare class BetListUIManager {
      */
     static activeUI(flag: boolean): void;
     /**重置設定 */
-    static reset(): void;
+    static reset(portrait: boolean): void;
     /**設定押注列表選項
      * @param index 押注選項的索引
      */
@@ -129,7 +134,7 @@ declare class AutoSpinListUIManager {
      */
     static activeUI(flag: boolean): void;
     /**重置設定 */
-    static reset(): void;
+    static reset(portrait: boolean): void;
     /**
      * 設定自動旋轉列表選項
      * @param index 自動旋轉列表的索引

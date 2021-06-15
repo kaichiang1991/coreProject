@@ -5,7 +5,7 @@ export enum eReelType{
 
 var w: any = window as any
 w.reelType = eReelType._3x5_single
-// w.reelType = eReelType._3x5_reel
+w.reelType = eReelType._3x5_reel
 
 import {eSymbolName} from "./src/Game/Reel/SymbolDef"
 
@@ -46,4 +46,5 @@ switch(w.reelType){
 }
 
 w.idx = 0
-w.sarr = [1, 2]
+// w.sarr = [1, 2]
+w.arr = [1]

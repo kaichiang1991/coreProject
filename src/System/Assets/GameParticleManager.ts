@@ -11,7 +11,7 @@ export enum eEmitterName{
 export default class GameParticleManager{
     
     private static emitterList: IParticleList = {
-        [eEmitterName.emitter1]: 'img/BigWin_Emitter'
+        // [eEmitterName.emitter1]: 'img/BigWin_Emitter'
     }
 
     public static async init(){
