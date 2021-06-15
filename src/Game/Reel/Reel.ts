@@ -5,6 +5,12 @@ import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
 import { Graphics } from "pixi.js-legacy"
 
+export enum eListeningState{
+    none,       // 沒有聽牌
+    normal,     // 一般聽牌 (減速)
+    special,    // 特殊聽牌 (單顆，會卡一半後回彈)
+}
+
 export default class Reel{
 
     private symbolArr: Array<Symbol>        // 所有滾輪上的符號 (包含上下各一顆)
@@ -34,8 +40,8 @@ export default class Reel{
     private toSetStop: boolean          // 是否已經設定下一輪
 
     // 聽牌
-    private isListening: boolean            // 該輪有沒有聽牌
-    public get Listening(): boolean { return this.isListening }
+    private isListening: eListeningState            // 該輪有沒有聽牌
+    public get Listening(): eListeningState { return this.isListening }
     private isListeningDone: boolean        // 聽牌是否進到bounce
     public get ListeningDone(): boolean { return this.isListeningDone }
     private listeningSpeedUpDone: boolean   // 聽牌加速完
@@ -90,7 +96,8 @@ export default class Reel{
         this.correctIndex = 0
 
         // 聽牌重設
-        this.listeningSpeedUpDone = this.isListening = this.isListeningDone = false
+        this.isListening = eListeningState.none
+        this.listeningSpeedUpDone = this.isListeningDone = false
         this.listeningSpeed = spinConfig.spinSpeed
         this.listeningTween?.kill()
     }
@@ -144,7 +151,7 @@ export default class Reel{
                 if(this.correctIndex == this.resultArr.length + spinConfig.extraSymbolCount){   // 換到最後一顆，準備進bounce
                     ReelController.setListeningEffect(this.reelIndex)       // 設定下一輪的聽牌效果
                     this.isListeningDone = true                             // 讓下一輪判斷，前一輪聽牌結束 ReelController.isPreviousListeningDone()
-                    this.spinBounce()
+                    this.isListening == eListeningState.special? this.specialListeningBounce(): this.spinBounce()
                     return
                 }
 
@@ -188,6 +195,31 @@ export default class Reel{
         this.stopSpinEvent()
     }
 
+    /** 特殊聽牌的回彈流程 */
+    private async specialListeningBounce(){
+        this.toBounce = true
+
+        const lastIndex: number = this.symbolArr.length - 1                                         // bounce 時最下面那顆的index
+        const overDistance: number = this.symbolArr[lastIndex].y - yOffsetArr[mapRowIndex(this.reelIndex)][lastIndex - 1]        // 超出規定的座標多少
+
+        // 先下移半顆
+        const downDistance: number = eSymbolConfig.height/2 - overDistance
+        const isEmpty: boolean = this.resultArr[0] == 0
+        const endMove: string = isEmpty? `-=${eSymbolConfig.height / 2}`: `+=${eSymbolConfig.height / 2}`
+        
+        const timeline: Timeline = gsap.timeline()
+        .to(this.symbolArr, {ease: Power2.easeOut, y: `+=${downDistance}`})
+        .to(this.symbolArr, {y: endMove, delay: 1})
+
+        await waitTweenComplete(timeline)
+
+        if(isEmpty) this.resetSymbol()      // 歸位
+
+        const allEndSpin: Array<Promise<void>> = this.DownSymbol.map(symbol => symbol.playEndSpinAnim())        // 演出落定動畫
+        await Promise.all(allEndSpin)
+        this.stopSpinEvent()
+    }
+
     /** 設定下一顆符號，並記錄目前最下面的符號 */
     private setNextSymbol(){
         this.lastBottomSymbolId = this.symbolArr[0].SymbolID
@@ -209,8 +241,8 @@ export default class Reel{
 
     //#region 聽牌
     /** 設定聽牌 */
-    public setListening(){
-        this.isListening = true
+    public setListening(state: eListeningState){
+        this.isListening = state
     }
     
     /** 設定聽牌效果(減速) */
@@ -287,6 +319,11 @@ export default class Reel{
      * @param result 結果
      */
     private getCorrectDataIndex(result: Array<number>){
+        if(this.isListening == eListeningState.special){    // 特殊聽牌的情形
+            this.dataIndex = this.reelDatas.indexOf(0) + result.length + spinConfig.extraSymbolCount
+            return
+        }
+
         const flatArrStr: string = JSON.stringify([...this.reelDatas, ...this.reelDatas]).slice(1, -1)       // 避免結果落在尾巴
         const resultStr: string = JSON.stringify(result).slice(1, -1)
         const index: number = flatArrStr.indexOf(resultStr)

@@ -42,7 +42,7 @@ class GameInit extends GameState{
 
         EventHandler.on(eEventName.gameStateChange, (ctx)=>{
             const {type} = ctx
-            console.log('change state', type)
+            // console.log('change state', type)
         })
 
         // 初始化滾輪
@@ -57,8 +57,10 @@ class GameInit extends GameState{
 
 class GameStart extends GameState{
 
-    enter(){
+    async enter(){
         EventHandler.once(eEventName.startSpin, this.change.bind(this))
+        // if(!window['idx'])  await Sleep(.5)
+        // EventHandler.dispatch(eEventName.startSpin)
         // Auto  
         // if Auto( > 0) : EventHandler.dispatch(eEventName.startSpin)
     }
@@ -98,7 +100,8 @@ class StartSpin extends GameState{
         }
 
         await Sleep(1)
-        window['arr'] && ReelController.setListening(...window['arr'])
+        window['arr'] && ReelController.setListening(...window['arr'])              // 設定一般聽牌
+        window['sarr'] && ReelController.setSpecialListening(...window['sarr'])     // 設定特殊聽牌
         ReelController.stopSpin()
 
         await allSpin

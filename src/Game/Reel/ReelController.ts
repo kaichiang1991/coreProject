@@ -1,6 +1,6 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics } from "pixi.js-legacy";
-import Reel from "./Reel";
+import Reel, { eListeningState } from "./Reel";
 import { reelCount, defaultStopOrder, reelContPivot } from "./SymbolDef";
 import { editConfig } from "@root/src";
 import config from '@root/config'
@@ -230,8 +230,20 @@ export default class ReelController{
     }
 
     //#region 聽牌
+    /**
+     * 設定一般的聽牌
+     * @param {...Array<number>} indexArr 要聽牌的輪
+     */
     public static setListening(...indexArr: Array<number>){
-        indexArr.map(index => this.reelArr[index].setListening())
+        indexArr.map(index => this.reelArr[index].setListening(eListeningState.normal))
+    }
+
+    /**
+     * 設定特殊聽牌
+     * @param {Array<number>} indexArr 要聽牌的輪
+     */
+    public static setSpecialListening(...indexArr: Array<number>){
+        indexArr.map(index => this.reelArr[index].setListening(eListeningState.special))
     }
 
     /**
