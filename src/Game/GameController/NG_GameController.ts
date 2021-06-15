@@ -1,4 +1,3 @@
-import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
@@ -59,16 +58,24 @@ class GameStart extends GameState{
 
     async enter(){
         EventHandler.once(eEventName.startSpin, this.change.bind(this))
-        // if(!window['idx'])  await Sleep(.5)
-        // EventHandler.dispatch(eEventName.startSpin)
         // Auto  
-        // if Auto( > 0) : EventHandler.dispatch(eEventName.startSpin)
+        if(SlotUIManager.IsAuto)    EventHandler.dispatch(eEventName.startSpin)
     }
 
     async change(){
         // 檢查狀態
-
+    
         // 檢查餘額
+        if(!this.checkCreditEnough()){
+            // 關 auto
+            // SlotUIManager.activeSpinRound(false)
+            this.context.changeState(eNG_GameState.start)
+            return
+        }
+
+        // 更新餘額
+        BetModel.getInstance().startSpin()
+        EventHandler.dispatch(eEventName.creditChange)
 
         this.context.changeState(eNG_GameState.spin)
     }
@@ -77,6 +84,14 @@ class GameStart extends GameState{
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
         LineManager.StopEachLineFn()
     }
+
+    /**
+     * 檢查餘額是否夠再spin一次
+     * @returns true 餘額足夠 / false 餘額不足
+     */
+    private checkCreditEnough(): boolean{
+        return BetModel.getInstance().credit >= BetModel.getInstance().TotalBet
+    }
 }
 
 class StartSpin extends GameState{
@@ -84,8 +99,6 @@ class StartSpin extends GameState{
     private stopEvent: Function
 
     async enter(){
-        // 綁事件
-
         const allSpin: Promise<void> = ReelController.startSpin()
 
         // 接受server 資料 先寫假資料
@@ -121,7 +134,7 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const isFreeGame: boolean = false //this.getWinlineBySymbol(eSymbolName.FG).length != 0        // 之後判斷server資料
+        const isFreeGame: boolean = this.getWinlineBySymbol(eSymbolName.FG).length != 0        // 之後判斷server資料
 
         if(isFreeGame){
             await this.playSpecialSymbol(this.getWinlineBySymbol(eSymbolName.FG)[0])

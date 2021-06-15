@@ -14,11 +14,11 @@ import AppDebug from './System/AppDebug'
 import editJson from '@root/editConfig.json'
 import NG_GameController from './Game/GameController/NG_GameController'
 
-EventHandler.init()     // 初始化事件管理
-
 // 顯示專案資訊
 const {name, version, size, fps} = config
-console.log('Project', name, version)
+console.log(`%cProject "${name}", version: "${version}"`, 'background-color:yellow; padding: 1px 30px; fontFamily: 600 Ariel; font-size: 24px;')
+
+EventHandler.init()     // 初始化事件管理
 
 const {width, height} = size
 export const App: Application = new Application({

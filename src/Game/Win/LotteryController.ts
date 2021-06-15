@@ -52,7 +52,7 @@ class LotteryAnim extends GameState{
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
         await LineManager.playAllLineWin(GameSlotData.NGSpinData.winlineArr)
-        LineManager.playEachLine()
+        await LineManager.playEachLine()
         this.change()
     }
 

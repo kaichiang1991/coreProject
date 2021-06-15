@@ -25,7 +25,7 @@ export default class Symbol extends Container{
     constructor(){
         super()
        
-        this.sprite = this.addChild(new Sprite('N1'))
+        this.sprite = this.addChild(new Sprite(this.getTextureName(eSymbolName.H1, eSymbolState.Normal)))
         this.sprite.anchor.set(.5)
 
         const style: TextStyle = new TextStyle({

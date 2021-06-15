@@ -38,7 +38,7 @@ export default class GameAssetManager{
     }
 
     public static async loadAsset(){
-        BetModel.init(10, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
+        BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
 
         const {canUseWebp} = config
         // 圖片的引入

@@ -85,35 +85,45 @@ export class LineManager{
         })
     }
 
-    /** 播放逐縣動畫 */
-    public static playEachLine(){
+
+    /**
+     * 播放逐線動畫
+     * @returns 單線的話直接回傳 / 多線的話 timeline 開始跑了之後回傳
+     */
+    public static async playEachLine(){
         this.stopEachLineFn = null
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
             return
         }
 
-        const {eachLineLight} = this.lineConfig
+        return new Promise<void>(res =>{
 
-        let index: number = 0
-        this.eachLineTimeline = gsap.timeline().repeat(-1)
-        .call(()=>{
-            this.clearLineEvent()
-            const {lineNo, Win, WinPosition} = this.winlineArr[index]
-            this.lineAnimArr = [this.playLine(lineNo)]                                                    // 播放線獎
-            LineNumberManager.playLineNumber(Win)                                           // 播放分數
-            WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
-            index = ++index % this.winlineArr.length
+            const {eachLineLight} = this.lineConfig
+            
+            let index: number = 0
+            this.eachLineTimeline = gsap.timeline().repeat(-1)
+            .call(()=>{
+                this.clearLineEvent()
+                const {lineNo, Win, WinPosition} = this.winlineArr[index]
+                this.lineAnimArr = [this.playLine(lineNo)]                                                    // 播放線獎
+                LineNumberManager.playLineNumber(Win)                                           // 播放分數
+                WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
+                index = ++index % this.winlineArr.length
+            })
+            .add(()=> {}, `+=${eachLineLight}`)
+            
+            .eventCallback('onStart', ()=> res())
+
+            .eventCallback('onComplete', ()=>{
+                this.clearLineEvent()
+                // 取消旋轉事件
+            })
+            
+            this.stopEachLineFn = ()=>{
+                safe_kill_tween(this.eachLineTimeline, false)
+                this.eachLineTimeline = null
+            }
         })
-        .add(()=> {}, `+=${eachLineLight}`)
-
-        .eventCallback('onComplete', ()=>{
-            this.clearLineEvent()
-            // 取消旋轉事件
-        })
-
-        this.stopEachLineFn = ()=>{
-            safe_kill_tween(this.eachLineTimeline, false)
-        }
     }
 
     /** 清除所有得獎動畫 */

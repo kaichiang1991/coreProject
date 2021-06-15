@@ -3,7 +3,8 @@ import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneControll
 import { Container, Graphics, Text } from "pixi.js-legacy"
 import GameSlotData from "../GameSlotData"
 import ReelController, { eReelGameType } from "../Reel/ReelController"
-import { eSymbolName } from "../Reel/SymbolDef"
+import FGLotteryController from "../Win/FGLotteryController"
+import { LineManager } from "../Win/LineManager"
 
 export enum eFG_GameState{
     init    = 'FG_Init',
@@ -79,20 +80,7 @@ class StartSpin extends GameState{
         const allSpin: Promise<void> = ReelController.startSpin()
 
         // 接受server 資料 先寫假資料
-        const winlineArr = [
-            {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2}
-        ]
-        
-        GameSlotData.FGSpinData = {...GameSlotData.FGSpinData, 
-            result: [
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-            ],
-            winlineArr
-        }
+        GameSlotData.FGSpinData = window['FGData'][0]
 
         ReelController.setResult(GameSlotData.FGSpinData.result)
 
@@ -121,12 +109,17 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        await Sleep(1)
+        await FGLotteryController.init()
         this.change()
     }
 
     change(){
-        this.context.changeState(eFG_GameState.end)
+        this.context.changeState(--window['FGTimes'] > 0? eFG_GameState.start: eFG_GameState.end)
+    }
+    
+    exit(){
+        EventHandler.dispatch(eEventName.activeBlack, {flag: false})
+        LineManager.StopEachLineFn()
     }
 }
 
