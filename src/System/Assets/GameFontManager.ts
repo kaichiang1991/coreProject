@@ -13,8 +13,8 @@ export default class GameFontManager{
     
     private static fontList: IBitmapTextList = {
         // [eFontName.SG_Bet] : 'font/SG_Bet_fnt',
-        // [eFontName.SG_Win] : 'font/SG_Win_fnt',
-        [eFontName.Win] : 'font/Win_fnt',
+        [eFontName.SG_Win] : 'font/SG_Win_fnt',
+        // [eFontName.Win] : 'font/Win_fnt',
     }
 
     public static async init(){

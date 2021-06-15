@@ -28,9 +28,7 @@ export default class GameAssetManager{
         }
         this.spriteSheetList = {...this.spriteSheetList, 
         
-        }
-        
-        Array(6).fill(1).map((_, index) => this.pngList['N' + (index+1)] = `img/N${index+1}.png`)
+        }        
     }
 
     public static init(){
