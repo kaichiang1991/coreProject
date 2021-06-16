@@ -12,4 +12,5 @@ var eEventName;
     eEventName["openGameInfo"] = "openGameInfo";
     eEventName["openHistory"] = "openHistory";
     eEventName["exitGame"] = "exitGame";
+    eEventName["receiveServerData"] = "receiveServerData";
 })(eEventName || (eEventName = {}));

@@ -10,5 +10,6 @@ declare enum eEventName {
     creditChange = "creditChange",
     openGameInfo = "openGameInfo",
     openHistory = "openHistory",
-    exitGame = "exitGame"
+    exitGame = "exitGame",
+    receiveServerData = "receiveServerData"
 }

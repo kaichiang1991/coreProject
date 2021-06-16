@@ -157,30 +157,30 @@ declare namespace PixiAsset {
         /**
          * 設定第0軌播放動畫
          * @param animName 動畫名稱
-         * @param loop 循環
+         * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
         setAnimation(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 設定最新一軌播放動畫
          * @param animName 動畫名稱
-         * @param loop 循環
+         * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
         setAnimationWithLatestIndex(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 設定第 n 軌播放動畫
          * @param animName 動畫名稱
-         * @param loop 循環
+         * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
         setAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 在第 0 軌後接著播放動畫
          * @param animName 動畫名稱
-         * @param loop 循環
-         * @param delay 延遲時間
-         * @param mixDuration 交疊時間
+         * @param {boolean} [loop = false] 循環
+         * @param {number} [delay = 0] 延遲時間
+         * @param {number} [mixDuration = 0] 交疊時間
          * @returns {PIXI.spine.core.TrackEntry}
          */
         addAnimation(animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
@@ -188,17 +188,30 @@ declare namespace PixiAsset {
          * 在第 n 軌後接著播放動畫
          * @param trackIndex 第幾軌
          * @param animName 動畫名稱
-         * @param loop 循環
-         * @param delay 延遲時間
-         * @param mixDuration 交疊時間
+         * @param {boolean} [loop = false] 循環
+         * @param {number} [delay = 0] 延遲時間
+         * @param {number} [mixDuration = 0] 交疊時間
          * @returns {PIXI.spine.core.TrackEntry}
          */
         addAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        /**
+         * 清除指定軌動畫
+         * @param trackIndex 第幾軌
+         * @param {number} [mixDuration = 0] 取消的融合時間
+         */
+        setEmptyAnimation(trackIndex: number, mixDuration?: number): void;
+        /**
+         * 清除所有動畫
+         * @param {number} [mixDuration = 0] 融合時間
+         */
+        setEmptyAnimations(mixDuration?: number): void;
         /**
          * 取得最新一軌沒有在播放動畫的軌道索引
          * @returns {number} 索引值
          */
         private getLatestTrackIndex;
+        /** 重設spine 動畫，讓下一次update是從頭開始 */
+        private resetSpine;
         /**
          * 設定動畫跳到結束
          * @param trackIndex 第幾軌
@@ -435,3 +448,4 @@ declare namespace PixiAsset {
         private static getAnimatedParticleArt;
     }
 }
+{};
