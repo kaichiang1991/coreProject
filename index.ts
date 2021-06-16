@@ -20,7 +20,7 @@ export module modSlotGame{
          * @param stage 
          */
         public static init(stage: PIXI.Container){
-            console.log(`%c${name} 版號: ${version}`, 'color:green; background-color:cyan; font-size:16px; padding:2px;')
+            console.log(`%c${name} 版號: ${version}`, 'color:#E6A23C; background-color:#909399; font-size:16px; padding:0 5px; font-family: 600 Ariel')
             gsap.registerPlugin(PixiPlugin, MotionPathPlugin)
             // config.canUseWebp = await supportWebp()         // 判斷是否可以使用 Webp，Lib有使用到自己的資源再初始化就好
         }

@@ -9,3 +9,13 @@ declare module '*.tiff'
 declare module '*.webp'
 declare module '*.atlas'
 declare module '*.json?edit'
+
+// config 的結構
+interface IConfig{
+    name: string
+    version: string
+    size: {width: number, height: number}
+    fps: number
+    canUseWebp: boolean
+    portrait: boolean
+}

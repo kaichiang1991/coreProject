@@ -16,7 +16,6 @@ module.exports = {
             type: 'umd'
         },
         path: path.resolve(__dirname, 'dist', name),
-        filename: '[name].js',
     },
 
     module: {

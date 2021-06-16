@@ -12,6 +12,10 @@ module.exports = merge(common, {
         index: path.resolve(__dirname, 'index.ts')
     },
 
+    output: {
+        filename: '[name].min.js',
+    },
+
     module: {
         rules: [
             {

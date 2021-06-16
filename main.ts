@@ -13,6 +13,8 @@ function initPixi(){
     div.appendChild(App.view)
 }
 
+EventHandler.init()
+
 initPixi()
 // modSlotGame.LibExample.init(App.stage)
 // modSlotGame.LibExample.exampleFn1(gp, Back.easeInOut)
