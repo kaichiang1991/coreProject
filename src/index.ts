@@ -43,39 +43,12 @@ stage.addChild(versionText)
 
 export let editConfig: JSON
 
-const resizeFn: Function = ()=>{
-    const {clientWidth: width, clientHeight: height} = document.documentElement
-    const portrait: boolean = height > width
-    const {style} = App.view
-
-    let ratio: number
-    if(portrait){
-        ratio = height / 1280
-        // 自適應縮放 (先註解
-        // style.width = ratio * 720 + 'px'
-        // style.height = ratio * 1280 + 'px'
-        App.renderer.resize(720, 1280)
-
-    }else{
-        ratio = width / 1280
-        // 自適應縮放 (先註解
-        // style.width = ratio * 1280 + 'px'
-        // style.height = ratio * 720 + 'px'
-        App.renderer.resize(1280, 720)
-    }
-
-    config.portrait = portrait
-    EventHandler.dispatch(eEventName.orientationChange, config)
-}
-
-window.addEventListener('resize', ()=> resizeFn())
-resizeFn()
-
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     editConfig = await PixiAsset.JSON.getJson(editJson.toString())
 
+    Entry.init(App, config)
     AppDebug.init()
     MathTool.init()
     ParameterParse.init()

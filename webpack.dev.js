@@ -39,6 +39,7 @@ module.exports = merge(common, {
             filename: path.resolve(__dirname, 'dist/Debug/index.html'),
             template: 'template.cshtml',
             files: {
+                // js
                 js: [
                     'https://cdn.jsdelivr.net/npm/pixi.js-legacy@5.3.9/dist/pixi-legacy.min.js',
                     'https://cdn.jsdelivr.net/npm/pixi-spine@2.1.14/dist/pixi-spine.min.js',
@@ -50,9 +51,15 @@ module.exports = merge(common, {
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
                 ].concat([
-                    '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', 
+                    '/Entry', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', 
                 ].map(dir => 'Lib' + dir + '/index.js'))
-                .concat('Lib/EventName.js')
+                .concat('Lib/EventName.js'),
+            },
+            style: {
+                // css
+                css: [
+                    'Lib/Entry/index.min.css'
+                ]
             }
         }),
 

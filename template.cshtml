@@ -5,13 +5,18 @@
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<% for (var chunk in htmlWebpackPlugin.options.style.css) { %>
+	<link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.style.css[chunk] %>"><% } %>
 	<% for (var chunk in htmlWebpackPlugin.options.files.js) { %>
 	<script src="<%= htmlWebpackPlugin.options.files.js[chunk] %>"></script><% } %>
 </head>
 <body>
-  <div id="game">
-    <div id="div_pixi"></div>
-  </div>
+	<div id="game">
+		<div id="div_pixi"></div>
+	</div>
+	<iframe id="popup" src="" frameborder="0" scrolling="auto" width="0" height="0" frameborder="0"></iframe>
+	<div id="tips"></div>
+	<div id="debug"></div>
 </body> 
 </html>
 

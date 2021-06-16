@@ -27,3 +27,12 @@ type GameStateContext = StateModule.StateContext
 // gsap
 type Timeline = gsap.core.Timeline
 type gsapAnimation = gsap.core.Animation
+
+interface IConfig{
+    name: string
+    version: string
+    size: {width: number, height: number}
+    fps: number
+    canUseWebp: boolean
+    portrait: boolean
+}
