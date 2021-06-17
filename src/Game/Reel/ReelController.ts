@@ -6,6 +6,7 @@ import { editConfig } from "@root/src";
 import config from '@root/config'
 import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 import { eReelType } from "@root/globalDef";
+import Symbol from './Symbol'
 
 interface ISpinConfig{
     upDistance: number          // 上移的距離
@@ -264,18 +265,44 @@ export class SymbolController{
 
     private static reelArr: Array<Reel>
 
+    /**
+     * 初始化 SymbolController
+     * @param reelArr 滾輪的陣列
+     */
     public static init(reelArr: Array<Reel>){
         this.reelArr = reelArr
     }
 
+    /**
+     * 取得 Symbol
+     * @param {number} reelIndex 第幾輪
+     * @param {number} symbolIndex 第幾顆
+     * @returns {Symbol}
+     */
+    public static getSymbol(reelIndex: number, symbolIndex: number): Symbol{
+        return this.reelArr[reelIndex].DownSymbol[symbolIndex]
+    }
+
+    /**
+     * 播放得獎動畫
+     * @param reelIndex 第幾輪
+     * @param symbolIndex 第幾顆
+     * @param times 播放次數
+     */
     public static async playWinAnimation(reelIndex: number, symbolIndex: number, times: number = 1){
-        await this.reelArr[reelIndex].DownSymbol[symbolIndex].playWinAnimation(times)
+        await this.getSymbol(reelIndex, symbolIndex).playWinAnimation(times)
     }
 
+    /**
+     * 清除得獎動畫
+     * @param reelIndex 第幾輪
+     * @param symbolIndex 第幾顆
+     */
     public static clearWinAnimation(reelIndex: number, symbolIndex: number){
-        this.reelArr[reelIndex].DownSymbol[symbolIndex].clearWinAnimation()
+        this.getSymbol(reelIndex, symbolIndex).clearWinAnimation()
     }
 
+    /** 清除所有播放中的得獎動畫 */
     public static clearAllWinAnimation(){
         this.reelArr.map(reel => reel.DownSymbol.map(symbol => symbol.clearWinAnimation()))
     }

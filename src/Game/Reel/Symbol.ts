@@ -1,20 +1,14 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
-import { Container, Graphics, Text, TextStyle } from "pixi.js-legacy";
-import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, mapColumnIndex, mapRowIndex, noBlurSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { Container, Text, TextStyle } from "pixi.js-legacy";
+import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, mapColumnIndex, mapRowIndex, noBlurSymbolArr, upperStickSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
-
-const colorDef: {[key: number]: {'border': number, 'inner': number}} = {
-    0: {border: 0xEEEEEE, inner: 0x000033},
-    1: {border: 0xEEEEEE, inner: 0x003300},
-    2: {border: 0xEEEEEE, inner: 0x330000},
-}
 
 export default class Symbol extends Container{
 
     private text: Text
-    private sprite: Sprite
-    private animSpine: Spine
+    protected sprite: Sprite
+    protected animSpine: Spine
 
     private symbolId: eSymbolName
     public get SymbolID(): number {return this.symbolId}
@@ -98,10 +92,11 @@ export default class Symbol extends Container{
     }
 
     /** 根據狀態設定圖層 */
-    private setLayer(){
+    protected setLayer(){
         this.zIndex = 
             this.state == eSymbolState.Win? eReelContainerLayer.winAnimation:                   // 得獎演出
             this.state == eSymbolState.EndSpin? eReelContainerLayer.endSpinAnim:                // 落定演出
+            upperStickSymbolArr.includes(this.symbolId)? eReelContainerLayer.upperStickSymbol:  // 滾動中要在 stick 上面的符號 (一般來說是 FG)
             eReelContainerLayer.normalSymbol + eSymbolLayer[eSymbolName[this.symbolId]]         // 一般 / 模糊 
     }
 
@@ -184,7 +179,7 @@ export default class Symbol extends Container{
      * @param state symbol 狀態
      * @returns {string}
      */
-    private getTextureName(symbolId: eSymbolName, state: eSymbolState): string{
+    protected getTextureName(symbolId: eSymbolName, state: eSymbolState): string{
         return eSymbolName[symbolId] + ((state == eSymbolState.Blur && !noBlurSymbolArr.includes(symbolId))? '_01': '_00') + '.png'
     }
 

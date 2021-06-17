@@ -31,6 +31,8 @@ enum eSymbolLayer{
 
     FG,
     WD,
+
+    total
 }
 
 /** 定義 symbol 狀態 */
@@ -50,6 +52,8 @@ enum eSymbolConfig{
 const endSpinSymbolArr: Array<eSymbolName> = []
 // 不要模糊的 symbol
 const noBlurSymbolArr: Array<eSymbolName> = []
+// 要在 StickSymbol 上面的 symbol
+const upperStickSymbolArr: Array<eSymbolName> = [eSymbolName.FG]
 
 var reelCount: number,                              // 輪數
     reelSymbolCount: Array<number>,                 // 每一輪 symbol 的個數
@@ -113,4 +117,4 @@ switch(window['reelType']){
     break
 }
 
-export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, mapRowIndex, mapColumnIndex}
+export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, upperStickSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, mapRowIndex, mapColumnIndex}

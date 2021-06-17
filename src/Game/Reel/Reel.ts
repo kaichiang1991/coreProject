@@ -100,6 +100,9 @@ export default class Reel{
         this.listeningSpeedUpDone = this.isListeningDone = false
         this.listeningSpeed = spinConfig.spinSpeed
         this.listeningTween?.kill()
+
+        // 回復 symbol ( 主要是回復 zIndex )
+        this.symbolArr.map(symbol => symbol.setTexture(null, eSymbolState.Normal))
     }
 
     /**

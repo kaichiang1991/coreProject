@@ -1,3 +1,5 @@
+import { eSymbolLayer } from "../Game/Reel/SymbolDef";
+
 enum eAppLayer{
     sceneContainer,
     version
@@ -11,8 +13,11 @@ enum eNGLayer{
 enum eReelContainerLayer{
 
     normalSymbol,
+    stickSymbol = normalSymbol + eSymbolLayer.total,
+    upperStickSymbol,
     black = 1000,
     logo,
+
     endSpinAnim,
     winAnimation,
 

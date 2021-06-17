@@ -8,6 +8,7 @@ import ReelController from "@root/src/Game/Reel/ReelController";
 import GameParticleManager from "./GameParticleManager";
 import LineNumberManager from "@root/src/Game/Number/LineNumberManager";
 import { LineManager } from "@root/src/Game/Win/LineManager";
+import StickSymbolController from "@root/src/Game/Reel/StickSymbolController";
 
 const {AssetLoader} = PixiAsset
 
@@ -62,6 +63,7 @@ export default class GameAssetManager{
 
     private static async loadDone(){
         await ReelController.init()
+        await StickSymbolController.init()
     
         await LineManager.init()
         await LineNumberManager.init()
