@@ -44,8 +44,9 @@ class GameInit extends GameState{
             // console.log('change state', type)
         })
 
-        // 初始化滾輪
-        ReelController.reset(eReelGameType.normalGame)
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
+        ReelController.reset(eReelGameType.normalGame)          // 初始化滾輪
+
         this.change()
     }
 
@@ -67,15 +68,14 @@ class GameStart extends GameState{
     
         // 檢查餘額
         if(!this.checkCreditEnough()){
-            // 關 auto
-            // SlotUIManager.activeSpinRound(false)
+            SlotUIManager.activeSpinRound(false)            // 關 auto
             this.context.changeState(eNG_GameState.start)
             return
         }
 
         // 更新餘額
         BetModel.getInstance().startSpin()
-        EventHandler.dispatch(eEventName.creditChange)
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
         this.context.changeState(eNG_GameState.spin)
     }
@@ -107,12 +107,13 @@ class StartSpin extends GameState{
 
         ReelController.setResult(GameSlotData.NGSpinData.result)
 
+        await Sleep(1)
+        EventHandler.dispatch(eEventName.receiveServerData)
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
         if(SlotUIManager.IsAutoSpeed){
             this.stopEvent()
         }
 
-        await Sleep(1)
         window['arr'] && ReelController.setListening(...window['arr'])              // 設定一般聽牌
         window['sarr'] && ReelController.setSpecialListening(...window['sarr'])     // 設定特殊聽牌
         ReelController.stopSpin()

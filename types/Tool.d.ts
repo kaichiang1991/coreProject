@@ -1,4 +1,5 @@
 /// <reference types="pixi-spine" />
+/// <reference types="pixi-particles/ambient" />
 declare function init(): void;
 /**
  * 延遲時間 (用gsap，會有落差，但只有在畫面更新時會計時)

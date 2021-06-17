@@ -64,10 +64,30 @@ declare class SlotUIManager {
     private static showSpinRound;
     /**更新押注 */
     static updateBet(): void;
-    /**更新總分/幣 */
+    /**更新總分/幣
+     * @param betModel 押注模組
+     */
     private static updateCredit;
-    /**更新贏分 */
+    /**更新贏分
+     * @param betModel 押注模組
+     */
     private static updateWin;
+    /**
+     * 更新單號
+     * @param betModel 押注模組
+     */
+    private static updateRoundCode;
+    /**
+     * 進行跑分動畫
+     * @param betModel 押注模組
+     * @param duration 動畫時間(秒)
+     */
+    static playWinChangeAnim(betModel: BetModel, duration: number): Promise<void>;
+    /**
+     * 設定贏分框的可點擊狀態
+     * @param flag 可點擊狀態
+     */
+    private static setWinBotInteractive;
 }
 /**設置UI管理 */
 declare class SettingUIManager {

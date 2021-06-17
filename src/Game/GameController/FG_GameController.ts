@@ -84,9 +84,8 @@ class StartSpin extends GameState{
 
         ReelController.setResult(GameSlotData.FGSpinData.result)
 
-        this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
         if(SlotUIManager.IsAutoSpeed){
-            this.stopEvent()
+            ReelController.StopNowEvent()
         }
 
         await Sleep(1)

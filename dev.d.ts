@@ -28,6 +28,7 @@ type GameStateContext = StateModule.StateContext
 type Timeline = gsap.core.Timeline
 type gsapAnimation = gsap.core.Animation
 
+// config 的結構
 interface IConfig{
     name: string
     version: string

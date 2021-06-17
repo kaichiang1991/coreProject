@@ -52,7 +52,7 @@ module.exports = merge(common, {
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
                 ].concat([
                     '/Entry', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', 
-                ].map(dir => 'Lib' + dir + '/index.js'))
+                ].map(dir => 'Lib' + dir + '/index.min.js'))
                 .concat('Lib/EventName.js'),
             },
             style: {

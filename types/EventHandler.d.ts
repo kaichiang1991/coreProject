@@ -1,3 +1,4 @@
+/// <reference types="pixi-particles/ambient" />
 declare class EventHandler {
     private static instance;
     /**

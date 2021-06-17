@@ -14,6 +14,10 @@ module.exports = merge(common, {
         clean: true
     },
 
+    output: {
+        filename: '[name].min.js',
+    },
+
     module: {
         rules: [
             {

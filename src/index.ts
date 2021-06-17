@@ -1,4 +1,3 @@
-/// <reference types="pixi-spine"/>
 import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legacy'
 import gsap from 'gsap'
 window.gsap = gsap
@@ -22,7 +21,7 @@ EventHandler.init()     // 初始化事件管理
 
 const {width, height} = size
 export const App: Application = new Application({
-    width, height, backgroundColor: 0xAAAAAA, autoStart: false
+    width, height, backgroundColor: 0xAAAAAA, autoStart: false//, autoDensity: true
 })
 
 // init Pixi Application
@@ -73,3 +72,5 @@ const gameEntry: Function = async ()=>{
     NG_GameController.getInstance().init()
 }
 gameEntry()
+
+window['App'] = App

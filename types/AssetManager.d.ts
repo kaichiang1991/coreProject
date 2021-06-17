@@ -448,3 +448,4 @@ declare namespace PixiAsset {
         private static getAnimatedParticleArt;
     }
 }
+{};
