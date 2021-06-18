@@ -20,18 +20,38 @@ switch(w.reelType){
         ]
         w.FGReelData = Array(5).fill([21, 21, 31, 4, 3, 2, 1, 14, 13, 12, 11])
 
-        w.NGData = {
-            0: { result: [[14, 21, 31], [14, 21, 14], [14, 21, 31], [14, 21, 14], [14, 21, 31]], winlineArr: [
-                {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, lineNo: 1},
-                {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, lineNo: 2},
-                {SymbolID: eSymbolName.FG, WinPosition: [[0, 2], [2, 2], [4, 2]], Win: 2000, lineNo: 3},
-            ]},
-            1: { result: [[31, 1, 2], [11, 1, 2], [31, 1, 2], [11, 1, 2], [3, 4, 11]], winlineArr: [
-                {SymbolID: eSymbolName.H1, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1]], Win: 2000, lineNo: 2},
-            ]},
-            2: { result: [[1, 2, 3], [11, 1, 2], [31, 1, 2], [11, 1, 2], [3, 4, 11]], winlineArr: [
-            ]}
-        }
+        window.NGSpinDataArr = [
+            // 三條線，有FG
+            {
+                SpinInfo: {
+                    SymbolResult: [[14, 21, 31], [14, 21, 14], [14, 21, 31], [14, 21, 14], [14, 21, 31]],
+                    WinLineInfos: [
+                        {SymbolID: eSymbolName.N4, WinPosition: [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]], Win: 1000, LineNo: 1},
+                        {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1]], Win: 9999, LineNo: 2},
+                        // {SymbolID: eSymbolName.FG, WinPosition: [[0, 2], [2, 2], [4, 2]], Win: 1000, LineNo: 0},
+                    ]
+                }
+            } as IGtoCNGPlay,
+            // 正常一線得分
+            {
+                SpinInfo: {
+                    SymbolResult: [[31, 1, 2], [11, 1, 2], [31, 1, 2], [11, 1, 2], [3, 4, 11]],
+                    WinLineInfos: [
+                        {SymbolID: eSymbolName.H1, WinPosition:  [[0, 1], [1, 1], [2, 1], [3, 1]], Win: 2222, LineNo: 2},
+                    ]
+                }
+            } as IGtoCNGPlay,
+            // 沒得獎
+            {
+                SpinInfo: {
+                    SymbolResult: [[1, 2, 3], [11, 1, 2], [31, 1, 2], [11, 1, 2], [3, 4, 11]],
+                    WinLineInfos: [
+                    ]
+                }
+            } as IGtoCNGPlay,
+        ]
+
+
         w.FGData = {
             0: { result: [
                 [11, 21, 21],
@@ -68,7 +88,11 @@ switch(w.reelType){
     break
 }
 
-w.idx = 0
+window.idx = -1
 // w.sarr = [1, 2]
 // w.arr = [1]
 w.FGTimes = 5
+
+
+
+window.useServerData = false

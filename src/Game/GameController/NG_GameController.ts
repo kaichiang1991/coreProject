@@ -1,8 +1,9 @@
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
+import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData from "../GameSlotData"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
-import { ISSlotWinLineInfo, LineManager } from "../Win/LineManager"
+import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
 import FG_GameController from "./FG_GameController"
 
@@ -101,13 +102,23 @@ class StartSpin extends GameState{
     async enter(){
         const allSpin: Promise<void> = ReelController.startSpin()
 
-        // 接受server 資料 先寫假資料
-        const data = window['NGData'], index = window['idx']++ % Object.keys(data).length
-        GameSlotData.NGSpinData = data[index]
+        // 接受server 資料 
+        if(!window.useServerData){
+            await Sleep(1)
+            window.idx = ++window.idx % window.NGSpinDataArr.length
+            GameSlotData.NGSpinData = window.NGSpinDataArr[window.idx]
+        }else{
+            GameSlotData.NGSpinData = await GameDataRequest.NGSpin(BetModel.getInstance().Bet)
+        }
 
-        ReelController.setResult(GameSlotData.NGSpinData.result)
+        const {RoundCode, SpinInfo} = GameSlotData.NGSpinData
+        // 更新 細單單號
+        BetModel.getInstance().roundCode = RoundCode
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
-        await Sleep(1)
+        const {SymbolResult} = SpinInfo
+        ReelController.setResult(SymbolResult)
+
         EventHandler.dispatch(eEventName.receiveServerData)
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
         if(SlotUIManager.IsAutoSpeed){
@@ -158,7 +169,7 @@ class EndSpin extends GameState{
      * @returns {ISSlotWinLineInfo}
      */
     private getWinlineBySymbol(symbol: eSymbolName): Array<ISSlotWinLineInfo>{
-        return GameSlotData.NGSpinData.winlineArr?.filter(winline => winline.SymbolID == symbol)
+        return GameSlotData.NGSpinData.SpinInfo.WinLineInfos.filter(winline => winline.SymbolID == symbol)
     }
 
     /**

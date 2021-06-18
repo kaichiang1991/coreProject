@@ -294,7 +294,7 @@ export default class Reel{
             case eReelGameType.normalGame:
                 this.reelDatas = window['NGReelData'][this.reelIndex]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
-                    this.getCorrectDataIndex(GameSlotData.NGSpinData.result[this.reelIndex])
+                    this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.SymbolResult[this.reelIndex])
                     this.nextDataIndex()
                 }else{
                     this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1

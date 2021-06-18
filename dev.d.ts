@@ -36,4 +36,20 @@ interface IConfig{
     fps: number
     canUseWebp: boolean
     portrait: boolean
+    pingDuration: number
+}
+
+// windows 結構
+interface Window{
+    // 測試用
+    reelType: number
+    idx: number
+    NGReelData: Array<Array<number>>
+    FGReelData: Array<Array<number>>
+    FGTimes: number
+    useServerData: boolean
+    NGSpinDataArr: Array<IGtoCNGPlay>
+
+    // 正式用
+    App: PIXI.Application
 }

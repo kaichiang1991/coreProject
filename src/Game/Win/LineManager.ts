@@ -1,4 +1,3 @@
-import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import config from '@root/config'
@@ -11,12 +10,6 @@ const lineDef: {[key: number]: {y: number}} = {
     1: {y: 240},
     2: {y: 405},
     3: {y: 570}
-}
-
-export interface ISSlotWinLineInfo{        // 之後統一跟server格式
-    WinPosition: Array<Array<number>>
-    lineNo: number
-    Win: number
 }
 
 interface ILineConfig{
@@ -58,7 +51,7 @@ export class LineManager{
     public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>){      // Winline的結構要重做
         this.winlineArr = winlineArr.slice()
         
-        this.lineAnimArr = this.winlineArr.map(winline => this.playLine(winline.lineNo))
+        this.lineAnimArr = this.winlineArr.map(winline => this.playLine(winline.LineNo))
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
@@ -104,8 +97,8 @@ export class LineManager{
             this.eachLineTimeline = gsap.timeline().repeat(-1)
             .call(()=>{
                 this.clearLineEvent()
-                const {lineNo, Win, WinPosition} = this.winlineArr[index]
-                this.lineAnimArr = [this.playLine(lineNo)]                                                    // 播放線獎
+                const {LineNo, Win, WinPosition} = this.winlineArr[index]
+                this.lineAnimArr = [this.playLine(LineNo)]                                      // 播放線獎
                 LineNumberManager.playLineNumber(Win)                                           // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
                 index = ++index % this.winlineArr.length

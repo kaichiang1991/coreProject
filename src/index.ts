@@ -2,7 +2,7 @@ import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legac
 import gsap from 'gsap'
 window.gsap = gsap
 import '@root/globalDef.ts'
-
+import gameConfig from '@root/gameConfig.json'
 import config from '@root/config'
 import GameSceneManager, { eGameScene } from './System/GameSceneController'
 import { eAppLayer } from './System/LayerDef'
@@ -12,6 +12,9 @@ import AppDebug from './System/AppDebug'
 
 import editJson from '@root/editConfig.json'
 import NG_GameController from './Game/GameController/NG_GameController'
+import GameDataRequest from './System/Network/GameDataRequest'
+import { NetworkManager } from './System/Network/NetworkManager'
+import GameSlotData from './Game/GameSlotData'
 
 // 顯示專案資訊
 const {name, version, size, fps} = config
@@ -21,7 +24,7 @@ EventHandler.init()     // 初始化事件管理
 
 const {width, height} = size
 export const App: Application = new Application({
-    width, height, backgroundColor: 0xAAAAAA, autoStart: false//, autoDensity: true
+    width, height, backgroundColor: 0x000000, autoStart: false, autoDensity: true
 })
 
 // init Pixi Application
@@ -50,7 +53,7 @@ const gameEntry: Function = async ()=>{
     Entry.init(App, config)
     AppDebug.init()
     MathTool.init()
-    ParameterParse.init()
+    ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()
@@ -61,7 +64,14 @@ const gameEntry: Function = async ()=>{
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
     await Loading.init(loadingCont, config.portrait)
     const loading: Promise<void> = Loading.startLoading()
+    await NetworkManager.init()
+    // 取得設定檔的設定
+    const {DemoOn, GameID} = await PixiAsset.JSON.getJson(gameConfig.toString())
+    GameSlotData.JoinGameData = await GameDataRequest.joinGame(ParameterParse.UrlParser.token, GameID, DemoOn)
+    const {CurrencyID, GameName} = GameSlotData.JoinGameData
+    document.title = GameName           // 設定 html title
     await GameAssetManager.loadAsset()
+    // 通知 loading 結束
     Loading.finishLoading()
     await loading
     //#endregion Loading
@@ -73,4 +83,4 @@ const gameEntry: Function = async ()=>{
 }
 gameEntry()
 
-window['App'] = App
+window.App = App

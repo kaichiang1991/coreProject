@@ -5,5 +5,6 @@ module.exports = {
     size: {width: 720, height: 1280},
     fps: 60,
     canUseWebp: false,      // 預設值，進遊戲要先設定
-    portrait: true          // 預設值，進遊戲要先設定
+    portrait: true,         // 預設值，進遊戲要先設定
+    pingDuration: 10000,    // 多久送一次 ping 值 ( ms )
 }

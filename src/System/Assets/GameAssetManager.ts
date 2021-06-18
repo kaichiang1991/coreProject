@@ -9,6 +9,7 @@ import GameParticleManager from "./GameParticleManager";
 import LineNumberManager from "@root/src/Game/Number/LineNumberManager";
 import { LineManager } from "@root/src/Game/Win/LineManager";
 import StickSymbolController from "@root/src/Game/Reel/StickSymbolController";
+import GameSlotData from "@root/src/Game/GameSlotData";
 
 const {AssetLoader} = PixiAsset
 
@@ -39,7 +40,6 @@ export default class GameAssetManager{
     }
 
     public static async loadAsset(){
-        BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
 
         const {canUseWebp} = config
         // 圖片的引入
@@ -62,6 +62,13 @@ export default class GameAssetManager{
     }
 
     private static async loadDone(){
+        // 初始化 BetModel
+        const {SlotInitData: {MoneyFractionMultiple, Denom, BetUnit, BetMultiples, Line}, JoinGameData: {Balance}} = GameSlotData
+        if(window.useServerData)
+            BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, Line)
+        else    // ToDo
+            BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
+
         await ReelController.init()
         await StickSymbolController.init()
     

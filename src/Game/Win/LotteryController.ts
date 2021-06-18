@@ -14,6 +14,7 @@ const {GameStateContext, createState, GameState} = StateModule
 export default class LotteryController{
 
     public static win: number
+    public static winlineInfos: Array<ISSlotWinLineInfo>
 
     public static async init(){
         return new Promise<void>(res =>{
@@ -36,7 +37,8 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        LotteryController.win = GameSlotData.NGSpinData.winlineArr?.reduce((pre, curr) => pre + curr.Win, 0)
+        LotteryController.win = GameSlotData.NGSpinData.SpinInfo.WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
+        LotteryController.winlineInfos = GameSlotData.NGSpinData.SpinInfo.WinLineInfos.filter(winline => winline.LineNo != 0)       // ToDo 過濾沒得分的 FG，帶確認格式
         this.change()
     }
 
@@ -51,7 +53,7 @@ class LotteryAnim extends GameState{
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
-        await LineManager.playAllLineWin(GameSlotData.NGSpinData.winlineArr)
+        await LineManager.playAllLineWin(GameSlotData.NGSpinData.SpinInfo.WinLineInfos)
         await LineManager.playEachLine()
         this.change()
     }
