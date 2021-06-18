@@ -14,10 +14,6 @@ module.exports = merge(common, {
         clean: true
     },
 
-    output: {
-        filename: '[name].min.js',
-    },
-
     module: {
         rules: [
             {
@@ -42,14 +38,22 @@ module.exports = merge(common, {
                     'https://cdn.jsdelivr.net/npm/pixi.js-legacy@5.3.9/dist/pixi-legacy.min.js',
                     'https://cdn.jsdelivr.net/npm/pixi-spine@2.1.14/dist/pixi-spine.min.js',
                     'https://cdn.jsdelivr.net/npm/@pixi/sound@4.0.2/dist/pixi-sound.js',
+                    'https://cdn.jsdelivr.net/npm/pixi-particles@4.3.0/dist/pixi-particles.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/EasePack.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/PixiPlugin.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
                 ].concat([
-                    '/AssetManager', '/Debug', '/Loading', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/MathTool', '/UIManager', '/EventHandler'
-                ].map(dir => '../GameCommon/Lib' + dir + '.' + md5.sync('./Lib' + dir) + '/index.js'))      // 解析 md5 後的路徑，確保和使用的版本相同
+                    '/Entry', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/MathTool', '/UIManager', '/EventHandler'
+                ].map(dir => '../GameCommon/Lib' + dir + '.' + md5.sync('./Lib' + dir) + '/index.min.js'))      // 解析 md5 後的路徑，確保和使用的版本相同
+                .concat('../GameCommon/Lib/EventName.js')
+            },
+            style: {
+                // css
+                css: [
+                    '../GameCommon/Lib/Entry.' + md5.sync('./Lib/Entry') + '/index.min.css'
+                ]
             }
         }),
         // new ImageMinimizerPlugin({

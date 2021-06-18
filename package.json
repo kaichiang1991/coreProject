@@ -7,7 +7,7 @@
     "build:dev": "npm run fileParse && webpack --config webpack.dev.js",
     "serve": "live-server ./dist/Debug",
     "start": "concurrently 'npm:build:dev' 'npm:serve'",
-    "build": "webpack --config webpack.prod.js --progress",
+    "build": "npm run fileParse && webpack --config webpack.prod.js --progress",
     "postbuild": "node buildFileParse.js"
   },
   "keywords": [],
