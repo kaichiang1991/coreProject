@@ -82,6 +82,7 @@ interface Window{
     FGTimes: number
     useServerData: boolean
     NGSpinDataArr: Array<IGtoCNGPlay>
+    FGSpinDataArr: Array<IGtoCFGPlay>
 
     // 正式用
     App: PIXI.Application

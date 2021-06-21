@@ -92,6 +92,18 @@ interface IGtoCNGPlay extends IGtoCStructure{
 }
 //#endregion NormalGame
 
+//#region FreeGame
+interface ICtoGFGPlay extends ICtoGStructure{
+}
+
+interface IGtoCFGPlay extends IGtoCStructure{
+    SpinInfo: ISSlotSpinInfo,
+    LDOption: Array<ISSlotOptionValue>,
+    IsOver: boolean,
+    WaitNGRespin: boolean
+}
+//#endregion FreeGame
+
 //#region RoundEnd
 interface ICtoGRoundEnd extends ICtoGStructure{
 

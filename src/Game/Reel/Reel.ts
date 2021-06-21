@@ -331,7 +331,7 @@ export default class Reel{
         const resultStr: string = JSON.stringify(result).slice(1, -1)
         const index: number = flatArrStr.indexOf(resultStr)
         if(index < 0){
-            Debug.error('getCorrectDateIndex', '不在滾輪表內')
+            Debug.error(this.reelIndex, 'getCorrectDateIndex', '不在滾輪表內')
             return
         }
         this.dataIndex = flatArrStr.slice(0, index - 1).split(',').length + result.length + spinConfig.extraSymbolCount

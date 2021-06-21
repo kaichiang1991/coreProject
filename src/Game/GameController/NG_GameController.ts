@@ -151,7 +151,7 @@ class EndSpin extends GameState{
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
         if(isFreeGame){
-            await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
+            await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.WD)[0])
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)
@@ -180,7 +180,10 @@ class EndSpin extends GameState{
      */
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})        // 壓黑
+
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
+        .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
+
         await Promise.all(allPromise)
         SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})

@@ -35,8 +35,9 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        LotteryController.win = GameSlotData.NGSpinData.SpinInfo.WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
-        LotteryController.winlineInfos = GameSlotData.NGSpinData.SpinInfo.WinLineInfos.filter(winline => winline.LineNo != 0)       // ToDo 過濾沒得分的 FG，帶確認格式
+        const {WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
+        LotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
+        LotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)       // ToDo 過濾沒得分的 FG，帶確認格式
         this.change()
     }
 

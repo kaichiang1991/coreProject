@@ -1,7 +1,8 @@
 import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
+import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import { Container, Graphics, Text } from "pixi.js-legacy"
-import GameSlotData from "../GameSlotData"
+import GameSlotData, { eWinType } from "../GameSlotData"
 import ReelController, { eReelGameType } from "../Reel/ReelController"
 import FGLotteryController from "../Win/FGLotteryController"
 import { LineManager } from "../Win/LineManager"
@@ -81,14 +82,22 @@ class StartSpin extends GameState{
 
         // 接受server 資料 先寫假資料
         GameSlotData.FGSpinData = window['FGData'][0]
+        // 接受server 資料 
+        if(!window.useServerData){
+            await Sleep(1)
+            window.idx = ++window.idx % window.FGSpinDataArr.length
+            GameSlotData.FGSpinData = window.FGSpinDataArr[window.idx]
+        }else{
+            GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
+        }
 
-        ReelController.setResult(GameSlotData.FGSpinData.result)
+        const {SymbolResult} = GameSlotData.FGSpinData.SpinInfo
+        ReelController.setResult(SymbolResult)
 
         if(SlotUIManager.IsAutoSpeed){
             ReelController.StopNowEvent()
         }
 
-        await Sleep(1)
         ReelController.stopSpin()
 
         await allSpin
@@ -108,7 +117,12 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        await FGLotteryController.init()
+        const {WinType} = GameSlotData.FGSpinData.SpinInfo
+        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
+        const isWin: boolean = (WinType & eWinType.normal) != 0
+
+        // ToDo 演加場次
+        isWin && await FGLotteryController.init()
         this.change()
     }
 

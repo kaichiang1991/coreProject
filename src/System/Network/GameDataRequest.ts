@@ -73,6 +73,20 @@ export default class GameDataRequest{
     }
 
     /**
+     * 傳送 FG 請求
+     * @param BetMultiple 壓住乘數
+     * @returns {IGtoCNGPlay}
+     */
+    public static async FGSpin(){
+        const data: ICtoGFGPlay = {
+            Code: eCommand.CtoGSlotFGPlay
+        }
+
+        const receiveData: IGtoCFGPlay = await this.requestData(data) as IGtoCFGPlay
+        return receiveData
+    }
+
+    /**
      * 傳送 roundEnd 請求
      * @returns {IGtoCRoundEnd}
      */

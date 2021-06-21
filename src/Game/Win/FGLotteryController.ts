@@ -12,6 +12,7 @@ const {GameStateContext, createState, GameState} = StateModule
 export default class FGLotteryController{
 
     public static win: number
+    public static winlineInfos: Array<ISSlotWinLineInfo>
 
     public static async init(){
         return new Promise<void>(res =>{
@@ -34,7 +35,9 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        FGLotteryController.win = GameSlotData.FGSpinData.winlineArr?.reduce((pre, curr) => pre + curr.Win, 0)
+        const {WinLineInfos} = GameSlotData.FGSpinData.SpinInfo
+        FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
+        FGLotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)
         this.change()
     }
 
@@ -49,7 +52,8 @@ class LotteryAnim extends GameState{
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
-        await LineManager.playAllLineWin(GameSlotData.FGSpinData.winlineArr)
+        BetModel.getInstance().addWin(FGLotteryController.win)
+        await LineManager.playAllLineWin(FGLotteryController.winlineInfos)
         await LineManager.playEachLine()
         this.change()
     }
