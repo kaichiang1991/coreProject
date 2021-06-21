@@ -1,20 +1,15 @@
-import { Container, Graphics, Point } from "pixi.js-legacy";
+import { Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import config from '@root/config'
 import { editConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
 import {plus} from 'number-precision'
-import { eReelContainerLayer } from "@root/src/System/LayerDef";
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager";
 
 const lineDef: {[key: number]: {y: number}} = {
     1: {y: 240},
     2: {y: 405},
     3: {y: 570}
-}
-
-interface ILineConfig{
-    leastAllLineDuration: number    // 全縣演出最短時間
-    eachLineLight: number           // 逐縣時每條線亮的時間
 }
 
 /** 管理線獎演出 */
@@ -32,7 +27,7 @@ export class LineManager{
     private static resizeFn: Function
 
     public static init(){
-        this.lineConfig = editConfig['line']
+        this.lineConfig = editConfig.line
 
         this.resizeFn = ()=>{
             // Line 的動畫改變
@@ -51,7 +46,7 @@ export class LineManager{
     public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>){      // Winline的結構要重做
         this.winlineArr = winlineArr.slice()
         
-        this.lineAnimArr = this.winlineArr.map(winline => this.playLine(winline.LineNo))
+        this.winlineArr.map(winline => this.playLine(winline.LineNo))
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
@@ -98,7 +93,7 @@ export class LineManager{
             .call(()=>{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
-                this.lineAnimArr = [this.playLine(LineNo)]                                      // 播放線獎
+                this.playLine(LineNo)                                                           // 播放線獎
                 LineNumberManager.playLineNumber(Win)                                           // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
                 index = ++index % this.winlineArr.length
@@ -121,17 +116,12 @@ export class LineManager{
 
     /** 清除所有得獎動畫 */
     private static clearLineEvent(){
-        if(this.lineAnimArr?.length){        // 清除所有線，之後應該會改spine的做法
-            this.lineAnimArr.map(line => line.destroy())
-            this.lineAnimArr.length = 0
-        }
+        GameSpineManager.clearLine()
         SymbolController.clearAllWinAnimation()         // 清除動畫
         LineNumberManager.clearLineNumber()             // 清除分數
     }
 
     private static playLine(lineNo: number){
-        const line: Graphics = ReelController.ReelContainer.addChild(new Graphics().lineStyle(5, 0xFF0000).moveTo(-100, lineDef[lineNo].y).lineTo(800, lineDef[lineNo].y))
-        line.zIndex = eReelContainerLayer.line
-        return line
+        GameSpineManager.playLine(ReelController.ReelContainer, lineNo)
     }
 }

@@ -8,19 +8,6 @@ import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 import { eReelType } from "@root/globalDef";
 import Symbol from './Symbol'
 
-interface ISpinConfig{
-    upDistance: number          // 上移的距離
-    upDuration: number          // 上移的時間
-    spinSpeed: number           // 一般的滾動速度
-    forceStopSpeed: number      // 急停的滾動速度
-    listeningSpeed: number      // 聽牌的滾動速度  (最終的速度，漸慢)
-    listeningDelay: number      // 聽牌的延遲時間  (s)
-    bounceDistance: number      // 回彈的距離
-    bounceBackDuration: number  // 回拉的時間
-    eachReelStop: number        // 每輪的間隔
-    extraSymbolCount: number    // 結尾要接回去的滾輪表個數
-}
-
 export enum eReelGameType{
     normalGame,
     freeGame
@@ -50,7 +37,7 @@ export default class ReelController{
 
     /** 初始化滾輪控制 */
     public static async init(){
-        spinConfig = editConfig['spin']        // 讀取滾輪參數的 json 檔
+        spinConfig = editConfig.spin        // 讀取滾輪參數的 json 檔
 
         this.initReelContainer()
         this.initMask()

@@ -71,4 +71,17 @@ export default class GameDataRequest{
         const receiveData: IGtoCNGPlay = await this.requestData(data) as IGtoCNGPlay
         return receiveData
     }
+
+    /**
+     * 傳送 roundEnd 請求
+     * @returns {IGtoCRoundEnd}
+     */
+    public static async roundEnd(){
+        const data: ICtoGRoundEnd = {
+            Code: eCommand.CtoGSlotRoundEnd
+        }
+        
+        const receiveData: IGtoCRoundEnd = await this.requestData(data) as IGtoCRoundEnd
+        return receiveData
+    }
 }

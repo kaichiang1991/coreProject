@@ -1,4 +1,4 @@
-import { App } from "../..";
+import { App, gameConfig } from "../..";
 import lazyLoad from "../../Tool/lazyLoad";
 import config from '@root/config'
 import GameAudioManager from "./GameAudioManager";
@@ -65,14 +65,18 @@ export default class GameAssetManager{
         // 初始化 BetModel
         const {SlotInitData: {MoneyFractionMultiple, Denom, BetUnit, BetMultiples, Line}, JoinGameData: {Balance}} = GameSlotData
         if(window.useServerData)
-            BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, Line)
+            BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame? Line: undefined)
         else    // ToDo
             BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
+
+        MathTool.init(BetModel)
 
         await ReelController.init()
         await StickSymbolController.init()
     
         await LineManager.init()
         await LineNumberManager.init()
+
+        GameSpineManager.initLine()
     }
 }

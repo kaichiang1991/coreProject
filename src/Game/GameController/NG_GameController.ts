@@ -1,6 +1,6 @@
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
-import GameSlotData from "../GameSlotData"
+import GameSlotData, { eWinType } from "../GameSlotData"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
 import { LineManager } from "../Win/LineManager"
@@ -146,16 +146,19 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const isFreeGame: boolean = this.getWinlineBySymbol(eSymbolName.FG).length != 0        // 之後判斷server資料
+        const {WinType, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
+        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
+        const isWin: boolean = (WinType & eWinType.normal) != 0
 
         if(isFreeGame){
-            await this.playSpecialSymbol(this.getWinlineBySymbol(eSymbolName.FG)[0])
+            await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)
             ReelController.reset(eReelGameType.normalGame)
         }
-        await LotteryController.init()
+
+        isWin && await LotteryController.init()
         this.change()
     }
 
@@ -168,8 +171,8 @@ class EndSpin extends GameState{
      * @param symbol 要包含的symbol
      * @returns {ISSlotWinLineInfo}
      */
-    private getWinlineBySymbol(symbol: eSymbolName): Array<ISSlotWinLineInfo>{
-        return GameSlotData.NGSpinData.SpinInfo.WinLineInfos.filter(winline => winline.SymbolID == symbol)
+    private getWinlineBySymbol(winlineInfos: Array<ISSlotWinLineInfo>, symbol: eSymbolName): Array<ISSlotWinLineInfo>{
+        return winlineInfos.filter(winline => winline.SymbolID == symbol)
     }
 
     /**
@@ -177,19 +180,24 @@ class EndSpin extends GameState{
      */
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})        // 壓黑
-        // 播放 symbol 得獎
-        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
         await Promise.all(allPromise)
-        // 清除 symbol 得獎
-        SymbolController.clearAllWinAnimation()
+        SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
     }
 }
 
 class RoundEnd extends GameState{
 
-    enter(){
+    async enter(){
        // 跟 server 要資料
+       const roundEnd: IGtoCRoundEnd = await GameDataRequest.roundEnd()
+        // ToDo  測試分數有沒有一致
+        if(BetModel.getInstance().credit + BetModel.getInstance().Win != roundEnd.Balance){
+            Debug.log('round end 分數不同', 
+            `Balance: ${roundEnd.Balance}, 目前餘額: ${BetModel.getInstance().credit}, 目前贏分: ${BetModel.getInstance().Win}`)
+        }
+
        this.change() 
     }
 

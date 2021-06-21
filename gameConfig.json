@@ -1,4 +1,5 @@
 {
-    "DemoOn": false,
-    "GameID": 10
+    "GameID": 10,
+    "DemoOn": true,
+    "LineGame": true
 }

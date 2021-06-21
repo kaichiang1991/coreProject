@@ -3,7 +3,6 @@
 declare class UIManager {
     static stage: PIXI.Container;
     private static blackMask;
-    static useMoney: boolean;
     static externalConfig: any;
     /**
      * 初始化
@@ -25,6 +24,8 @@ declare class UIManager {
      * @param fn 要註銷的功能
      */
     static logoutBlackMaskEvent(fn: Function): void;
+    /**清除所有的UI */
+    static clearAll(): void;
 }
 /**老虎機介面管理 */
 declare class SlotUIManager {
@@ -88,6 +89,8 @@ declare class SlotUIManager {
      * @param flag 可點擊狀態
      */
     private static setWinBotInteractive;
+    /**清除所有物件 */
+    static clearAll(): void;
 }
 /**設置UI管理 */
 declare class SettingUIManager {
@@ -111,6 +114,8 @@ declare class SettingUIManager {
     static reset(portrait: boolean): void;
     /**註冊事件 */
     private static registerEvent;
+    /**清除所有物件 */
+    static clearAll(): void;
 }
 /**押注列表管理器 */
 declare class BetListUIManager {
@@ -137,6 +142,8 @@ declare class BetListUIManager {
     private static setBetListOptionChosen;
     /**註冊事件 */
     private static registerEvent;
+    /**清除所有物件 */
+    static clearAll(): void;
 }
 /**自動旋轉列表管理器 */
 declare class AutoSpinListUIManager {
@@ -162,4 +169,6 @@ declare class AutoSpinListUIManager {
     private static setAutoSpinListOptionChosen;
     /**註冊事件 */
     private static registerEvent;
+    /**清除所有物件 */
+    static clearAll(): void;
 }

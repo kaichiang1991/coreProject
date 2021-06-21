@@ -45,6 +45,9 @@ export class NetworkManager{
     public static async sendMsg(data: ICtoGStructure){
         return new Promise<IGtoCStructure>(res =>{
 
+            if(this.websocket.readyState != WebSocket.OPEN)
+                return
+
             // 將回傳後的名稱存入 callback 陣列
             const {Code} = data
             this.callbackArr[eCommand[Code].replace('CtoG', 'GtoC')] = res
@@ -58,6 +61,8 @@ export class NetworkManager{
 
     /** 關閉 websocket */
     public static closeWebsocket(){
+        if(this.websocket.readyState != WebSocket.OPEN)
+            return
         this.websocket?.close()
     }
 
@@ -97,7 +102,7 @@ export class NetworkManager{
     private static onMsg(e: MessageEvent){
         const data = JSON.parse(e.data)
         if(!ignoreShowLog.includes(data.Code))
-            Debug.log('Network onMsg', eCommand[data.Code], data.Code, data.Result)
+            Debug.log('Network onMsg', eCommand[data.Code], data)
 
         switch(data.Code){
             //#region JoinGame

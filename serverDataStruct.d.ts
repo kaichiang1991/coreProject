@@ -90,4 +90,14 @@ interface IGtoCNGPlay extends IGtoCStructure{
     LDOption: Array<ISSlotOptionValue>
     WaitNGRespin: boolean
 }
-//#endregion
+//#endregion NormalGame
+
+//#region RoundEnd
+interface ICtoGRoundEnd extends ICtoGStructure{
+
+}
+
+interface IGtoCRoundEnd extends IGtoCStructure{
+    Balance: number
+}
+//#endregion RoundEnd

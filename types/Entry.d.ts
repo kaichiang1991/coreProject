@@ -1,6 +1,8 @@
 declare class Entry {
     private static app;
     private static game;
+    private static divPixi;
+    private static ratioApply;
     private static config;
     private static width;
     private static height;
@@ -14,12 +16,6 @@ declare class Entry {
     static init(app: PIXI.Application, config: IConfig): void;
     /** 屏幕旋轉 */
     private static rotateChange;
-    /** PC */
-    private static PC;
-    /** mobile - 垂直 */
-    private static portrait;
-    /** mobile - 水平 */
-    private static landscape;
     /** 行動裝置設定 */
     private static fullscreenEvent;
     /** Android */
@@ -42,6 +38,14 @@ declare class Entry {
      * @param url 要離開的url
      */
     private static exitHandler;
-    /** windowHandler */
+    /**
+     * 彈窗開關事件
+     * @param show 彈窗開(true)/關(false)
+     * @param info 需要傳遞的資料
+     */
     private static windowHandler;
+    /** Google Analytics */
+    private static analytics;
+    /** debug */
+    private static debugInfo;
 }

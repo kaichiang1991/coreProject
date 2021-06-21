@@ -131,6 +131,7 @@ export default class Symbol extends Container{
 
     /** 清除得獎動畫 */
     public clearWinAnimation(){
+        this.state = eSymbolState.Normal
         this.animSpine.setEmptyAnimations()
         this.animSpine.parent?.removeChild(this.animSpine)
         this.sprite.visible = true      // 顯示底下的 symbol

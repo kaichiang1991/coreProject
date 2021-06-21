@@ -1,8 +1,8 @@
-import { Application, Container, Graphics, Text, TextStyle } from 'pixi.js-legacy'
+import { Application, Container, Text, TextStyle } from 'pixi.js-legacy'
 import gsap from 'gsap'
 window.gsap = gsap
 import '@root/globalDef.ts'
-import gameConfig from '@root/gameConfig.json'
+import gameConfigUrl from '@root/gameConfig.json'
 import config from '@root/config'
 import GameSceneManager, { eGameScene } from './System/GameSceneController'
 import { eAppLayer } from './System/LayerDef'
@@ -24,7 +24,7 @@ EventHandler.init()     // 初始化事件管理
 
 const {width, height} = size
 export const App: Application = new Application({
-    width, height, backgroundColor: 0x000000, autoStart: false, autoDensity: true
+    width, height, backgroundColor: 0x000000, autoStart: false//, autoDensity: true
 })
 
 // init Pixi Application
@@ -43,17 +43,18 @@ versionText.zIndex = eAppLayer.version
 versionText.anchor.set(-.2, -.1)
 stage.addChild(versionText)
 
-export let editConfig: JSON
+export let editConfig: IEditConfig, gameConfig: IGameConfig
 
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
     editConfig = await PixiAsset.JSON.getJson(editJson.toString())
+    gameConfig = await PixiAsset.JSON.getJson(gameConfigUrl.toString())
 
     Entry.init(App, config)
     AppDebug.init()
-    MathTool.init()
     ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
+    // ParameterParse.init('ws://192.168.1.116:12201')     // 先連demo站的
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()
@@ -66,7 +67,7 @@ const gameEntry: Function = async ()=>{
     const loading: Promise<void> = Loading.startLoading()
     await NetworkManager.init()
     // 取得設定檔的設定
-    const {DemoOn, GameID} = await PixiAsset.JSON.getJson(gameConfig.toString())
+    const {DemoOn, GameID} = gameConfig
     GameSlotData.JoinGameData = await GameDataRequest.joinGame(ParameterParse.UrlParser.token, GameID, DemoOn)
     const {CurrencyID, GameName} = GameSlotData.JoinGameData
     document.title = GameName           // 設定 html title
