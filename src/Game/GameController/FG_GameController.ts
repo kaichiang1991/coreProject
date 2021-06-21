@@ -3,7 +3,7 @@ import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneControll
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import { Container, Graphics, Text } from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
-import ReelController, { eReelGameType } from "../Reel/ReelController"
+import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import FGLotteryController from "../Win/FGLotteryController"
 import { LineManager } from "../Win/LineManager"
 
@@ -91,8 +91,8 @@ class StartSpin extends GameState{
             GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
         }
 
-        const {SymbolResult} = GameSlotData.FGSpinData.SpinInfo
-        ReelController.setResult(SymbolResult)
+        const {ScreenOutput, ScreenOrg, SymbolResult} = GameSlotData.FGSpinData.SpinInfo
+        ReelController.setResult(ScreenOrg)
 
         if(SlotUIManager.IsAutoSpeed){
             ReelController.StopNowEvent()

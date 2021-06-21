@@ -1,12 +1,14 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
-import { Container, Graphics } from "pixi.js-legacy";
+import { Container, Graphics, Point } from "pixi.js-legacy";
 import Reel, { eListeningState } from "./Reel";
-import { reelCount, defaultStopOrder, reelContPivot } from "./SymbolDef";
+import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState } from "./SymbolDef";
 import { editConfig } from "@root/src";
 import config from '@root/config'
 import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 import { eReelType } from "@root/globalDef";
 import Symbol from './Symbol'
+import StickSymbolController from "./StickSymbolController";
+import StickSymbol from "./StickSymbol";
 
 export enum eReelGameType{
     normalGame,
@@ -270,14 +272,21 @@ export class SymbolController{
         return this.reelArr[reelIndex].DownSymbol[symbolIndex]
     }
 
+    //#region 得獎
     /**
      * 播放得獎動畫
      * @param reelIndex 第幾輪
      * @param symbolIndex 第幾顆
-     * @param times 播放次數
+     * @param {number} [times = 1] 播放次數
+     * @param {boolean} [playOrigin = false]    是否強制播放stick底下原來的symbol
      */
-    public static async playWinAnimation(reelIndex: number, symbolIndex: number, times: number = 1){
-        await this.getSymbol(reelIndex, symbolIndex).playWinAnimation(times)
+    public static async playWinAnimation(reelIndex: number, symbolIndex: number, times: number = 1, playOrigin: boolean = false){
+        const stick: StickSymbol = StickSymbolController.getUsedStick(StickSymbol.calcID(reelIndex, symbolIndex))
+        if(!playOrigin && stick){
+            await stick.playWinAnimation(times)
+        }else{
+            await this.getSymbol(reelIndex, symbolIndex).playWinAnimation(times)
+        }
     }
 
     /**
@@ -286,11 +295,28 @@ export class SymbolController{
      * @param symbolIndex 第幾顆
      */
     public static clearWinAnimation(reelIndex: number, symbolIndex: number){
-        this.getSymbol(reelIndex, symbolIndex).clearWinAnimation()
+        const stick: StickSymbol = StickSymbolController.getUsedStick(StickSymbol.calcID(reelIndex, symbolIndex))
+        if(stick?.State == eSymbolState.Win){
+            stick.clearWinAnimation()
+        }else{
+            this.getSymbol(reelIndex, symbolIndex).clearWinAnimation()
+        }
     }
 
     /** 清除所有播放中的得獎動畫 */
     public static clearAllWinAnimation(){
-        this.reelArr.map(reel => reel.DownSymbol.map(symbol => symbol.clearWinAnimation()))
+        this.reelArr.map((reel, reelIndex) => reel.DownSymbol.map((_, colIndex) => this.clearWinAnimation(reelIndex, colIndex)))
     }
+    //#endregion 得獎
+
+    //#region Stick
+    public static async playFeatureStick(screenOutput: Array<Array<number>>){
+        // 解析 output 中要變牌的位置座標
+        const posArr: Array<Point> = screenOutput.map((reel, reelIndex) => reel.map((result, colIndex) => result == eSymbolName.WD? [reelIndex, colIndex].toString(): null)).reduce((pre, curr) => [...pre, ...curr.filter(str => str)] , [])
+        .map(str => {const [x, y] = str.split(','); return new Point(+x, +y)})
+
+        await Sleep(.7)
+        await Promise.all(posArr.map(pos => StickSymbolController.playStick(pos.x, pos.y, eSymbolName.WD)))
+    }
+    //#endregion Stick
 }

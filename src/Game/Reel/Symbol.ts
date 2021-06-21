@@ -10,9 +10,10 @@ export default class Symbol extends Container{
     protected sprite: Sprite
     protected animSpine: Spine
 
-    private symbolId: eSymbolName
+    protected symbolId: eSymbolName
     public get SymbolID(): number {return this.symbolId}
-    private state: eSymbolState         // 紀錄目前 symbol 的狀態
+    protected state: eSymbolState         // 紀錄目前 symbol 的狀態
+    public get State(): eSymbolState {return this.state}
 
     private useMask: Container          // 使用的遮罩
 
@@ -190,7 +191,7 @@ export default class Symbol extends Container{
      * @param {eSymbolState} [state = eSymbolState.Win] 狀態
      * @returns {string}
      */
-    private getAnimName(symbolId: eSymbolName, state: eSymbolState): string{
+    protected getAnimName(symbolId: eSymbolName, state: eSymbolState): string{
         return eSymbolName[symbolId] + '_' + eSymbolState[state]
     }
     //#endregion

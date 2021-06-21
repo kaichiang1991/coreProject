@@ -116,8 +116,8 @@ class StartSpin extends GameState{
         BetModel.getInstance().roundCode = RoundCode
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
-        const {SymbolResult} = SpinInfo
-        ReelController.setResult(SymbolResult)
+        const {ScreenOrg, ScreenOutput, SymbolResult} = SpinInfo
+        ReelController.setResult(ScreenOrg)
 
         EventHandler.dispatch(eEventName.receiveServerData)
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())

@@ -57,9 +57,33 @@ export default class StickSymbol extends Symbol{
         return this
     }
 
+    /**
+     * 播放得獎動畫
+     * @param times 次數 
+     */
+    public async playWinAnimation(times: number){
+        return new Promise<void>(res =>{
+
+            this.state = eSymbolState.Win
+            this.setLayer()
+            this.sprite.visible = false         // 隱藏底下的 symbol 單圖
+            // this.activeMask(false)
+            this.addChild(this.animSpine)
+            const track = this.animSpine.setAnimation(this.getAnimName(this.symbolId, this.state), true)
+            let count: number = 0
+            track.listener = { ...track.listener, 
+                complete: ()=>{
+                    if(++count == times){
+                        res()
+                    }
+                }
+            }
+        })
+    }
+
     /** 根據狀態設定圖層 */
     protected setLayer(){
-        this.zIndex = eReelContainerLayer.stickSymbol
+        this.zIndex = this.state == eSymbolState.Win? eReelContainerLayer.winAnimation: eReelContainerLayer.stickSymbol
     }
 
     /** 重設stickSymbol */
