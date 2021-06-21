@@ -20,10 +20,10 @@ export default class LineNumberManager{
     public static async playLineNumberAnim(value: number){
         ReelController.ReelContainer.addChild(this.lineNumber)
         const duration: number = 1 // 跑分時間
-        this.lineNumber.text = '0'
+        const config: {value: number} = {value: 0}
         await waitTweenComplete(
-            gsap.to(this.lineNumber, {duration, text: value + '', onUpdate: ()=>{
-                this.lineNumber.text = (+this.lineNumber.text).toFixed(2)       // 更新數字
+            gsap.to(config, {duration, value, onUpdate: ()=>{
+                this.lineNumber.text = MathTool.convertNumDisplay(config.value)       // 更新數字
             }})
         )
     }
@@ -34,7 +34,7 @@ export default class LineNumberManager{
      */
     public static playLineNumber(value: number){
         ReelController.ReelContainer.addChild(this.lineNumber)
-        this.lineNumber.text = value + ''
+        this.lineNumber.text = MathTool.convertNumDisplay(value)
     }
 
     /** 清除線獎數字 */

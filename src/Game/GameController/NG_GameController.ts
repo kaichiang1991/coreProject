@@ -190,15 +190,17 @@ class EndSpin extends GameState{
 class RoundEnd extends GameState{
 
     async enter(){
-       // 跟 server 要資料
-       const roundEnd: IGtoCRoundEnd = await GameDataRequest.roundEnd()
+        // 跟 server 要資料
+        const roundEnd: IGtoCRoundEnd = await GameDataRequest.roundEnd()
         // ToDo  測試分數有沒有一致
         if(BetModel.getInstance().credit + BetModel.getInstance().Win != roundEnd.Balance){
             Debug.log('round end 分數不同', 
             `Balance: ${roundEnd.Balance}, 目前餘額: ${BetModel.getInstance().credit}, 目前贏分: ${BetModel.getInstance().Win}`)
         }
+        BetModel.getInstance().Win = 0
+        BetModel.getInstance().credit = roundEnd.Balance
 
-       this.change() 
+        this.change() 
     }
 
     change(){

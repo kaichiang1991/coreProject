@@ -51,7 +51,8 @@ export class LineManager{
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),     // 最少演出時間
-            LineNumberManager.playLineNumberAnim(win)        // 跑分
+            LineNumberManager.playLineNumberAnim(win),       // 線獎跑分
+            SlotUIManager.playWinChangeAnim(BetModel.getInstance(), 1)      // UI 跑分
         )        
         // 註冊旋轉事件
 

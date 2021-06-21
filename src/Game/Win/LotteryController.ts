@@ -1,5 +1,3 @@
-import GameSceneManager from "@root/src/System/GameSceneController"
-import { Container, Graphics } from "pixi.js-legacy"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -53,7 +51,8 @@ class LotteryAnim extends GameState{
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
-        await LineManager.playAllLineWin(GameSlotData.NGSpinData.SpinInfo.WinLineInfos)
+        BetModel.getInstance().addWin(LotteryController.win)
+        await LineManager.playAllLineWin(LotteryController.winlineInfos)
         await LineManager.playEachLine()
         this.change()
     }
