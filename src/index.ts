@@ -60,6 +60,7 @@ const gameEntry: Function = async ()=>{
     GameAssetManager.init()
     GameSceneManager.init()
     StateModule.init()
+    await SystemErrorManager.init(stage, config)
     
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)

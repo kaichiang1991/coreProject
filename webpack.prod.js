@@ -45,7 +45,7 @@ module.exports = merge(common, {
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
                 ].concat([
-                    '/Entry', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/MathTool', '/UIManager', '/EventHandler'
+                    '/Entry', '/SystemErrorManager', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/MathTool', '/UIManager', '/EventHandler'
                 ].map(dir => '../GameCommon/Lib' + dir + '.' + md5.sync('./Lib' + dir) + '/index.min.js'))      // 解析 md5 後的路徑，確保和使用的版本相同
                 .concat('../GameCommon/Lib/EventName.js')
             },

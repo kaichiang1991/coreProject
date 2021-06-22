@@ -85,7 +85,7 @@ export default class ReelController{
     /** 初始化滾輪的遮罩 */
     private static initMask(){
         // ToDo 之後會直接拿滾輪底圖做遮罩大小
-        switch(window['reelType']){
+        switch(window.reelType){
             case eReelType._3x5_reel:
                 this.mask = this.reelContainer.addChild(new Graphics()
                     .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()

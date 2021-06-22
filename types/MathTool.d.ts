@@ -13,7 +13,7 @@ declare class MathTool {
      */
     static init(betModel: any): void;
     /**
-     * 將帶入的數值轉換成帶有逗點的字串並回傳
+     * 將帶入的數值轉換成帶有逗點的整數字串並回傳
      * @param value 數值
      */
     static numberWithCommas(value: number): string;

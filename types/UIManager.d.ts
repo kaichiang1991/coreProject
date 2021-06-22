@@ -3,12 +3,12 @@
 declare class UIManager {
     static stage: PIXI.Container;
     private static blackMask;
-    static externalConfig: any;
+    static externalConfig: IConfig;
     /**
      * 初始化
      * @param stage 場景
      */
-    static init(stage: PIXI.Container, externalConfig: any): Promise<void>;
+    static init(stage: PIXI.Container, externalConfig: IConfig): Promise<void>;
     /**
      * 開關黑色遮罩
      * @param flag 開關狀態
@@ -84,11 +84,6 @@ declare class SlotUIManager {
      * @param duration 動畫時間(秒)
      */
     static playWinChangeAnim(betModel: BetModel, duration: number): Promise<void>;
-    /**
-     * 設定贏分框的可點擊狀態
-     * @param flag 可點擊狀態
-     */
-    private static setWinBotInteractive;
     /**清除所有物件 */
     static clearAll(): void;
 }

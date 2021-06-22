@@ -292,9 +292,9 @@ export default class Reel{
         // ToDo 讀json滾輪表
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = window['NGReelData'][this.reelIndex]
+                this.reelDatas = window.NGReelData[this.reelIndex]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
-                    this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.SymbolResult[this.reelIndex])
+                    this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.ScreenOrg[this.reelIndex])
                     this.nextDataIndex()
                 }else{
                     this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
@@ -303,7 +303,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = window['FGReelData'][this.reelIndex]
+                this.reelDatas = window.FGReelData[this.reelIndex]
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }

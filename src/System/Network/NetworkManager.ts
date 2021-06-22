@@ -92,7 +92,7 @@ export class NetworkManager{
         Debug.error('Network onClose', e)
         const msg: string = LocalizationManager.systemText('ConnectClose')
         Debug.warn(msg, new Date().toLocaleString())
-        // ToDo 顯示錯誤訊息
+        SystemErrorManager.showError(msg)        // 顯示錯誤訊息
     }
 
     /**
@@ -111,8 +111,7 @@ export class NetworkManager{
                     case eJoinGameError.Success:    break
                     case eJoinGameError.Failed:
                     case eJoinGameError.MismatchGameCode:
-                        // ToDo 顯示系統錯誤訊息
-                        const msg: string = LocalizationManager.systemText('TokenInvalid')
+                        SystemErrorManager.showError(LocalizationManager.systemText('TokenInvalid'))                        // 顯示系統錯誤訊息
                         break
                     case eJoinGameError.NotReady:
                     case eJoinGameError.GameDisabled:
@@ -143,8 +142,7 @@ export class NetworkManager{
                         this.closeWebsocket()
                         break
                     case eGameError.IdleForceClose:
-                        // ToDo 錯誤訊息
-                        console.log(LocalizationManager.systemText('IdleForceClose'))
+                        SystemErrorManager.showError(LocalizationManager.systemText('IdleForceClose'))                        // 錯誤訊息
                         break
                 }
             break
