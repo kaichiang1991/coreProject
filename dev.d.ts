@@ -72,6 +72,11 @@ interface IGameConfig{
     LineGame: boolean
 }
 
+// 定義內容 結構
+interface IDefConfig{
+    pos?: PIXI.Point
+}
+
 // windows 結構
 interface Window{
     // 測試用
@@ -86,4 +91,8 @@ interface Window{
 
     // 正式用
     App: PIXI.Application
+    FG_NumberDef: {[key: string]: {
+        [key: number]: IDefConfig
+    }}
+    LineNumberDef: {[key: number]: IDefConfig}
 }

@@ -97,7 +97,7 @@ class GameStart extends GameState{
 
 class StartSpin extends GameState{
 
-    private stopEvent: Function
+    private stopEvent: IEventCallback
 
     async enter(){
         const allSpin: Promise<void> = ReelController.startSpin()
@@ -138,7 +138,7 @@ class StartSpin extends GameState{
     }
 
     exit(){
-        EventHandler.getListeners(eEventName.startSpin).length && EventHandler.off(eEventName.startSpin, this.stopEvent)
+        EventHandler.off(eEventName.startSpin, this.stopEvent)
     }
 }
 

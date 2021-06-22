@@ -8,6 +8,8 @@ w.reelType = eReelType._3x5_single
 w.reelType = eReelType._3x5_reel
 
 import {eSymbolName} from "./src/Game/Reel/SymbolDef"
+import { eFGNumber } from "./src/Game/Number/FreeGameNumberManager"
+import { eLineNumber } from "./src/Game/Number/LineNumberManager"
 
 switch(w.reelType){
     case eReelType._3x5_reel:
@@ -83,18 +85,26 @@ switch(w.reelType){
             } as IGtoCFGPlay,
         ]
 
-        w.FGData = {
-            0: { result: [
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-                [11, 21, 21],
-            ], winlineArr: [
-                {SymbolID: eSymbolName.WD, WinPosition: [[0, 1], [1, 1], [2, 1]], Win: 9999, lineNo: 2},
-                {SymbolID: eSymbolName.N1, WinPosition: [[0, 0], [1, 0], [2, 0]], Win: 3500, lineNo: 1},
-            ]}
+        window.LineNumberDef = {
+            [eLineNumber.lineWin]: {pos: new PIXI.Point(360, 380)}
         }
+
+        window.FG_NumberDef = {
+            [eLanguage.ENG]: {
+                [eFGNumber.currentTimes]: {pos: new PIXI.Point(260, 115)},
+                // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)},
+                [eFGNumber.remainTimes]: {pos: new PIXI.Point(400, 115)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(400, 115)}
+            },
+        
+            [eLanguage.CHS]: {
+                [eFGNumber.currentTimes]: {pos: new PIXI.Point(260, 115)},
+                // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)}
+                [eFGNumber.remainTimes]: {pos: new PIXI.Point(400, 115)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(400, 115)}
+            },
+        }
+
     break
 
     case eReelType._3x5_single:

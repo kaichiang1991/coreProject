@@ -17,6 +17,8 @@ enum eReelContainerLayer{
     upperStickSymbol,
     black = 1000,
     logo,
+    FG_roundTimes = logo,
+    FG_plusTimes,
 
     endSpinAnim,
     winAnimation,

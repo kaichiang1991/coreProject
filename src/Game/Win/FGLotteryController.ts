@@ -17,7 +17,7 @@ export default class FGLotteryController{
     public static async init(){
         return new Promise<void>(res =>{
 
-            EventHandler.once(eEventName.FG_lotteryEnd, res)
+            EventHandler.once(eEventName.FG_lotteryEnd, ()=> res())
 
             // 註冊狀態機
             const context: GameStateContext = new GameStateContext()

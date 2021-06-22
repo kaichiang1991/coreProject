@@ -4,9 +4,11 @@ import { Container, Point } from "pixi.js-legacy"
 const {BitmapText} = PixiAsset
 
 export enum eFontName{
-    SG_Bet = 'SG_Bet',
+    // ToDo 確認字型後要改
+    lineWin = 'SG_Win',
+    FGRound = 'SG_Win',
+    FGPlus = 'SG_Win',
     SG_Win = 'SG_Win',
-    Win = 'Win'
 }
 
 export default class GameFontManager{
@@ -24,21 +26,45 @@ export default class GameFontManager{
     }
 
     /**
-     * 畫 SG Win 字型
-     * @param name 容器名稱
-     * @param text 顯示文字
+     * 畫線獎的數字
+     * @param {string} name 容器名稱
      * @param {number | Point} pos 座標
-     * @param parent 父節點
-     * @param size 大小
-     * @returns 
+     * @param {Container} [parent] 父節點
+     * @param {number} [size = 32] 數字大小
+     * @returns {BitmapText}
      */
-    public static drawSGWinNumber(name: string, text: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
-        const font: BitmapText = BitmapText.drawFont(name, eFontName.SG_Win, size)
-        font.text = text
-        if(typeof pos == 'number')  font.position.set(pos)
-        else                        font.position.copyFrom(pos)
-        
+    public static drawLineWinNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.lineWin, size, pos)
         parent?.addChild(font)
         return font
     }
+
+    /**
+     * 畫 FreeGame 場次的數字
+     * @param {string} name 容器名稱
+     * @param {number | Point} pos 座標
+     * @param {Container} [parent] 父節點
+     * @param {number} [size = 32] 數字大小
+     * @returns {BitmapText}
+     */
+    public static drawFreeGameRoundNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.FGRound, size, pos)
+        parent?.addChild(font)
+        return font
+    }
+
+    /**
+     * 畫 FreeGame 加場次的數字
+     * @param {string} name 容器名稱
+     * @param {number | Point} pos 座標
+     * @param {Container} [parent] 父節點
+     * @param {number} [size = 32] 數字大小
+     * @returns {BitmapText}
+     */
+    public static drawFreeGamePlusNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.FGPlus, size, pos)
+        parent?.addChild(font)
+        return font
+    }
+
 }

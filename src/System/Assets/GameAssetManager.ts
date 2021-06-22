@@ -10,6 +10,7 @@ import LineNumberManager from "@root/src/Game/Number/LineNumberManager";
 import { LineManager } from "@root/src/Game/Win/LineManager";
 import StickSymbolController from "@root/src/Game/Reel/StickSymbolController";
 import GameSlotData from "@root/src/Game/GameSlotData";
+import FreeGameNumberManager from "@root/src/Game/Number/FreeGameNumberManager";
 
 const {AssetLoader} = PixiAsset
 
@@ -76,6 +77,7 @@ export default class GameAssetManager{
     
         await LineManager.init()
         await LineNumberManager.init()
+        await FreeGameNumberManager.init()
 
         GameSpineManager.initLine()
     }

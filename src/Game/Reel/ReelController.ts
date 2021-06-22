@@ -35,7 +35,7 @@ export default class ReelController{
     private static stopNowEvent: Function
     public static get StopNowEvent(): Function {return this.stopNowEvent}       // 急停事件
 
-    private static resizeFn: Function
+    private static resizeFn: IEventCallback
 
     /** 初始化滾輪控制 */
     public static async init(){

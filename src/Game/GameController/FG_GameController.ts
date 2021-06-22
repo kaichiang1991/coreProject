@@ -3,6 +3,7 @@ import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneControll
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import { Container, Graphics, Text } from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
+import FreeGameNumberManager from "../Number/FreeGameNumberManager"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import FGLotteryController from "../Win/FGLotteryController"
 import { LineManager } from "../Win/LineManager"
@@ -25,7 +26,7 @@ export default class FG_GameController{
 
     public async init(){
         return new Promise<void>(res => {
-            EventHandler.once(eEventName.FG_End, res)
+            EventHandler.once(eEventName.FG_End, ()=> res())
 
             // 註冊狀態機
             const context: GameStateContext = new GameStateContext()
@@ -52,8 +53,12 @@ class GameInit extends GameState{
         await waitTweenComplete(gsap.from(tr, {y: -1280}))
         tr.destroy()
         EventHandler.dispatch('transitionDone')
+        // 場次
+        FreeGameNumberManager.playCurrentTimes(0, ReelController.ReelContainer)
+        FreeGameNumberManager.playRemainTimes(GameSlotData.NGSpinData.SpinInfo.FGTotalTimes, ReelController.ReelContainer)
         ReelController.reset(eReelGameType.freeGame)
         await Sleep(1)
+
         this.change()
     }
 
@@ -75,13 +80,12 @@ class GameStart extends GameState{
 
 class StartSpin extends GameState{
 
-    private stopEvent: Function
-
     async enter(){
+        FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
+        FreeGameNumberManager.adjustRemainTimes(false)              // 減少剩餘場次
+
         const allSpin: Promise<void> = ReelController.startSpin()
 
-        // 接受server 資料 先寫假資料
-        GameSlotData.FGSpinData = window['FGData'][0]
         // 接受server 資料 
         if(!window.useServerData){
             await Sleep(1)
@@ -107,27 +111,28 @@ class StartSpin extends GameState{
     change(){
         this.context.changeState(eFG_GameState.endSpin)
     }
-
-    exit(){
-        EventHandler.getListeners(eEventName.startSpin).length && EventHandler.off(eEventName.startSpin, this.stopEvent)
-    }
 }
 
 class EndSpin extends GameState{
 
     async enter(){
 
-        const {WinType} = GameSlotData.FGSpinData.SpinInfo
+        const {WinType, FGRemainTimes} = GameSlotData.FGSpinData.SpinInfo
         const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
-        // ToDo 演加場次
+        // 演加場次
+        const plus: number = FGRemainTimes - FreeGameNumberManager.RemainTimes
+        if(plus > 0){
+            await FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
+            FreeGameNumberManager.adjustRemainTimes(true, plus)
+        }
         isWin && await FGLotteryController.init()
         this.change()
     }
 
     change(){
-        this.context.changeState(--window['FGTimes'] > 0? eFG_GameState.start: eFG_GameState.end)
+        this.context.changeState(GameSlotData.FGSpinData.SpinInfo.FGRemainTimes > 0? eFG_GameState.start: eFG_GameState.end)
     }
     
     exit(){
@@ -149,6 +154,10 @@ class GameEnd extends GameState{
         text.position.set(360, 300)
         
         await Sleep(2)
+        // 清除場次
+        FreeGameNumberManager.clearCurrentTimes()
+        FreeGameNumberManager.clearRemainTimes()
+
         title.destroy()
         this.change()
     }
