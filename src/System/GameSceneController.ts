@@ -17,8 +17,8 @@ interface IScene{
     context: SceneContext
     cont: Container
 
-    pre()
-    enter()
+    pre(context?: any)
+    enter(context?: any)
     exit()
 }
 
@@ -45,16 +45,16 @@ class SceneContext{
         return this
     }
 
-    public setScene(type: string): SceneContext{
-        this.sceneArr[type]?.pre()
+    public setScene(type: string, context?: any): SceneContext{
+        this.sceneArr[type]?.pre(context)
         return this
     }
 
-    public changeScene(type: string): SceneContext{
+    public changeScene(type: string, context?: any): SceneContext{
         this.currentScene?.exit()
 
         this.currentScene = this.sceneArr[type]
-        this.currentScene.enter()
+        this.currentScene.enter(context)
         return this
     }
 }
@@ -70,8 +70,8 @@ class GameScene implements IScene{
         this.context = context
     }
 
-    pre(){}
-    enter(){}
+    pre(context?: any){}
+    enter(context?: any){}
     exit(){}
 }
 //#endregion
@@ -98,6 +98,7 @@ export default class GameSceneManager{
         .regScene(createScene(LoadingScene, eGameScene.loading, this.context))
         .regScene(createScene(NormalGame, eGameScene.normalGame, this.context))
         .regScene(createScene(FreeGame, eGameScene.freeGame, this.context))
+        .regScene(createScene(SystemError, eGameScene.systemError, this.context))
     }
 
     /**
@@ -105,7 +106,7 @@ export default class GameSceneManager{
      * @param scene 場景名稱 
      * @returns 該場景的 container
      */
-    public static switchGameScene(scene: eGameScene): Container{
+    public static switchGameScene(scene: eGameScene, context?: any): Container{
         
         this.currentScene = scene
         switch(scene){
@@ -120,6 +121,9 @@ export default class GameSceneManager{
                 this.context.setScene(scene)
                 // 等轉場完再換
                 EventHandler.once('transitionDone', ()=> this.context.changeScene(scene))
+                break
+            case eGameScene.systemError:
+                this.context.changeScene(scene, context)
                 break
         }
 
@@ -217,5 +221,15 @@ class FreeGame extends GameScene{
         }else{
             this.bg.clear().beginFill(0x91C7FF).drawRect(0, 0, height, width)
         }
+    }
+}
+
+/** 錯誤訊息 */
+class SystemError extends GameScene{
+
+    enter(context: any){
+        SystemErrorManager.closeAll()
+        App.stage.removeChildren()
+        SystemErrorManager.showError(context)
     }
 }

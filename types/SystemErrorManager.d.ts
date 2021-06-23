@@ -20,7 +20,7 @@ declare class SystemErrorManager {
      * 開關黑色遮罩
      * @param flag 開關狀態
      */
-    static activeBlackMask(flag?: boolean, maskAlpha?: number): void;
+    private static activeBlackMask;
     /**
      * 顯示錯誤訊息
      * @param message 錯誤訊息字串
@@ -32,6 +32,8 @@ declare class SystemErrorManager {
      * @returns
      */
     static showPrompOut(message: string): Promise<void>;
+    /**關閉/清除所有的流程/物件 */
+    static closeAll(): void;
     /**關閉所有音訊 */
     private static closeAllAudio;
     /**清除所有演出流程 */

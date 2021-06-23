@@ -1,6 +1,7 @@
 import GameSlotData from "@root/src/Game/GameSlotData"
 import { eCommand } from "./GameDataRequest"
 import { pingDuration } from '@root/config'
+import GameSceneManager, { eGameScene } from "../GameSceneController"
 
 enum eJoinGameError{
     Success = 0,
@@ -92,7 +93,7 @@ export class NetworkManager{
         Debug.error('Network onClose', e)
         const msg: string = LocalizationManager.systemText('ConnectClose')
         Debug.warn(msg, new Date().toLocaleString())
-        SystemErrorManager.showError(msg)        // 顯示錯誤訊息
+        GameSceneManager.switchGameScene(eGameScene.systemError, msg)       // 顯示錯誤訊息
     }
 
     /**
@@ -111,7 +112,7 @@ export class NetworkManager{
                     case eJoinGameError.Success:    break
                     case eJoinGameError.Failed:
                     case eJoinGameError.MismatchGameCode:
-                        SystemErrorManager.showError(LocalizationManager.systemText('TokenInvalid'))                        // 顯示系統錯誤訊息
+                        GameSceneManager.switchGameScene(eGameScene.systemError, LocalizationManager.systemText('TokenInvalid'))        // 顯示系統錯誤訊息
                         break
                     case eJoinGameError.NotReady:
                     case eJoinGameError.GameDisabled:
@@ -142,7 +143,7 @@ export class NetworkManager{
                         this.closeWebsocket()
                         break
                     case eGameError.IdleForceClose:
-                        SystemErrorManager.showError(LocalizationManager.systemText('IdleForceClose'))                        // 錯誤訊息
+                        GameSceneManager.switchGameScene(eGameScene.systemError, LocalizationManager.systemText('IdleForceClose'))        // 顯示系統錯誤訊息
                         break
                 }
             break
