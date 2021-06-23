@@ -84,7 +84,6 @@ interface Window{
     idx: number
     NGReelData: Array<Array<number>>
     FGReelData: Array<Array<number>>
-    FGTimes: number
     useServerData: boolean
     NGSpinDataArr: Array<IGtoCNGPlay>
     FGSpinDataArr: Array<IGtoCFGPlay>

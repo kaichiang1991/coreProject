@@ -157,7 +157,7 @@ class NormalGame extends GameScene{
         this.logo = new Sprite('logo')
         this.logo.anchor.set(.5)
         this.logo.zIndex = eReelContainerLayer.logo
-        this.logo.position.set(360, 160)
+        this.logo.position.set(415, -35)
 
         this.bg = new Graphics()
     }

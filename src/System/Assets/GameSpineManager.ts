@@ -3,6 +3,7 @@ import config from '@root/config'
 import { App } from "@root/src"
 import { Container } from "pixi.js-legacy"
 import { eReelContainerLayer } from "../LayerDef"
+import { reelContPivot } from "@root/src/Game/Reel/SymbolDef"
 
 const {Spine} = PixiAsset
 
@@ -49,7 +50,7 @@ export default class GameSpineManager{
         this.line = Spine.playSpine(eSpineName.line)[0]
         this.line.zIndex = eReelContainerLayer.line
         this.line.pivot.set(640, 360)
-        this.line.position.set(340, 430)
+        reelContPivot.copyTo(this.line.position)
     }
 
     private static getLineAnim(lineNo: number): string{

@@ -43,9 +43,10 @@ enum eSymbolState{
     Win,
 }
 
+const type: string = eReelType[window.reelType]
 enum eSymbolConfig{
-    width = 168,
-    height = 160
+    width = /3x5/.test(type)? 168: 230,
+    height = /3x5/.test(type)? 160: 170
 }
 
 // 有落定動畫的 symbol
@@ -60,7 +61,9 @@ var reelCount: number,                              // 輪數
     defaultStopOrder: Array<number>,                // 預設的停輪順序
     xOffsetArr: Array<number>,                      // x 軸座標陣列
     yOffsetArr: Array<Array<number>>,               // y 軸座標陣列
-    reelContPivot: Point                            // reelContainer 的中心點
+    reelContPivot: Point,                           // reelContainer 的中心點
+    reelContPos_land: Point,                        // reelContainer 橫式的座標
+    reelContPos_port: Point                         // reelContainer 直式的座標
 
 /**
  * 找出該reel是屬於第幾列
@@ -81,9 +84,12 @@ switch(window['reelType']){
         reelCount = 5
         reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3, 3, 3]
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2, 3, 4]
-        xOffsetArr = [0, 173, 346, 519, 692]
-        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => 85 + index * eSymbolConfig.height)]
-        reelContPivot = new Point((xOffsetArr[0] + xOffsetArr[xOffsetArr.length - 1]) / 2, eSymbolConfig.height * (reelSymbolCount[0] + 2) / 2)
+
+        reelContPivot = new Point(860 / 2, 480 / 2)
+        reelContPos_land = new Point(674, 357)
+        reelContPos_port = new Point(360, 704)
+        xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
+        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2) * eSymbolConfig.height)]
 
         mapRowIndex = (reelIndex): number =>{
             return 0
@@ -98,14 +104,18 @@ switch(window['reelType']){
         reelCount = 15
         reelSymbolCount = Array(reelCount).fill(1)     
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      
-        xOffsetArr = [0, 173, 346, 519, 692]
+
+        reelContPivot = new Point(860 / 2, 480 / 2)
+        reelContPos_land = new Point(674, 357)
+        reelContPos_port = new Point(360, 704)
+
+        xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
         yOffsetArr = [
-            Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => 85 + index * eSymbolConfig.height),
-            Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => 85+160 + index * eSymbolConfig.height),
-            Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => 85+160+160 + index * eSymbolConfig.height),
+            Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2) * eSymbolConfig.height),
+            Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2 + 1) * eSymbolConfig.height),
+            Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2 + 2) * eSymbolConfig.height),
         ]
-        reelContPivot = new Point((xOffsetArr[0] + xOffsetArr[xOffsetArr.length - 1]) / 2, eSymbolConfig.height * (3 + 2) / 2)
-        
+
         mapRowIndex = (reelIndex): number =>{
             return ~~(reelIndex / 5)
         }
@@ -115,6 +125,26 @@ switch(window['reelType']){
         }
 
     break
+
+    case eReelType._3x3_reel:
+        reelCount = 3
+        reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3]
+        defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2]
+        xOffsetArr = [0, 235, 470]
+        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => (index + 0.5) * eSymbolConfig.height)]
+        reelContPivot = new Point(350, 255)
+        reelContPos_land = new Point(640, 340)
+        reelContPos_port = new Point(360, 700)
+        
+        mapRowIndex = (reelIndex): number =>{
+            return 0
+        }
+        
+        mapColumnIndex = (reelIndex): number =>{
+            return reelIndex
+        }
+    break
+
 }
 
-export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, upperStickSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, mapRowIndex, mapColumnIndex}
+export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, upperStickSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, reelContPos_land, reelContPos_port, mapRowIndex, mapColumnIndex}

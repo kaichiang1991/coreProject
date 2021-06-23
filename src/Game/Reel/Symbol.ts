@@ -22,6 +22,8 @@ export default class Symbol extends Container{
        
         this.sprite = this.addChild(new Sprite(this.getTextureName(eSymbolName.H1, eSymbolState.Normal)))
         this.sprite.anchor.set(.5)
+        this.sprite.width = eSymbolConfig.width
+        this.sprite.height = eSymbolConfig.height
 
         const style: TextStyle = new TextStyle({
             fontSize: 48,

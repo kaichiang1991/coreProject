@@ -1,7 +1,7 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
 import { Container, Graphics, Point } from "pixi.js-legacy";
 import Reel, { eListeningState } from "./Reel";
-import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState } from "./SymbolDef";
+import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState, reelContPos_land, reelContPos_port } from "./SymbolDef";
 import { editConfig } from "@root/src";
 import config from '@root/config'
 import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
@@ -88,16 +88,22 @@ export default class ReelController{
         switch(window.reelType){
             case eReelType._3x5_reel:
                 this.mask = this.reelContainer.addChild(new Graphics()
-                    .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
+                    .beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 480).endFill()
                 )
             break
 
             case eReelType._3x5_single:
                 this.mask = [
-                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-130, 164, 950, 160).endFill(),      // 第一列
-                    new Graphics().beginFill(0xFF3333, .5).drawRect(-130, 324, 950, 160).endFill(),     // 第二列
-                    new Graphics().beginFill(0x33FF33, .5).drawRect(-130, 484, 950, 160).endFill(),     // 第三列
+                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 160).endFill(),     // 第一列
+                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 160, 950, 160).endFill(),     // 第一列
+                    new Graphics().beginFill(0xFF3333, .5).drawRect(-40, 320, 950, 160).endFill(),     // 第二列
                 ]
+            break
+
+            case eReelType._3x3_reel:
+                this.mask = this.reelContainer.addChild(new Graphics()
+                    .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
+                )
             break
         } 
     }
@@ -106,7 +112,7 @@ export default class ReelController{
     private static initBlackCover(){
         // ToDo 之後會由美術出圖
         this.blackCover = this.reelContainer.addChild(new Graphics()
-            .beginFill(0x000000, .5).drawRect(-85, 165, 860, 480).endFill()
+            .beginFill(0x000000, .5).drawRect(0, 0, 860, 480).endFill()
         )
         this.blackCover.zIndex = eReelContainerLayer.black
         EventHandler.on(eEventName.activeBlack, (ctx) =>{
@@ -135,10 +141,10 @@ export default class ReelController{
     private static resize(){
         const {portrait} = config
         if(portrait){
-            this.reelContainer.position.set(360, 640)
+            reelContPos_port.copyTo(this.reelContainer.position)
             this.reelContainer.scale.set(.8)
         }else{
-            this.reelContainer.position.set(640, 360)
+            reelContPos_land.copyTo(this.reelContainer.position)
             this.reelContainer.scale.set(1)
         }
     }
