@@ -107,7 +107,6 @@ export default class GameSceneManager{
      * @returns 該場景的 container
      */
     public static switchGameScene(scene: eGameScene, context?: any): Container{
-        console.log('switch game scene', scene, context)
         this.currentScene = scene
         switch(scene){
             case eGameScene.loading:
@@ -123,6 +122,8 @@ export default class GameSceneManager{
                 EventHandler.once('transitionDone', ()=> this.context.changeScene(scene))
                 break
             case eGameScene.systemError:
+                if(SystemErrorManager.IsError)
+                    return
                 this.context.changeScene(scene, context)
                 break
         }
