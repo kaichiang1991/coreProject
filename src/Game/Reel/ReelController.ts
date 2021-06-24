@@ -102,7 +102,7 @@ export default class ReelController{
 
             case eReelType._3x3_reel:
                 this.mask = this.reelContainer.addChild(new Graphics()
-                    .beginFill(0xFFFFFF, .5).drawRect(-130, 165, 950, 480).endFill()
+                    .beginFill(0xFFFFFF, .5).drawRect(-280, 0, 800, 510).endFill()
                 )
             break
         } 
@@ -111,8 +111,9 @@ export default class ReelController{
     /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */
     private static initBlackCover(){
         // ToDo 之後會由美術出圖
+        const [x, y, width, height] = window.blackGraphic
         this.blackCover = this.reelContainer.addChild(new Graphics()
-            .beginFill(0x000000, .5).drawRect(0, 0, 860, 480).endFill()
+            .beginFill(0x000000, .5).drawRect(x, y, width, height).endFill()
         )
         this.blackCover.zIndex = eReelContainerLayer.black
         EventHandler.on(eEventName.activeBlack, (ctx) =>{
@@ -142,7 +143,7 @@ export default class ReelController{
         const {portrait} = config
         if(portrait){
             reelContPos_port.copyTo(this.reelContainer.position)
-            this.reelContainer.scale.set(.8)
+            this.reelContainer.scale.set(window.reelContScale)
         }else{
             reelContPos_land.copyTo(this.reelContainer.position)
             this.reelContainer.scale.set(1)

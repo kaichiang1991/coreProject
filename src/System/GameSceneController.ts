@@ -107,7 +107,7 @@ export default class GameSceneManager{
      * @returns 該場景的 container
      */
     public static switchGameScene(scene: eGameScene, context?: any): Container{
-        
+        console.log('switch game scene', scene, context)
         this.currentScene = scene
         switch(scene){
             case eGameScene.loading:
@@ -157,7 +157,7 @@ class NormalGame extends GameScene{
         this.logo = new Sprite('logo')
         this.logo.anchor.set(.5)
         this.logo.zIndex = eReelContainerLayer.logo
-        this.logo.position.set(415, -35)
+        window.logoPos.copyTo(this.logo.position)
 
         this.bg = new Graphics()
     }

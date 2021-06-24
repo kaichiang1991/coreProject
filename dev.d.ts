@@ -87,6 +87,7 @@ interface Window{
     useServerData: boolean
     NGSpinDataArr: Array<IGtoCNGPlay>
     FGSpinDataArr: Array<IGtoCFGPlay>
+    blackGraphic: Array<number>
 
     // 正式用
     App: PIXI.Application
@@ -94,4 +95,6 @@ interface Window{
         [key: number]: IDefConfig
     }}
     LineNumberDef: {[key: number]: IDefConfig}
+    logoPos: PIXI.Point
+    reelContScale: number
 }

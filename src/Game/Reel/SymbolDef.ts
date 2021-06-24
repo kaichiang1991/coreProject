@@ -130,12 +130,13 @@ switch(window['reelType']){
         reelCount = 3
         reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3]
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2]
-        xOffsetArr = [0, 235, 470]
-        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(1).map((_, index) => (index + 0.5) * eSymbolConfig.height)]
-        reelContPivot = new Point(350, 255)
-        reelContPos_land = new Point(640, 340)
-        reelContPos_port = new Point(360, 700)
         
+        reelContPivot = new Point(700 / 2, 510 / 2)
+        reelContPos_land = new Point(875, 340)
+        reelContPos_port = new Point(584, 655)
+        xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
+        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2) * eSymbolConfig.height)]
+
         mapRowIndex = (reelIndex): number =>{
             return 0
         }
