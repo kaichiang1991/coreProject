@@ -71,6 +71,7 @@ export default class GameAssetManager{
             BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
 
         MathTool.init(BetModel)
+        await BigWinManager.init(App, config, [20, 50, 100, 200])   // ToDo 之後可能從 server 拿間隔
 
         await ReelController.init()
         await StickSymbolController.init()

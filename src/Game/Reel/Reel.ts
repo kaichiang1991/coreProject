@@ -210,7 +210,7 @@ export default class Reel{
         const isEmpty: boolean = this.resultArr[0] == 0
         const endMove: string = isEmpty? `-=${eSymbolConfig.height / 2}`: `+=${eSymbolConfig.height / 2}`
         
-        const timeline: Timeline = gsap.timeline()
+        const timeline: GSAPTimeline = gsap.timeline()
         .to(this.symbolArr, {ease: Power2.easeOut, y: `+=${downDistance}`})
         .to(this.symbolArr, {y: endMove, delay: 1})
 

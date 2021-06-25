@@ -51,7 +51,7 @@ module.exports = merge(common, {
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
                 ].concat([
-                    '/Entry', '/SystemErrorManager', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', 
+                    '/Entry', '/SystemErrorManager', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', '/BigWinManager'
                 ].map(dir => 'Lib' + dir + '/index.min.js'))
                 .concat('Lib/EventName.js'),
             },

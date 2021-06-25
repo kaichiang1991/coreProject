@@ -1,3 +1,4 @@
+import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
@@ -157,9 +158,10 @@ class EndSpin extends GameState{
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)
             ReelController.reset(eReelGameType.normalGame)
+            await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
         }
 
-        isWin && await LotteryController.init()
+        isWin && await LotteryController.init(isFreeGame)
         this.change()
     }
 

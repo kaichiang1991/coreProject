@@ -16,27 +16,15 @@ const lineDef: {[key: number]: {y: number}} = {
 export class LineManager{
 
     private static winlineArr: Array<ISSlotWinLineInfo>
-    private static eachLineTimeline: Timeline
+    private static eachLineTimeline: GSAPTimeline
     private static stopEachLineFn: Function
-    // 若有演逐縣則停止逐縣 timeline，否則就單純清除線
+    // 若有演逐線則停止逐線 timeline，否則就單純清除線
     public static get StopEachLineFn(): Function { return this.stopEachLineFn || this.clearLineEvent }
 
-    private static lineAnimArr: Array<Graphics>
-
     private static lineConfig: ILineConfig
-    private static resizeFn: Function
 
     public static init(){
         this.lineConfig = editConfig.line
-
-        this.resizeFn = ()=>{
-            // Line 的動畫改變
-            if(config.protrait){
-
-            }else{
-
-            }
-        }
     }
 
     /**
@@ -52,11 +40,10 @@ export class LineManager{
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),     // 最少演出時間
             LineNumberManager.playLineNumberAnim(win),       // 線獎跑分
-            SlotUIManager.playWinChangeAnim(BetModel.getInstance(), 1)      // UI 跑分
         )        
-        // 註冊旋轉事件
-
+        
         await Promise.all(allPromise)
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
 
     
@@ -105,7 +92,6 @@ export class LineManager{
 
             .eventCallback('onComplete', ()=>{
                 this.clearLineEvent()
-                // 取消旋轉事件
             })
             
             this.stopEachLineFn = ()=>{

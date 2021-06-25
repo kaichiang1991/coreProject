@@ -24,10 +24,6 @@ type TrackEntry = PIXI.spine.core.TrackEntry
 // State
 type GameStateContext = StateModule.StateContext
 
-// gsap
-type Timeline = gsap.core.Timeline
-type gsapAnimation = gsap.core.Animation
-
 // config 的結構
 interface IConfig{
     name: string

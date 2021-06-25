@@ -1,3 +1,4 @@
+import { App } from "@root/src"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -11,13 +12,21 @@ const {GameStateContext, createState, GameState} = StateModule
 
 export default class LotteryController{
 
+    public static isBackFromFG: boolean
     public static win: number
     public static winlineInfos: Array<ISSlotWinLineInfo>
 
-    public static async init(){
+    /**
+     * 初始化 NG 得獎流程
+     * @param {boolean} backFromFG 是否從FG回來
+     * @returns 演完回傳
+     */
+    public static async init(backFromFG: boolean){
         return new Promise<void>(res =>{
 
             EventHandler.once(eEventName.NG_lotteryEnd, ()=> res())
+
+            this.isBackFromFG = backFromFG      // 設定是否從 FG 回來
 
             // 註冊狀態機
             const context: GameStateContext = new GameStateContext()
@@ -49,9 +58,11 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
+        if(!LotteryController.isBackFromFG)                                                                         // 判斷從FG回來的那局，就算分數到了也不演 BigWin
+            await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, LotteryController.win)       // 演出 bigWin
+        
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
-
         BetModel.getInstance().addWin(LotteryController.win)
         await LineManager.playAllLineWin(LotteryController.winlineInfos)
         await LineManager.playEachLine()

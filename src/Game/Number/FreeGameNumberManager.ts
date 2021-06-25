@@ -128,7 +128,7 @@ export default class FreeGameNumberManager{
         font.setParent(this.numArr[eFGNumber.remainTimes].parent)
         font.text = '+' + plus
 
-        const timeline: Timeline = gsap.timeline()
+        const timeline: GSAPTimeline = gsap.timeline()
         .from(font, {ease: Back.easeOut.config(2), duration: .5, pixi: {scale: 0}})
         .to(font, {delay: .2, duration: .8, y: '-=50', alpha: 0})
 
