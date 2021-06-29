@@ -2,6 +2,7 @@ declare class MathTool {
     private static moneyFractionMultiple;
     private static denom;
     private static useMoney;
+    static get UseMoney(): boolean;
     /**
      * 切換幣/分顯示狀態，若不填入新狀態則反轉當前狀態
      * @param flag 新狀態

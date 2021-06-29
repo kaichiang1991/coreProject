@@ -86,6 +86,8 @@ declare class SlotUIManager {
     static playWinChangeAnim(betModel: BetModel, duration: number): Promise<void>;
     /**清除所有物件 */
     static clearAll(): void;
+    /**更新押注符號 */
+    static updateBetIcon(): void;
 }
 /**設置UI管理 */
 declare class SettingUIManager {
