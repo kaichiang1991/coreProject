@@ -38,6 +38,7 @@ module.exports = merge(common, {
         new HtmlWebpackPlugin({
             filename: path.resolve(__dirname, 'dist/Debug/index.html'),
             template: 'template.cshtml',
+            inject: 'body',
             files: {
                 // js
                 js: [
