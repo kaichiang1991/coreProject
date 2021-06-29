@@ -43,8 +43,11 @@ versionText.zIndex = eAppLayer.version
 versionText.anchor.set(-.2, -.1)
 stage.addChild(versionText)
 
-export let editConfig: IEditConfig, gameConfig: IGameConfig
+// 註冊視窗事件
+window.addEventListener('blur', ()=>{})
+window.addEventListener('focus', ()=>{})
 
+export let editConfig: IEditConfig, gameConfig: IGameConfig
 // 遊戲入口
 const gameEntry: Function = async ()=>{
     config.canUseWebp = await supportWebp()
@@ -64,7 +67,7 @@ const gameEntry: Function = async ()=>{
     
     //#region Loading
     const loadingCont: Container = GameSceneManager.switchGameScene(eGameScene.loading)
-    await Loading.init(loadingCont, config.portrait)
+    await Loading.init(loadingCont, config)
     const loading: Promise<void> = Loading.startLoading()
     await NetworkManager.init()
     // 取得設定檔的設定
@@ -77,6 +80,17 @@ const gameEntry: Function = async ()=>{
     Loading.finishLoading()
     await loading
     //#endregion Loading
+
+    //#region 註冊遊戲內事件
+    EventHandler.on(eEventName.openGameInfo, ()=>{
+        const {url} = PIXI.utils
+        const {href} = url.parse(document.URL)
+        EventHandler.dispatch(eEventName.popupWindow, {gameCode: 'BN' + gameConfig.GameID, gameLangugae: LocalizationManager.getLanguage(), url: url.resolve(href, '../GameCommon/GameInfo/index.html')})
+    })
+    EventHandler.on(eEventName.openHistory, ()=>{
+        console.log('打開細單')     // ToDo
+    })
+    //#endregion 註冊遊戲內事件
 
     // 遊戲場景轉換
     await UIManager.init(App.stage, config)

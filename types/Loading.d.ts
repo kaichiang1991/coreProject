@@ -7,13 +7,14 @@ declare class Loading {
     private static barWidth;
     private static barTween;
     private static logo;
+    private static config;
     private static resizeFn;
     /**
      * 初始化 Loading
      * @param stage
      * @returns loading 圖載完
      */
-    static init(container: PIXI.Container, portrait: boolean): Promise<void>;
+    static init(container: PIXI.Container, config: IConfig): Promise<void>;
     /**
      * 開始讀取條演出
      * @returns 讀取條演完後回傳
