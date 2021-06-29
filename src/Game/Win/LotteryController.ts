@@ -58,13 +58,16 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
-        if(!LotteryController.isBackFromFG)                                                                         // 判斷從FG回來的那局，就算分數到了也不演 BigWin
-            await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, LotteryController.win)       // 演出 bigWin
+        const {isBackFromFG, win, winlineInfos} = LotteryController
+        if(!isBackFromFG)                                                                         // 判斷從FG回來的那局，就算分數到了也不演 BigWin
+            await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)       // 演出 bigWin
         
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
-        BetModel.getInstance().addWin(LotteryController.win)
-        await LineManager.playAllLineWin(LotteryController.winlineInfos)
+        if(!isBackFromFG)                                               // 因應流程，從FG回來的時候不加入計算
+            BetModel.getInstance().addWin(win)
+
+        await LineManager.playAllLineWin(winlineInfos)
         await LineManager.playEachLine()
         this.change()
     }

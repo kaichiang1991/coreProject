@@ -53,12 +53,19 @@ class GameInit extends GameState{
         await waitTweenComplete(gsap.from(tr, {y: -1280}))
         tr.destroy()
         EventHandler.dispatch('transitionDone')
+
+        const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         // 場次
         FreeGameNumberManager.playCurrentTimes(0, ReelController.ReelContainer)
-        FreeGameNumberManager.playRemainTimes(GameSlotData.NGSpinData.SpinInfo.FGTotalTimes, ReelController.ReelContainer)
+        FreeGameNumberManager.playRemainTimes(FGTotalTimes, ReelController.ReelContainer)
         ReelController.reset(eReelGameType.freeGame)
-        await Sleep(1)
 
+        // NG 盤面分數
+        const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // ToDo 之後看server格式
+        BetModel.getInstance().addWin(win)
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
+
+        await Sleep(1)
         this.change()
     }
 

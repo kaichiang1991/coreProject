@@ -50,13 +50,14 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
-        await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, FGLotteryController.win)     // 先演大獎
+        const {win, winlineInfos} = FGLotteryController
+        await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)     // 先演大獎
         
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
-        BetModel.getInstance().addWin(FGLotteryController.win)
-        await LineManager.playAllLineWin(FGLotteryController.winlineInfos)
+        BetModel.getInstance().addWin(win)
+        await LineManager.playAllLineWin(winlineInfos)
         await LineManager.playEachLine()
         this.change()
     }
