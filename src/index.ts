@@ -57,7 +57,6 @@ const gameEntry: Function = async ()=>{
     Entry.init(App, config)
     AppDebug.init()
     // ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
-    // ParameterParse.init('wss://gsvr1.msgdev.info')     // 先連demo站的
     ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
     GSAPManager.init()
     LocalizationManager.init()
@@ -85,11 +84,12 @@ const gameEntry: Function = async ()=>{
     //#region 註冊遊戲內事件
     const {url} = PIXI.utils
     const {href} = url.parse(document.URL)
+    const dispatchObj: Object = {gameCode: 'BN' + gameConfig.GameID, gameLanguage: LocalizationManager.getLanguage()}
     EventHandler.on(eEventName.openGameInfo, ()=>{
-        EventHandler.dispatch(eEventName.popupWindow, {gameCode: 'BN' + gameConfig.GameID, gameLangugae: LocalizationManager.getLanguage(), url: url.resolve(href, '../GameCommon/GameInfo/index.html')})
+        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, url: url.resolve(href, '../GameCommon/GameInfo/index.html')})
     })
     EventHandler.on(eEventName.openHistory, ()=>{
-        EventHandler.dispatch(eEventName.popupWindow, {gameCode: 'BN10', gameToken: ParameterParse.UrlParser.token, gameLangugae: LocalizationManager.getLanguage(), betQuery: ParameterParse.UrlParser.betQuery, url: url.resolve(href, '../GameCommon/GameResult/index.html')})
+        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, gameToken: ParameterParse.UrlParser.token, betQuery: ParameterParse.UrlParser.betQuery, url: url.resolve(href, '../GameCommon/GameResult/index.html')})
     })
     //#endregion 註冊遊戲內事件
 
