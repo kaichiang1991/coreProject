@@ -25,16 +25,16 @@ export default class Symbol extends Container{
         this.sprite.width = eSymbolConfig.width
         this.sprite.height = eSymbolConfig.height
 
-        const style: TextStyle = new TextStyle({
-            fontSize: 48,
-            fontWeight: 'bold',
-            stroke: 'black',
-            strokeThickness: 2,
-            fill: 'white',
-            fontFamily: 'bolder'
-        })
-        this.text = this.addChild(new Text('1', style))
-        this.text.anchor.set(.5)
+        // const style: TextStyle = new TextStyle({
+        //     fontSize: 48,
+        //     fontWeight: 'bold',
+        //     stroke: 'black',
+        //     strokeThickness: 2,
+        //     fill: 'white',
+        //     fontFamily: 'bolder'
+        // })
+        // this.text = this.addChild(new Text('1', style))
+        // this.text.anchor.set(.5)
 
         this.animSpine = Spine.playSpine(eSpineName.symbol)[0]
     }
@@ -104,7 +104,7 @@ export default class Symbol extends Container{
     }
 
     public setIndex(index: number){
-        this.text.text = index + ''
+        // this.text.text = index + ''
     }
 
     //#region 得獎動畫
@@ -184,7 +184,7 @@ export default class Symbol extends Container{
      * @returns {string}
      */
     protected getTextureName(symbolId: eSymbolName, state: eSymbolState): string{
-        return eSymbolName[symbolId] + ((state == eSymbolState.Blur && !noBlurSymbolArr.includes(symbolId))? '_01': '_00') + '.png'
+        return eSymbolName[symbolId] + ((state == eSymbolState.Blur && !noBlurSymbolArr.includes(symbolId))? '_Blur': '_Normal') + '.png'
     }
 
     /**

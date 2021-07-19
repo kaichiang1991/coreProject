@@ -6,15 +6,16 @@ enum eAppLayer{
 }
 
 enum eNGLayer{
-    reelContainer,
-    logo
+    reelContainer
 }
 
 enum eReelContainerLayer{
 
+    reelBg,
     normalSymbol,
     stickSymbol = normalSymbol + eSymbolLayer.total,
     upperStickSymbol,
+    reelFrame,
     black = 1000,
     logo,
     FG_roundTimes = logo,

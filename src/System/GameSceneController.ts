@@ -76,7 +76,7 @@ class GameScene implements IScene{
 }
 //#endregion
 
-const {Sprite, Spine} = PixiAsset
+const {AssetLoader, Sprite, Spine} = PixiAsset
 
 export default class GameSceneManager{
     private static sceneContainerArr: {[key: string]: Container} = {}
@@ -152,20 +152,22 @@ class LoadingScene extends GameScene{
 class NormalGame extends GameScene{
     
     private logo: Sprite
-    private bg: Graphics
+    private bg: Sprite
+    private UI_Bottom: Sprite
 
     pre(){
-        this.logo = new Sprite('logo')
+        this.logo = new Sprite('Logo.png')
         this.logo.anchor.set(.5)
         this.logo.zIndex = eReelContainerLayer.logo
         window.logoPos.copyTo(this.logo.position)
 
-        this.bg = new Graphics()
+        this.bg = new Sprite('Scene_NG')
+        this.UI_Bottom = new Sprite()
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
-        this.cont.addChild(this.bg)
+        this.cont.addChild(this.bg, this.UI_Bottom)
         this.cont.sortableChildren = true
 
         ReelController.ReelContainer.addChild(this.logo)
@@ -185,9 +187,13 @@ class NormalGame extends GameScene{
     resize = ()=>{
         const {portrait, size: {width, height}} = config
         if(portrait){
-            this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, width, height).endFill()
+            this.bg.position.set(-280, 0)
+            this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
+            this.UI_Bottom.position.set(0, 895)
         }else{
-            this.bg.clear().beginFill(0xC7FF91).drawRect(0, 0, height, width).endFill()
+            this.bg.position.set(0, -280)
+            this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
+            this.UI_Bottom.position.set(0, 600)
         }
     }
 }

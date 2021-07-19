@@ -17,15 +17,19 @@ export enum eReelGameType{
 
 export let spinConfig: ISpinConfig
 
+const {Sprite} = PixiAsset
+
 export default class ReelController{
 
     private static gameType: eReelGameType      // 目前遊戲的型態
 
     private static reelContainer: Container
     public static get ReelContainer(): Container {return this.reelContainer}
+    private static reelBackground: Sprite
+    private static reelFrame: Sprite
     private static reelArr: Array<Reel>
-    private static mask: Graphics | Array<Graphics>
-    public static get Mask(): Graphics | Array<Graphics> {return this.mask}
+    private static mask: Sprite | Array<Sprite>
+    public static get Mask(): Sprite | Array<Sprite> {return this.mask}
     private static blackCover: Graphics
 
     private static stopOrder: Array<number>
@@ -42,6 +46,8 @@ export default class ReelController{
         spinConfig = editConfig.spin        // 讀取滾輪參數的 json 檔
 
         this.initReelContainer()
+        this.initReelBackground()
+        this.initReelFrame()
         this.initMask()
         this.initBlackCover()
 
@@ -82,28 +88,41 @@ export default class ReelController{
         this.reelContainer.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
     }
 
+    /** 初始化滾輪底板 */
+    private static initReelBackground(){
+        this.reelBackground = this.reelContainer.addChild(new Sprite('Reel_Back.png'))
+        this.reelBackground.zIndex = eReelContainerLayer.reelBg
+        this.reelBackground.position.copyFrom(window.reelBgPos)
+    }
+
+    /** 初始化滾輪框 */
+    private static initReelFrame(){
+        this.reelFrame = this.reelContainer.addChild(new Sprite('Reel_Frame.png'))
+        this.reelFrame.zIndex = eReelContainerLayer.reelFrame
+        this.reelFrame.position.copyFrom(window.reelBgPos)
+    }
+
     /** 初始化滾輪的遮罩 */
     private static initMask(){
         // ToDo 之後會直接拿滾輪底圖做遮罩大小
         switch(window.reelType){
             case eReelType._3x5_reel:
-                this.mask = this.reelContainer.addChild(new Graphics()
-                    .beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 480).endFill()
-                )
+                // this.mask = this.reelContainer.addChild(new Graphics()
+                //     .beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 480).endFill()
+                // )
             break
 
             case eReelType._3x5_single:
-                this.mask = [
-                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 160).endFill(),     // 第一列
-                    new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 160, 950, 160).endFill(),     // 第一列
-                    new Graphics().beginFill(0xFF3333, .5).drawRect(-40, 320, 950, 160).endFill(),     // 第二列
-                ]
+                // this.mask = [
+                //     new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 160).endFill(),     // 第一列
+                //     new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 160, 950, 160).endFill(),     // 第一列
+                //     new Graphics().beginFill(0xFF3333, .5).drawRect(-40, 320, 950, 160).endFill(),     // 第二列
+                // ]
             break
 
             case eReelType._3x3_reel:
-                this.mask = this.reelContainer.addChild(new Graphics()
-                    .beginFill(0xFFFFFF, .5).drawRect(-280, 0, 800, 510).endFill()
-                )
+                this.mask = this.reelContainer.addChild(new Sprite('Reel_Back.png'))
+                this.mask.position.copyFrom(window.reelBgPos)
             break
         } 
     }
@@ -132,7 +151,7 @@ export default class ReelController{
         this.reelArr.map(reel => reel.reset())
 
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
-        const maskArr: Array<Graphics> = !Array.isArray(this.mask)? [this.mask]: this.mask
+        const maskArr: Array<Sprite> = !Array.isArray(this.mask)? [this.mask]: this.mask
         this.reelContainer.addChild(...maskArr)
 
         EventHandler.on(eEventName.orientationChange, this.resizeFn)

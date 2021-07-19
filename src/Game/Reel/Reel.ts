@@ -77,7 +77,7 @@ export default class Reel{
             symbol.setTexture(this.reelDatas[this.nextDataIndex()])        // 滾輪表由下至上
         })
         
-        const maskArr: Array<Graphics> = Array.isArray(ReelController.Mask)? ReelController.Mask: [ReelController.Mask]
+        const maskArr: Array<Sprite> = Array.isArray(ReelController.Mask)? ReelController.Mask: [ReelController.Mask]
         this.symbolArr.map(symbol =>{
             const maskIndex: number = !Array.isArray(ReelController.Mask)? 0: ~~(this.reelIndex / 5)
             symbol.setUseMask(maskArr[maskIndex])

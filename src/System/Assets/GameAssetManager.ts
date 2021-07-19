@@ -19,10 +19,13 @@ export default class GameAssetManager{
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
         // 'Button': 'img/Button.png',
         'logo': 'img/logo.png',
+        'Scene_NG': 'img/Scene_NG.png',
+        'Scene_FG': 'img/Scene_FG.png',
     }
 
     private static spriteSheetList: {[key: string]: string} = {     // 圖集
-        'symbolSprite': 'img/Symbol.json'
+        'symbolSprite': 'img/Symbol.json',
+        'game': 'img/Game.json'
     }
 
     public static setLanguage(){
@@ -30,7 +33,7 @@ export default class GameAssetManager{
             // 'UITxt': 'img/' + LocalizationManager.getFolder() + '/UITxt.png', 
         }
         this.spriteSheetList = {...this.spriteSheetList, 
-        
+            'word': 'img/' + LocalizationManager.getFolder() + '/Word.json'
         }        
     }
 

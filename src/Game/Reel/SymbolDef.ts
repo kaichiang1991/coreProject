@@ -12,6 +12,7 @@ enum eSymbolName{
     N2 = 12,
     N3 = 13,
     N4 = 14,
+    N5 = 15,
 
     WD = 21,
     FG = 31
@@ -133,7 +134,7 @@ switch(window['reelType']){
         
         reelContPivot = new Point(700 / 2, 510 / 2)
         reelContPos_land = new Point(875, 340)
-        reelContPos_port = new Point(584, 655)
+        reelContPos_port = new Point(595, 635)
         xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
         yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2) * eSymbolConfig.height)]
 

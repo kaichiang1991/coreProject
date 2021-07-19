@@ -93,4 +93,5 @@ interface Window{
     LineNumberDef: {[key: number]: IDefConfig}
     logoPos: PIXI.Point
     reelContScale: number
+    reelBgPos: PIXI.Point
 }

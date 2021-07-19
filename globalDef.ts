@@ -6,7 +6,7 @@ export enum eReelType{
 
 window.reelType = eReelType._3x5_single
 window.reelType = eReelType._3x5_reel
-// window.reelType = eReelType._3x3_reel
+window.reelType = eReelType._3x3_reel
 
 import {eSymbolName} from "./src/Game/Reel/SymbolDef"
 import { eFGNumber } from "./src/Game/Number/FreeGameNumberManager"
@@ -247,8 +247,9 @@ switch(window.reelType){
             },
         }
 
-        window.logoPos = new PIXI.Point(80, -35)
-        window.reelContScale = .95
+        window.logoPos = new PIXI.Point(125, -35)
+        window.reelContScale = 1
+        window.reelBgPos = new PIXI.Point(-335, -70)
 
     break
     // #endregion 3x3 整輪
