@@ -3,7 +3,7 @@ import { eSymbolConfig, eSymbolState, mapRowIndex, reelSymbolCount, yOffsetArr }
 import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
-import { Graphics } from "pixi.js-legacy"
+import strip from '@root/strip.json?edit'
 
 export enum eListeningState{
     none,       // 沒有聽牌
@@ -289,10 +289,9 @@ export default class Reel{
 
     //#region 滾輪表
     public setReelData(type: eReelGameType){
-        // ToDo 讀json滾輪表
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = window.NGReelData[this.reelIndex]
+                this.reelDatas = strip[type][this.reelIndex].slice(1)
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.ScreenOrg[this.reelIndex])
                     this.nextDataIndex()
@@ -303,7 +302,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = window.FGReelData[this.reelIndex]
+                this.reelDatas = strip[type][this.reelIndex].slice(1)
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }

@@ -1,16 +1,13 @@
-import { Graphics, Point } from "pixi.js-legacy";
+import { Container, Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
-import config from '@root/config'
 import { editConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
 import {plus} from 'number-precision'
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager";
+import { eReelContainerLayer } from "@root/src/System/LayerDef";
+import { mapRowIndex, reelCount, xOffsetArr, yOffsetArr } from "../Reel/SymbolDef";
 
-const lineDef: {[key: number]: {y: number}} = {
-    1: {y: 240},
-    2: {y: 405},
-    3: {y: 570}
-}
+const {Sprite} = PixiAsset
 
 /** 管理線獎演出 */
 export class LineManager{
@@ -23,8 +20,18 @@ export class LineManager{
 
     private static lineConfig: ILineConfig
 
+    private static lineContainer: Container
+
     public static init(){
         this.lineConfig = editConfig.line
+
+        // 初始化放line的容器
+        this.lineContainer = ReelController.ReelContainer.addChild(new Container())
+        this.lineContainer.name = 'line container'
+        this.lineContainer.zIndex = eReelContainerLayer.line
+
+        const yArr: Array<number> = yOffsetArr[mapRowIndex(0)]
+        this.lineContainer.position.set(xOffsetArr[~~(reelCount / 2)], yArr[~~(yArr.length / 2)])
     }
 
     /**
@@ -34,7 +41,7 @@ export class LineManager{
     public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>){      // Winline的結構要重做
         this.winlineArr = winlineArr.slice()
         
-        this.winlineArr.map(winline => this.playLine(winline.LineNo))
+        this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
@@ -103,12 +110,28 @@ export class LineManager{
 
     /** 清除所有得獎動畫 */
     private static clearLineEvent(){
-        GameSpineManager.clearLine()
+        this.lineContainer.children.slice().map(child => child.destroy())
+        // GameSpineManager.clearLine()
         SymbolController.clearAllWinAnimation()         // 清除動畫
         LineNumberManager.clearLineNumber()             // 清除分數
     }
 
+    /**
+     * 播放線
+     * @param {number} lineNo 第幾線
+     */
     private static playLine(lineNo: number){
-        GameSpineManager.playLine(ReelController.ReelContainer, lineNo)
+        // GameSpineManager.playLine(ReelController.ReelContainer, lineNo)
+        const line = this.lineContainer.addChild(new Sprite(this.getLineTextureName(lineNo)))
+        line.anchor.set(.5)
+    }
+
+    /**
+     * 取得貼圖名稱
+     * @param {number} lineNo 第幾線
+     * @returns {string}
+     */
+    private static getLineTextureName(lineNo: number): string{
+        return 'Line_0' + lineNo + '.png'
     }
 }

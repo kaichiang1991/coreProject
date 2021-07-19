@@ -1,7 +1,11 @@
 {
     "game": {
         "BetLevelTitle" : "押注乘数",
-        "AutoSpinTitle": "Auto Spin(代翻)",
+        "BetListTitle": "押注金額选单",
+        "AutoSpinTitle": "自动旋转选单",
+        "AutoSpinSubTitle": "停止自动旋转",
+        "AutoSpinList1": "进入特色游戏时",
+        "AutoSpinList2": "获得高倍大奖时",
         "Line": "线",
         "GetWin": "得分",
         "SymbolWin": "符号得分",

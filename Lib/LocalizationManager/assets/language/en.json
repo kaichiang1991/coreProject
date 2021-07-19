@@ -1,7 +1,11 @@
 {
     "game": {
         "BetLevelTitle" : "Bet Level",
+        "BetListTitle": "Bet Options",
         "AutoSpinTitle": "Auto Spin",
+        "AutoSpinSubTitle": "Stop Auto Spin",
+        "AutoSpinList1": "if Features are won",
+        "AutoSpinList2": "if HugeWins are won",
         "Line": "Line",
         "GetWin": "Win",
         "SymbolWin": "Symbol Win",

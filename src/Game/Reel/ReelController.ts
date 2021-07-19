@@ -11,8 +11,8 @@ import StickSymbolController from "./StickSymbolController";
 import StickSymbol from "./StickSymbol";
 
 export enum eReelGameType{
-    normalGame,
-    freeGame
+    normalGame = 0,
+    freeGame = 50
 }
 
 export let spinConfig: ISpinConfig
@@ -74,7 +74,7 @@ export default class ReelController{
         }
 
         // 初始化旋轉 resize 事件
-        this.resizeFn = ()=> this.resize()
+        (this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=> this.resize()))()
     }
 
     /** 初始化滾輪的容器，方便之後縮放 */
@@ -153,9 +153,6 @@ export default class ReelController{
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
         const maskArr: Array<Sprite> = !Array.isArray(this.mask)? [this.mask]: this.mask
         this.reelContainer.addChild(...maskArr)
-
-        EventHandler.on(eEventName.orientationChange, this.resizeFn)
-        this.resizeFn()
     }
 
     private static resize(){
