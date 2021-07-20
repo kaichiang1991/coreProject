@@ -291,7 +291,7 @@ export default class Reel{
     public setReelData(type: eReelGameType){
         switch(type){
             case eReelGameType.normalGame:
-                this.reelDatas = strip[type][this.reelIndex].slice(1)
+                this.reelDatas = strip[type][this.reelIndex].slice()
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.ScreenOrg[this.reelIndex])
                     this.nextDataIndex()
@@ -302,7 +302,7 @@ export default class Reel{
             break
 
             case eReelGameType.freeGame:
-                this.reelDatas = strip[type][this.reelIndex].slice(1)
+                this.reelDatas = strip[type][this.reelIndex].slice()
                 this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
             break
         }
