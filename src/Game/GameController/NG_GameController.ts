@@ -149,7 +149,7 @@ class EndSpin extends GameState{
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
         if(isFreeGame){
-            await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.WD)[0])
+            await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
             GameSceneManager.switchGameScene(eGameScene.normalGame)

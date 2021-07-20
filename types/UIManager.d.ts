@@ -148,6 +148,10 @@ declare class AutoSpinListUIManager {
     static get Active(): boolean;
     private static uiArr;
     static get UIArr(): Array<PIXI.Container>;
+    private static freeGameSwitch;
+    static get FreeGameSwitch(): boolean;
+    private static winSwitch;
+    static get WinSwitch(): boolean;
     private static autoSpinListOptionArr;
     private static exitFn;
     /**初始化 */
@@ -166,6 +170,23 @@ declare class AutoSpinListUIManager {
     private static setAutoSpinListOptionChosen;
     /**註冊事件 */
     private static registerEvent;
+    /**清除所有物件 */
+    static clearAll(): void;
+}
+declare class JackpotUIManager {
+    private static isActive;
+    static get Active(): boolean;
+    private static uiArr;
+    static get UIArr(): Array<PIXI.Container>;
+    /**初始化 */
+    static init(): void;
+    /**
+     * 開關UI
+     * @param flag 開關狀態
+     */
+    static activeUI(flag: boolean): void;
+    /**重置設定 */
+    static reset(portrait: boolean): void;
     /**清除所有物件 */
     static clearAll(): void;
 }
