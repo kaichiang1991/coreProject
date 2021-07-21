@@ -2,21 +2,23 @@ import lazyLoad from "@root/src/Tool/lazyLoad"
 import config from '@root/config'
 import { App } from "@root/src"
 import { Container } from "pixi.js-legacy"
-import { eReelContainerLayer } from "../LayerDef"
+import { eAppLayer, eReelContainerLayer } from "../LayerDef"
 import { reelContPivot } from "@root/src/Game/Reel/SymbolDef"
 
 const {Spine} = PixiAsset
 
 export enum eSpineName{
     symbol = 'Symbol',
-    line = 'line'
+    line = 'line',
+    Transition = 'Transition'
 }
 
 export default class GameSpineManager{
 
     private static spineList: ISpineList = {
         [eSpineName.symbol]: 'img/SymbolAnim',
-        [eSpineName.line]: 'img/Line'
+        [eSpineName.line]: 'img/Line',
+        [eSpineName.Transition]: 'img/Transition'
     }
 
     public static setLanguage(){
@@ -84,4 +86,22 @@ export default class GameSpineManager{
         this.line.parent?.removeChild(this.line)
     }
     //#endregion Line
+
+    //#region Transition
+    /**
+     * 播放轉場卷軸動畫
+     * @param {Container} parent 父節點
+     * @returns {[Spine, Promise<void>]} [動畫節點, 進場動畫播放完畢]
+     */
+    public static playTransition(parent: Container): [Spine, Promise<void>]{
+
+        const [transition, track] = Spine.playSpine(eSpineName.Transition, 'FG_Title_In')
+        transition.addAnimation('FG_Title_Loop', true)
+        transition.zIndex = eAppLayer.transition
+        transition.name = 'transition'
+        parent?.addChild(transition)
+
+        return [transition, waitTrackComplete(track)]
+    }
+    //#endregion Transition
 }

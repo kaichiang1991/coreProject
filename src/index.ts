@@ -16,6 +16,10 @@ import GameDataRequest from './System/Network/GameDataRequest'
 import { NetworkManager } from './System/Network/NetworkManager'
 import GameSlotData from './Game/GameSlotData'
 
+export enum eGameEventName{
+    transitionDone = 'transitionDone'
+}
+
 // 顯示專案資訊
 const {name, version, size, fps} = config
 console.log(`%cProject "${name}", version: "${version}"`, 'background-color:yellow; padding: 1px 30px; fontFamily: 600 Ariel; font-size: 24px;')

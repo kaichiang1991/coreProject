@@ -3,6 +3,7 @@ import { eReelContainerLayer } from "@root/src/System/LayerDef"
 import { Container } from "pixi.js-legacy"
 
 export enum eFGNumber{
+    titleTimes,
     currentTimes,
     remainTimes,
     totalTimes,
@@ -24,9 +25,10 @@ export default class FreeGameNumberManager{
 
         // 設定使用的設定檔
         this.useDef = window.FG_NumberDef[LocalizationManager.getLanguage()]
-        const {[eFGNumber.currentTimes]: current, [eFGNumber.remainTimes]: remain, [eFGNumber.plus]: plus} = this.useDef
+        const {[eFGNumber.titleTimes]: title, [eFGNumber.currentTimes]: current, [eFGNumber.remainTimes]: remain, [eFGNumber.plus]: plus} = this.useDef
 
-        this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)        // 現在場次
+        this.numArr[eFGNumber.titleTimes] = GameFontManager.drawFreeGameTitleRoundNumber('titleTimes', title.pos)          // 開頭場次
+        this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)         // 現在場次
         this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos)            // 總共場次
         ;[eFGNumber.currentTimes, eFGNumber.remainTimes].map(index => this.numArr[index]).map(font =>{                     // 場次數字共通設定
             font.zIndex = eReelContainerLayer.FG_roundTimes
@@ -35,6 +37,25 @@ export default class FreeGameNumberManager{
         this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos)
         this.numArr[eFGNumber.plus].zIndex = eReelContainerLayer.FG_plusTimes
     }
+
+    //#region 獲得總場次
+    /**
+     * 播放獲得免費遊戲的次數
+     * @param {number} value 總共幾場
+     * @param {Container} [parent=] 父節點 
+     */
+    public static playTitleTimes(value: number, parent?: Container){
+        const font: BitmapText = this.numArr[eFGNumber.titleTimes]
+        parent?.addChild(font)
+        font.text = value.toString()
+    }
+
+    /** 清除 title 的數字 */
+    public static clearTitleTimes(){
+        this.playTitleTimes(0)
+        this.numArr[eFGNumber.titleTimes].parent?.removeChild(this.numArr[eFGNumber.titleTimes])
+    }
+    //#endregion 獲得總場次
 
     //#region 目前場次
     /**

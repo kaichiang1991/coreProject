@@ -1,6 +1,6 @@
 import { Container, Graphics } from "pixi.js-legacy";
-import { App } from "..";
-import { eAppLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
+import { App, eGameEventName } from "..";
+import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
 import config from '@root/config'
 import ReelController from "../Game/Reel/ReelController";
 
@@ -16,6 +16,8 @@ interface IScene{
     type: string
     context: SceneContext
     cont: Container
+    resizeFn: IEventCallback
+    [propName: string]: any
 
     pre(context?: any)
     enter(context?: any)
@@ -57,6 +59,10 @@ class SceneContext{
         this.currentScene.enter(context)
         return this
     }
+
+    public getCurrent(): IScene{
+        return this.currentScene
+    }
 }
 
 class GameScene implements IScene{
@@ -64,7 +70,8 @@ class GameScene implements IScene{
     type: string
     context: SceneContext
     cont: Container 
-
+    resizeFn: IEventCallback
+    
     constructor(type: string, context: SceneContext){
         this.type = type
         this.context = context
@@ -81,7 +88,7 @@ const {AssetLoader, Sprite, Spine} = PixiAsset
 export default class GameSceneManager{
     private static sceneContainerArr: {[key: string]: Container} = {}
     private static currentScene: eGameScene
-    private static context: SceneContext
+    public static context: SceneContext
 
     /** 初始化所有場景 */
     public static init(){
@@ -119,7 +126,7 @@ export default class GameSceneManager{
             case eGameScene.freeGame:
                 this.context.setScene(scene)
                 // 等轉場完再換
-                EventHandler.once('transitionDone', ()=> this.context.changeScene(scene))
+                EventHandler.once(eGameEventName.transitionDone, ()=> this.context.changeScene(scene))
                 break
             case eGameScene.systemError:
                 if(SystemErrorManager.IsError)
@@ -163,6 +170,7 @@ class NormalGame extends GameScene{
 
         this.bg = new Sprite('Scene_NG')
         this.UI_Bottom = new Sprite()
+        this.bg.zIndex = this.UI_Bottom.zIndex = eNGLayer.background
     }
 
     enter(){
@@ -171,8 +179,18 @@ class NormalGame extends GameScene{
         this.cont.sortableChildren = true
 
         ReelController.ReelContainer.addChild(this.logo)
-        EventHandler.on(eEventName.orientationChange, this.resize)
-        this.resize()
+        ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
+            const {portrait} = config
+            if(portrait){
+                this.bg.position.set(-280, 0)
+                this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
+                this.UI_Bottom.position.set(0, 895)
+            }else{
+                this.bg.position.set(0, -280)
+                this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
+                this.UI_Bottom.position.set(0, 600)
+            }
+        }))()
     }
 
     exit(){
@@ -181,53 +199,66 @@ class NormalGame extends GameScene{
         this.bg.destroy()
 
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
-        EventHandler.off(eEventName.orientationChange, this.resize)
-    }
-
-    resize = ()=>{
-        const {portrait, size: {width, height}} = config
-        if(portrait){
-            this.bg.position.set(-280, 0)
-            this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
-            this.UI_Bottom.position.set(0, 895)
-        }else{
-            this.bg.position.set(0, -280)
-            this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
-            this.UI_Bottom.position.set(0, 600)
-        }
+        EventHandler.off(eEventName.orientationChange, this.resizeFn)
     }
 }
 
 /** FreeGame 場景 */
 class FreeGame extends GameScene{
 
-    private bg: Graphics
+    private bg: Sprite
+    private UI_Bottom: Sprite
+
+    private remainTimesBottom: Sprite       // 剩餘場次的底板
+    public get RemainTimesBottom(): Sprite {return this.remainTimesBottom}
+    private multipleTimesBottom: Sprite     // 倍數的底板
+    private remainTimesText: Sprite         // 剩餘場次的文字
 
     pre(){
-        this.bg = new Graphics()
+        this.bg = new Sprite('Scene_FG')
+        this.UI_Bottom = new Sprite()
+        this.bg.zIndex = this.UI_Bottom.zIndex = eFGLayer.background
+
+        // 底板
+        this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
+        this.multipleTimesBottom = new Sprite('Feature_TopPlate.png')
+        this.remainTimesBottom.zIndex = this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom
+        // 底板文字
+        this.remainTimesText = this.remainTimesBottom.addChild(new Sprite('Feature_RemainWord.png'))
+        this.remainTimesText.position.set(30, 15)
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
-        this.cont.addChild(this.bg)
+        this.cont.addChild(this.bg, this.UI_Bottom)
+        this.cont.sortableChildren = true
+
+        ReelController.ReelContainer.addChild(this.remainTimesBottom, this.multipleTimesBottom)
         
-        EventHandler.on(eEventName.orientationChange, this.resize)
-        this.resize()
+        ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
+            const {portrait} = config
+            if(portrait){
+                this.bg.position.set(-280, 0)
+                this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
+                this.UI_Bottom.position.set(0, 895)
+                
+                this.remainTimesBottom.position.set(-95, -145)
+                this.multipleTimesBottom.position.set(-95, -80)
+            }else{
+                this.bg.position.set(0, -280)
+                this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
+                this.UI_Bottom.position.set(0, 600)
+
+                this.remainTimesBottom.position.set(-305, -80)
+                this.multipleTimesBottom.position.set(115, -80)
+            }
+        }))()
     }
 
     exit(){
         this.bg.destroy()
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
-        EventHandler.off(eEventName.orientationChange, this.resize)
-    }
-
-    resize = ()=>{
-        const {portrait, size: {width, height}} = config
-        if(portrait){
-            this.bg.clear().beginFill(0x91C7FF).drawRect(0, 0, width, height)
-        }else{
-            this.bg.clear().beginFill(0x91C7FF).drawRect(0, 0, height, width)
-        }
+        EventHandler.off(eEventName.orientationChange, this.resizeFn)
     }
 }
 

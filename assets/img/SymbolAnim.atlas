@@ -1,685 +1,1130 @@
 
 SymbolAnim.png
-size: 968,1032
+size: 1024,1016
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-FG/FG_BG
+Sym_FG/FG_Light_01
   rotate: false
-  xy: 2, 234
-  size: 162, 157
-  orig: 162, 158
-  offset: 0, 1
-  index: -1
-FG/FG_cloud1
-  rotate: true
-  xy: 804, 137
-  size: 96, 44
-  orig: 99, 46
-  offset: 2, 1
-  index: -1
-FG/FG_cloud2
-  rotate: true
-  xy: 815, 55
-  size: 80, 46
-  orig: 82, 48
-  offset: 1, 1
-  index: -1
-FG/FG_cloud3
-  rotate: true
-  xy: 704, 102
-  size: 114, 31
-  orig: 118, 35
-  offset: 2, 1
-  index: -1
-FG/FG_door_L
-  rotate: true
-  xy: 576, 602
-  size: 111, 109
-  orig: 132, 129
-  offset: 11, 11
-  index: -1
-FG/FG_door_R
-  rotate: true
-  xy: 850, 140
-  size: 37, 67
-  orig: 39, 69
-  offset: 1, 1
-  index: -1
-FG/FG_doorshine
-  rotate: false
-  xy: 761, 874
-  size: 155, 156
-  orig: 158, 158
-  offset: 1, 1
-  index: -1
-FG/FG_frame
-  rotate: true
-  xy: 172, 385
-  size: 168, 99
-  orig: 168, 160
+  xy: 780, 281
+  size: 111, 103
+  orig: 111, 103
   offset: 0, 0
   index: -1
-FG/FG_frame_b
+Sym_FG/FG_Light_02
   rotate: false
-  xy: 260, 870
-  size: 168, 160
-  orig: 168, 160
+  xy: 777, 968
+  size: 51, 44
+  orig: 51, 44
   offset: 0, 0
   index: -1
-FG/FG_gemglow
-  rotate: true
-  xy: 583, 444
-  size: 26, 23
-  orig: 28, 25
-  offset: 2, 1
-  index: -1
-WD/WD_frameglow
-  rotate: true
-  xy: 583, 444
-  size: 26, 23
-  orig: 28, 25
-  offset: 2, 1
-  index: -1
-FG/FG_house
+Sym_FG/FG_Light_03
   rotate: false
-  xy: 242, 596
-  size: 162, 149
-  orig: 162, 149
-  offset: 0, 0
-  index: -1
-FG/FG_house_in
-  rotate: false
-  xy: 260, 747
-  size: 188, 121
-  orig: 188, 121
-  offset: 0, 0
-  index: -1
-FG/FG_par
-  rotate: false
-  xy: 809, 593
-  size: 117, 123
-  orig: 125, 127
-  offset: 1, 2
-  index: -1
-H2/H2_particle (6)
-  rotate: false
-  xy: 809, 593
-  size: 117, 123
-  orig: 125, 127
-  offset: 1, 2
-  index: -1
-H3/H3_par
-  rotate: false
-  xy: 809, 593
-  size: 117, 123
-  orig: 125, 127
-  offset: 1, 2
-  index: -1
-H4/H4_par
-  rotate: false
-  xy: 809, 593
-  size: 117, 123
-  orig: 125, 127
-  offset: 1, 2
-  index: -1
-WD/WD_par
-  rotate: false
-  xy: 809, 593
-  size: 117, 123
-  orig: 125, 127
-  offset: 1, 2
-  index: -1
-FG/FG_particle (102)
-  rotate: false
-  xy: 445, 314
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-H1/H1_particle (102)
-  rotate: false
-  xy: 445, 314
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-FG/FG_shine
-  rotate: false
-  xy: 445, 218
-  size: 148, 94
-  orig: 150, 103
-  offset: 1, 4
-  index: -1
-FG/FG_text
-  rotate: true
-  xy: 918, 892
-  size: 138, 32
-  orig: 140, 34
-  offset: 1, 1
-  index: -1
-H1/H1_BG
-  rotate: false
-  xy: 450, 715
-  size: 154, 153
-  orig: 154, 153
-  offset: 0, 0
-  index: -1
-H1/H1_BG2
-  rotate: true
-  xy: 763, 718
-  size: 154, 153
-  orig: 154, 153
-  offset: 0, 0
-  index: -1
-H1/H1_aura
-  rotate: false
-  xy: 2, 555
-  size: 238, 217
-  orig: 256, 256
-  offset: 8, 19
-  index: -1
-H1/H1_frame
-  rotate: false
-  xy: 600, 874
-  size: 159, 156
-  orig: 159, 156
-  offset: 0, 0
-  index: -1
-H2/H2_frame
-  rotate: false
-  xy: 600, 874
-  size: 159, 156
-  orig: 159, 156
-  offset: 0, 0
-  index: -1
-H3/H3_frame
-  rotate: false
-  xy: 600, 874
-  size: 159, 156
-  orig: 159, 156
-  offset: 0, 0
-  index: -1
-H4/H4_frame
-  rotate: false
-  xy: 600, 874
-  size: 159, 156
-  orig: 159, 156
-  offset: 0, 0
-  index: -1
-H1/H1_framelight
-  rotate: true
-  xy: 320, 112
-  size: 130, 122
-  orig: 134, 134
-  offset: 2, 6
-  index: -1
-H2/H2_framelight
-  rotate: true
-  xy: 320, 112
-  size: 130, 122
-  orig: 134, 134
-  offset: 2, 6
-  index: -1
-H3/H3_framelight
-  rotate: true
-  xy: 320, 112
-  size: 130, 122
-  orig: 134, 134
-  offset: 2, 6
-  index: -1
-H4/H4_framelight
-  rotate: true
-  xy: 320, 112
-  size: 130, 122
-  orig: 134, 134
-  offset: 2, 6
-  index: -1
-H1/H1_glow
-  rotate: false
-  xy: 815, 2
+  xy: 936, 961
   size: 56, 51
-  orig: 66, 69
-  offset: 4, 9
+  orig: 56, 51
+  offset: 0, 0
   index: -1
-H1/H1_hand
+Sym_FG/FG_Light_04
+  rotate: false
+  xy: 283, 980
+  size: 37, 32
+  orig: 37, 32
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_Light_05
+  rotate: false
+  xy: 830, 968
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0001
   rotate: true
-  xy: 687, 604
-  size: 110, 120
-  orig: 110, 120
+  xy: 87, 595
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H1/H1_lightning
-  rotate: false
-  xy: 166, 230
-  size: 137, 153
-  orig: 137, 153
-  offset: 0, 0
-  index: -1
-H1/H1_lightning3
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0003
   rotate: true
-  xy: 918, 762
-  size: 128, 32
-  orig: 128, 32
+  xy: 239, 592
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H1/H1_lightning4
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0005
   rotate: true
-  xy: 575, 314
-  size: 128, 32
-  orig: 128, 32
+  xy: 391, 591
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H1/H1_mesh
-  rotate: false
-  xy: 444, 88
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-H2/H2_BG
-  rotate: false
-  xy: 164, 75
-  size: 154, 153
-  orig: 154, 153
-  offset: 0, 0
-  index: -1
-H2/H2_aura
-  rotate: false
-  xy: 320, 2
-  size: 110, 108
-  orig: 128, 128
-  offset: 9, 9
-  index: -1
-H4/H4_aura
-  rotate: false
-  xy: 320, 2
-  size: 110, 108
-  orig: 128, 128
-  offset: 9, 9
-  index: -1
-H2/H2_cloth
-  rotate: false
-  xy: 809, 357
-  size: 100, 115
-  orig: 100, 115
-  offset: 0, 0
-  index: -1
-H2/H2_cloth_s
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0007
   rotate: true
-  xy: 893, 250
-  size: 105, 46
-  orig: 105, 46
+  xy: 543, 584
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H2/H2_glow
-  rotate: false
-  xy: 897, 46
-  size: 59, 31
-  orig: 61, 34
-  offset: 1, 1
-  index: -1
-H2/H2_glow2
-  rotate: false
-  xy: 863, 55
-  size: 32, 30
-  orig: 34, 34
-  offset: 1, 2
-  index: -1
-H2/H2_light1
-  rotate: false
-  xy: 918, 751
-  size: 8, 9
-  orig: 13, 12
-  offset: 3, 1
-  index: -1
-H2/H2_light2
-  rotate: false
-  xy: 793, 593
-  size: 9, 9
-  orig: 12, 12
-  offset: 2, 2
-  index: -1
-H2/H2_mesh
-  rotate: false
-  xy: 916, 79
-  size: 41, 41
-  orig: 41, 41
-  offset: 0, 0
-  index: -1
-H2/H2_motion (91)
-  rotate: false
-  xy: 574, 88
-  size: 128, 128
-  orig: 128, 256
-  offset: 0, 0
-  index: -1
-H2/H2_shine
-  rotate: false
-  xy: 305, 244
-  size: 138, 139
-  orig: 158, 158
-  offset: 8, 8
-  index: -1
-H3/H3_shine
-  rotate: false
-  xy: 305, 244
-  size: 138, 139
-  orig: 158, 158
-  offset: 8, 8
-  index: -1
-H3/H3_BG
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0009
   rotate: true
-  xy: 273, 440
-  size: 154, 153
-  orig: 154, 153
+  xy: 695, 583
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H3/H3_aura
-  rotate: false
-  xy: 2, 774
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
-H3/H3_glow
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0011
   rotate: true
-  xy: 919, 122
-  size: 62, 33
-  orig: 64, 36
-  offset: 1, 2
-  index: -1
-H3/H3_glow2
-  rotate: true
-  xy: 919, 122
-  size: 62, 33
-  orig: 64, 36
-  offset: 1, 2
-  index: -1
-H3/H3_glow3
-  rotate: false
-  xy: 863, 87
-  size: 51, 51
-  orig: 51, 51
+  xy: 847, 546
+  size: 78, 150
+  orig: 78, 150
   offset: 0, 0
   index: -1
-H3/H3_light
-  rotate: false
-  xy: 14, 2
-  size: 9, 9
-  orig: 13, 13
-  offset: 2, 2
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0013
+  rotate: true
+  xy: 2, 515
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
   index: -1
-H3/H3_light2
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0015
+  rotate: true
+  xy: 154, 512
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0017
+  rotate: true
+  xy: 306, 511
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0019
+  rotate: true
+  xy: 543, 504
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0021
+  rotate: true
+  xy: 695, 503
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0023
+  rotate: true
+  xy: 847, 466
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0025
+  rotate: true
+  xy: 2, 435
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0027
+  rotate: true
+  xy: 154, 432
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0029
+  rotate: true
+  xy: 306, 431
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0031
+  rotate: true
+  xy: 543, 424
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0033
+  rotate: true
+  xy: 695, 423
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0035
+  rotate: true
+  xy: 847, 386
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0037
+  rotate: true
+  xy: 2, 355
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0039
+  rotate: true
+  xy: 154, 352
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0041
+  rotate: true
+  xy: 306, 351
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX_02/Sym_FG_02_0043
+  rotate: true
+  xy: 458, 344
+  size: 78, 150
+  orig: 78, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_A
+  rotate: true
+  xy: 519, 976
+  size: 36, 51
+  orig: 36, 51
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_A_FX
+  rotate: true
+  xy: 2, 987
+  size: 25, 39
+  orig: 25, 39
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E
+  rotate: true
+  xy: 363, 977
+  size: 35, 49
+  orig: 35, 49
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E2
+  rotate: true
+  xy: 414, 977
+  size: 35, 49
+  orig: 35, 49
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E2_FX
+  rotate: true
+  xy: 43, 986
+  size: 26, 37
+  orig: 26, 37
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E3
+  rotate: true
+  xy: 572, 976
+  size: 36, 49
+  orig: 36, 49
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E3_FX
+  rotate: true
+  xy: 82, 986
+  size: 26, 37
+  orig: 26, 37
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_E_FX
+  rotate: true
+  xy: 121, 986
+  size: 26, 37
+  orig: 26, 37
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_F
+  rotate: true
+  xy: 465, 977
+  size: 35, 52
+  orig: 35, 52
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_F_FX
+  rotate: true
+  xy: 201, 984
+  size: 28, 40
+  orig: 28, 40
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_G
+  rotate: true
+  xy: 674, 969
+  size: 43, 49
+  orig: 43, 49
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_G_FX
+  rotate: true
+  xy: 160, 985
+  size: 27, 39
+  orig: 27, 39
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_M
+  rotate: true
+  xy: 725, 969
+  size: 43, 50
+  orig: 43, 50
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_M_FX
+  rotate: true
+  xy: 322, 980
+  size: 32, 39
+  orig: 32, 39
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_R
+  rotate: true
+  xy: 623, 972
+  size: 40, 49
+  orig: 40, 49
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_Words_R_FX
+  rotate: true
+  xy: 243, 981
+  size: 31, 38
+  orig: 31, 38
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Frame_Shinee/Sym_Frame_Shinee_0001
+  rotate: false
+  xy: 2, 598
+  size: 83, 81
+  orig: 83, 81
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Frame_Shinee/Sym_Frame_Shinee_0002
+  rotate: false
+  xy: 458, 508
+  size: 83, 81
+  orig: 83, 81
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Frame_Shinee/Sym_Frame_Shinee_0003
+  rotate: false
+  xy: 458, 425
+  size: 83, 81
+  orig: 83, 81
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Frame_Shinee/Sym_Frame_Shinee_0004
+  rotate: false
+  xy: 610, 341
+  size: 83, 81
+  orig: 83, 81
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Frame_Shinee/Sym_Frame_Shinee_0005
+  rotate: false
+  xy: 695, 340
+  size: 83, 81
+  orig: 83, 81
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0001
+  rotate: true
+  xy: 893, 264
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0003
+  rotate: true
+  xy: 2, 233
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0005
+  rotate: true
+  xy: 126, 230
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0007
+  rotate: true
+  xy: 250, 229
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0009
+  rotate: true
+  xy: 374, 222
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0011
+  rotate: true
+  xy: 498, 219
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0013
+  rotate: true
+  xy: 622, 218
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0015
+  rotate: true
+  xy: 746, 159
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0017
+  rotate: true
+  xy: 870, 142
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0019
+  rotate: true
+  xy: 2, 111
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0021
+  rotate: true
+  xy: 126, 108
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0023
+  rotate: true
+  xy: 250, 107
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0025
+  rotate: true
+  xy: 374, 100
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0027
+  rotate: true
+  xy: 498, 97
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Particle_FX/Sym_WD_Particle_FX_0029
+  rotate: true
+  xy: 622, 96
+  size: 120, 122
+  orig: 120, 122
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0001
+  rotate: false
+  xy: 2, 925
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0003
+  rotate: false
+  xy: 145, 919
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0005
+  rotate: false
+  xy: 288, 916
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0007
+  rotate: false
+  xy: 431, 915
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0009
+  rotate: false
+  xy: 574, 908
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0011
+  rotate: false
+  xy: 717, 907
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0013
+  rotate: false
+  xy: 2, 864
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0015
+  rotate: false
+  xy: 145, 858
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0017
+  rotate: false
+  xy: 288, 855
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0019
+  rotate: false
+  xy: 431, 854
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0021
+  rotate: false
+  xy: 574, 847
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0023
+  rotate: false
+  xy: 717, 846
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0025
+  rotate: false
+  xy: 2, 803
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0027
+  rotate: false
+  xy: 145, 797
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0029
+  rotate: false
+  xy: 288, 794
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0031
+  rotate: false
+  xy: 431, 793
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0033
+  rotate: false
+  xy: 574, 786
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0035
+  rotate: false
+  xy: 717, 785
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0037
+  rotate: false
+  xy: 2, 742
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0039
+  rotate: false
+  xy: 145, 736
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0041
+  rotate: false
+  xy: 288, 733
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0043
+  rotate: false
+  xy: 431, 732
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0045
+  rotate: false
+  xy: 574, 725
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0047
+  rotate: false
+  xy: 717, 724
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0049
+  rotate: false
+  xy: 2, 681
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0051
+  rotate: false
+  xy: 145, 675
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0053
+  rotate: false
+  xy: 288, 672
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0055
+  rotate: false
+  xy: 431, 671
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0057
+  rotate: false
+  xy: 574, 664
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_WD_Words_Light/Sym_WD_Words_Light_0059
+  rotate: false
+  xy: 717, 663
+  size: 141, 59
+  orig: 141, 59
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Black
+  rotate: false
+  xy: 746, 10
+  size: 133, 130
+  orig: 133, 130
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0001
+  rotate: false
+  xy: 860, 901
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0002
+  rotate: false
+  xy: 928, 894
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0003
+  rotate: false
+  xy: 860, 834
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0004
+  rotate: false
+  xy: 928, 827
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0005
+  rotate: false
+  xy: 860, 767
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0006
+  rotate: false
+  xy: 928, 760
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0007
+  rotate: false
+  xy: 860, 700
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0008
+  rotate: false
+  xy: 928, 693
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0009
+  rotate: false
+  xy: 860, 633
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0010
+  rotate: false
+  xy: 928, 626
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Star
+  rotate: false
+  xy: 883, 968
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+WD_Words
+  rotate: true
+  xy: 881, 2
+  size: 138, 141
+  orig: 138, 141
+  offset: 0, 0
+  index: -1
+
+SymbolAnim2.png
+size: 944,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sym_FG/FG_BG
+  rotate: true
+  xy: 639, 118
+  size: 307, 242
+  orig: 307, 242
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_Circle
+  rotate: true
+  xy: 639, 427
+  size: 260, 254
+  orig: 260, 254
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_FX_01
+  rotate: false
+  xy: 2, 722
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_FX_02
+  rotate: true
+  xy: 337, 689
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_FX_03
+  rotate: true
+  xy: 2, 387
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_FG/FG_FX_04
+  rotate: false
+  xy: 304, 387
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0001
+  rotate: false
+  xy: 271, 5
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0003
+  rotate: false
+  xy: 440, 5
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_BG_Glow
+  rotate: false
+  xy: 2, 152
+  size: 267, 233
+  orig: 267, 233
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Center
+  rotate: true
+  xy: 639, 689
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Line_FX
+  rotate: false
+  xy: 271, 157
+  size: 228, 228
+  orig: 228, 228
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Line_FX
   rotate: false
   xy: 2, 2
-  size: 10, 9
-  orig: 13, 12
-  offset: 2, 2
-  index: -1
-H3/H3_shield
-  rotate: false
-  xy: 793, 474
-  size: 118, 117
-  orig: 118, 117
+  size: 152, 148
+  orig: 152, 148
   offset: 0, 0
   index: -1
-H3/H3_shield_s
+
+SymbolAnim3.png
+size: 1016,976
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sym/H1_BKG
   rotate: false
-  xy: 120, 16
-  size: 118, 57
-  orig: 118, 57
+  xy: 2, 193
+  size: 230, 170
+  orig: 230, 170
   offset: 0, 0
   index: -1
-H4/H4_bg
+Sym/H1_UP
+  rotate: false
+  xy: 234, 193
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/H2_BKG
+  rotate: false
+  xy: 639, 174
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/H2_UP
+  rotate: false
+  xy: 2, 21
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/H3_BKG
+  rotate: false
+  xy: 234, 21
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/H3_UP
+  rotate: false
+  xy: 466, 2
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/H4_BKG
+  rotate: false
+  xy: 698, 2
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0005
+  rotate: false
+  xy: 2, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0007
+  rotate: false
+  xy: 171, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0009
+  rotate: false
+  xy: 340, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0011
+  rotate: false
+  xy: 509, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0013
+  rotate: false
+  xy: 678, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0015
+  rotate: false
+  xy: 847, 821
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0017
+  rotate: false
+  xy: 2, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0019
+  rotate: false
+  xy: 171, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0021
+  rotate: false
+  xy: 340, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0023
+  rotate: false
+  xy: 509, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0025
+  rotate: false
+  xy: 678, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0027
+  rotate: false
+  xy: 847, 669
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0029
+  rotate: false
+  xy: 2, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0031
+  rotate: false
+  xy: 171, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0033
+  rotate: false
+  xy: 340, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0035
+  rotate: false
+  xy: 509, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0037
+  rotate: false
+  xy: 678, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0039
+  rotate: false
+  xy: 847, 517
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0041
+  rotate: false
+  xy: 2, 365
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0043
+  rotate: false
+  xy: 171, 365
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_FG/Sym_FG_FX/Sym_FG_FX_0045
+  rotate: false
+  xy: 340, 365
+  size: 167, 150
+  orig: 167, 150
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Circle_FX
+  rotate: false
+  xy: 466, 176
+  size: 171, 171
+  orig: 171, 171
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Line02_FX
+  rotate: false
+  xy: 509, 349
+  size: 172, 166
+  orig: 172, 166
+  offset: 0, 0
+  index: -1
+WD_Frame_BG
+  rotate: false
+  xy: 683, 346
+  size: 225, 169
+  orig: 225, 169
+  offset: 0, 0
+  index: -1
+
+SymbolAnim4.png
+size: 924,412
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Sym/H4_UP
+  rotate: false
+  xy: 226, 4
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/N1
   rotate: true
-  xy: 428, 444
-  size: 154, 153
-  orig: 154, 153
+  xy: 368, 177
+  size: 230, 170
+  orig: 230, 170
   offset: 0, 0
   index: -1
-H4/H4_fur
+Sym/N2
+  rotate: false
+  xy: 458, 5
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+Sym/N3
   rotate: true
-  xy: 240, 13
-  size: 60, 73
-  orig: 60, 73
+  xy: 540, 177
+  size: 230, 170
+  orig: 230, 170
   offset: 0, 0
   index: -1
-H4/H4_glow
+Sym/N4
+  rotate: false
+  xy: 690, 5
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
+WD_CenterFrame
+  rotate: false
+  xy: 712, 204
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+WD_Frame
   rotate: true
-  xy: 928, 641
-  size: 45, 38
-  orig: 47, 41
-  offset: 1, 2
+  xy: 2, 176
+  size: 231, 181
+  orig: 231, 181
+  offset: 0, 0
   index: -1
-H4/H4_glow2
+WD_Frame_Shader
+  rotate: false
+  xy: 2, 2
+  size: 222, 172
+  orig: 222, 172
+  offset: 0, 0
+  index: -1
+WD_Light
   rotate: true
-  xy: 928, 688
-  size: 72, 38
-  orig: 74, 41
-  offset: 1, 2
-  index: -1
-H4/H4_glow3
-  rotate: true
-  xy: 850, 179
-  size: 76, 40
-  orig: 78, 43
-  offset: 1, 2
-  index: -1
-H4/H4_glow4
-  rotate: false
-  xy: 892, 186
-  size: 62, 62
-  orig: 64, 64
-  offset: 1, 1
-  index: -1
-H4/H4_head
-  rotate: false
-  xy: 812, 257
-  size: 79, 98
-  orig: 79, 98
-  offset: 0, 0
-  index: -1
-H4/H4_head_s
-  rotate: true
-  xy: 719, 2
-  size: 98, 50
-  orig: 98, 50
-  offset: 0, 0
-  index: -1
-N/N1
-  rotate: true
-  xy: 704, 351
-  size: 119, 103
-  orig: 121, 107
-  offset: 1, 1
-  index: -1
-N/N2
-  rotate: true
-  xy: 609, 218
-  size: 116, 99
-  orig: 116, 101
-  offset: 0, 0
-  index: -1
-N/N3
-  rotate: false
-  xy: 710, 235
-  size: 100, 114
-  orig: 100, 114
-  offset: 0, 0
-  index: -1
-N/N4
-  rotate: false
-  xy: 737, 133
-  size: 65, 100
-  orig: 65, 100
-  offset: 0, 0
-  index: -1
-WD/WD_BG
-  rotate: false
-  xy: 2, 393
-  size: 168, 160
-  orig: 168, 160
-  offset: 0, 0
-  index: -1
-WD/WD_D
-  rotate: false
-  xy: 242, 564
-  size: 29, 30
-  orig: 31, 32
-  offset: 1, 1
-  index: -1
-WD/WD_I
-  rotate: false
-  xy: 873, 23
-  size: 15, 30
-  orig: 17, 32
-  offset: 1, 1
-  index: -1
-WD/WD_L
-  rotate: false
-  xy: 928, 444
-  size: 24, 30
-  orig: 26, 32
-  offset: 1, 1
-  index: -1
-WD/WD_W
-  rotate: false
-  xy: 406, 715
-  size: 38, 30
-  orig: 40, 32
-  offset: 1, 1
-  index: -1
-WD/WD_body
-  rotate: false
-  xy: 273, 385
-  size: 159, 53
-  orig: 161, 55
-  offset: 1, 1
-  index: -1
-WD/WD_bread_L
-  rotate: true
-  xy: 928, 600
-  size: 39, 23
-  orig: 39, 23
-  offset: 0, 0
-  index: -1
-WD/WD_bread_Ls
-  rotate: true
-  xy: 911, 382
-  size: 29, 15
-  orig: 29, 15
-  offset: 0, 0
-  index: -1
-WD/WD_bread_R
-  rotate: false
-  xy: 812, 236
-  size: 34, 19
-  orig: 34, 19
-  offset: 0, 0
-  index: -1
-WD/WD_bread_Rs
-  rotate: true
-  xy: 737, 102
-  size: 29, 16
-  orig: 29, 16
-  offset: 0, 0
-  index: -1
-WD/WD_eyeLight
-  rotate: true
-  xy: 911, 413
-  size: 59, 15
-  orig: 62, 18
-  offset: 2, 1
-  index: -1
-WD/WD_eyeLight_L
-  rotate: false
-  xy: 2, 13
-  size: 116, 63
-  orig: 118, 65
-  offset: 1, 1
-  index: -1
-WD/WD_ eyeLight_R
-  rotate: false
-  xy: 2, 13
-  size: 116, 63
-  orig: 118, 65
-  offset: 1, 1
-  index: -1
-WD/WD_face
-  rotate: true
-  xy: 432, 3
-  size: 83, 143
-  orig: 83, 143
-  offset: 0, 0
-  index: -1
-WD/WD_frame
-  rotate: false
-  xy: 430, 870
-  size: 168, 160
-  orig: 168, 160
-  offset: 0, 0
-  index: -1
-WD/WD_frame_d
-  rotate: false
-  xy: 406, 600
-  size: 168, 113
-  orig: 168, 160
-  offset: 0, 0
-  index: -1
-WD/WD_framelight
-  rotate: false
-  xy: 771, 17
-  size: 42, 114
-  orig: 128, 128
-  offset: 83, 7
-  index: -1
-WD/WD_glow
-  rotate: true
-  xy: 913, 476
-  size: 115, 44
-  orig: 117, 49
-  offset: 1, 1
-  index: -1
-WD/WD_hair_L
-  rotate: true
-  xy: 577, 6
-  size: 80, 140
-  orig: 80, 140
-  offset: 0, 0
-  index: -1
-WD/WD_hair_R
-  rotate: false
-  xy: 713, 479
-  size: 78, 123
-  orig: 78, 123
-  offset: 0, 0
-  index: -1
-WD/WD_hair_b
-  rotate: true
-  xy: 609, 336
-  size: 134, 93
-  orig: 134, 93
-  offset: 0, 0
-  index: -1
-WD/WD_man
-  rotate: false
-  xy: 2, 78
-  size: 160, 154
-  orig: 160, 156
-  offset: 0, 0
-  index: -1
-WD/WD_shine_b
-  rotate: false
-  xy: 606, 716
-  size: 155, 156
-  orig: 158, 158
-  offset: 1, 1
-  index: -1
-WD/WD_shine_b3
-  rotate: false
-  xy: 583, 472
-  size: 128, 128
-  orig: 128, 128
+  xy: 185, 176
+  size: 231, 181
+  orig: 231, 181
   offset: 0, 0
   index: -1

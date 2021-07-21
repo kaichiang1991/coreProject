@@ -1,7 +1,10 @@
-import { App } from "@root/src"
+import config from '@root/config'
+import { App, eGameEventName } from "@root/src"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
+import { eAppLayer } from "@root/src/System/LayerDef"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
-import { Container, Graphics, Text } from "pixi.js-legacy"
+import { Container, Graphics, Text, Texture } from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
@@ -17,6 +20,7 @@ export enum eFG_GameState{
 }
 
 const {GameStateContext, createState, GameState} = StateModule
+const {Sprite} = PixiAsset
 
 export default class FG_GameController{
     private static instance: FG_GameController
@@ -44,32 +48,90 @@ export default class FG_GameController{
 
 class GameInit extends GameState{
 
+    private black: Graphics
+    private resizeFn: IEventCallback
+
     async enter(){
-        // 轉場
-        const tr = App.stage.addChild(
-            new Graphics().beginFill(0, .7).drawRect(0, 0, 720, 1280).endFill()
-        )
-        tr.zIndex = 999
-        await waitTweenComplete(gsap.from(tr, {y: -1280}))
-        tr.destroy()
-        EventHandler.dispatch('transitionDone')
+        //#region 轉場
+        // 黑底
+        this.black = App.stage.addChild(new Graphics().beginFill(0, .4).drawRect(0, 0, 1280, 1280).endFill())
+        this.black.zIndex = eAppLayer.transition
+        this.black.interactive = true
+        this.black.name = 'transition black'
 
-        const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
-        // 場次
-        FreeGameNumberManager.playCurrentTimes(0, ReelController.ReelContainer)
-        FreeGameNumberManager.playRemainTimes(FGTotalTimes, ReelController.ReelContainer)
-        ReelController.reset(eReelGameType.freeGame)
+        const transitionCont: Container = this.black.addChild(new Container())
+        transitionCont.name = 'transition container'
+        
+        // 轉場提示動畫
+        const [tranSpine, inAnimDone] = GameSpineManager.playTransition(transitionCont)
 
-        // NG 盤面分數
-        const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // ToDo 之後看server格式
-        BetModel.getInstance().addWin(win)
-        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
+        // 展開文字
+        const titleWord: Sprite = new Sprite('Transition_RoundWord.png')
+        titleWord.anchor.set(.5)
+        titleWord.position.set(0, -60)
 
-        await Sleep(1)
-        this.change()
+        ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
+            const {portrait} = config
+            if(portrait){
+                transitionCont.scale.set(.9)
+                transitionCont.position.set(360, 640)
+            }else{
+                transitionCont.scale.set(1)
+                transitionCont.position.set(640, 360)
+            }
+        }))()
+
+        await inAnimDone    // 等待展開
+
+        const titleCont: Container = transitionCont.addChild(new Container())
+        FreeGameNumberManager.playTitleTimes(5, titleCont)      // 數字
+        titleWord.setParent(titleCont)                          // 文字
+        await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))
+        //#endregion 轉場
+
+        // ToDo 到時候看 auto 設定?
+        this.black.once('pointerdown', async ()=>{
+            await Promise.all([
+                waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
+                waitTrackComplete(tranSpine.setAnimation('FG_Title_Out'))
+            ])            
+            this.change()
+        })
     }
 
-    change(){
+    async change(){
+        FreeGameNumberManager.clearTitleTimes()
+        this.black.destroy()        // 收拾容器
+        EventHandler.off(eEventName.orientationChange, this.resizeFn)
+        
+        EventHandler.dispatch(eGameEventName.transitionDone)
+        // 對位圖
+        // const po = App.stage.addChild(Sprite.from('assets/img/FG_W.png'))
+        // po.zIndex = 999
+        // po.alpha = .3
+        // EventHandler.on(eEventName.orientationChange, ()=>{
+        //     if(config.portrait){
+        //         po.texture = Texture.from('assets/img/FG_M.png')
+        //     }else{
+        //         po.texture = Texture.from('assets/img/FG_W.png')
+
+        //     }
+        // })
+
+        const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
+        //#region FG場景
+        // 滾輪
+        ReelController.reset(eReelGameType.freeGame)
+        // 場次
+        FreeGameNumberManager.playRemainTimes(FGTotalTimes, GameSceneManager.context.getCurrent().RemainTimesBottom)
+
+        // NG 盤面分數
+        const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // 統計NG盤面的所有贏分
+        BetModel.getInstance().addWin(win)
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
+        //#endregion FG場景
+
+        await Sleep(1)
         this.context.changeState(eFG_GameState.start)
     }
 }

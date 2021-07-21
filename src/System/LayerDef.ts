@@ -2,11 +2,20 @@ import { eSymbolLayer } from "../Game/Reel/SymbolDef";
 
 enum eAppLayer{
     sceneContainer,
-    version
+    blackCover,
+    version,
+
+    transition = 9999,
 }
 
 enum eNGLayer{
+    background,
     reelContainer
+}
+
+enum eFGLayer{
+    background,
+    reelContainer,
 }
 
 enum eReelContainerLayer{
@@ -18,6 +27,7 @@ enum eReelContainerLayer{
     reelFrame,
     black = 1000,
     logo,
+    featureBottom = logo,
     FG_roundTimes = logo,
     FG_plusTimes,
 
@@ -28,4 +38,4 @@ enum eReelContainerLayer{
     lineNumber
 }
 
-export {eAppLayer, eNGLayer, eReelContainerLayer}
+export {eAppLayer, eNGLayer, eFGLayer, eReelContainerLayer}

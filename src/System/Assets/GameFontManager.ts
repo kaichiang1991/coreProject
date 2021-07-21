@@ -6,6 +6,7 @@ const {BitmapText} = PixiAsset
 export enum eFontName{
     // ToDo 確認字型後要改
     lineWin = 'SG_Win',
+    FGTitle = 'SG_Win',
     FGRound = 'SG_Win',
     FGPlus = 'SG_Win',
     SG_Win = 'SG_Win',
@@ -35,6 +36,20 @@ export default class GameFontManager{
      */
     public static drawLineWinNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
         const font: BitmapText = BitmapText.drawFont(name, eFontName.lineWin, size, pos)
+        parent?.addChild(font)
+        return font
+    }
+
+    /**
+     * 畫 FreeGame 開頭場次的數字
+     * @param {string} name 容器名稱
+     * @param {number | Point} pos 座標
+     * @param {Container} [parent] 父節點
+     * @param {number} [size = 32] 數字大小
+     * @returns {BitmapText}
+     */
+    public static drawFreeGameTitleRoundNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.FGTitle, size, pos)
         parent?.addChild(font)
         return font
     }

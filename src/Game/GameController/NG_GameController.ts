@@ -180,7 +180,7 @@ class EndSpin extends GameState{
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})        // 壓黑
 
-        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))        // 播放 symbol 得獎
         .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
 
         await Promise.all(allPromise)

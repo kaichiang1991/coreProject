@@ -4,7 +4,7 @@ import Reel, { eListeningState } from "./Reel";
 import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState, reelContPos_land, reelContPos_port } from "./SymbolDef";
 import { editConfig } from "@root/src";
 import config from '@root/config'
-import { eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
+import { eFGLayer, eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 import { eReelType } from "@root/globalDef";
 import Symbol from './Symbol'
 import StickSymbolController from "./StickSymbolController";
@@ -83,7 +83,6 @@ export default class ReelController{
         this.reelContainer.name = 'reel container'
         this.reelContainer.sortableChildren = true
         this.reelContainer.pivot.copyFrom(reelContPivot)
-        this.reelContainer.zIndex = eNGLayer.reelContainer        
         this.reelContainer.interactive = this.reelContainer.buttonMode = true
         this.reelContainer.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
     }
@@ -145,8 +144,17 @@ export default class ReelController{
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})        // 一開始先隱藏
     }
 
+    /**
+     * 重設滾輪
+     * 1. 遊戲類型 (NG, FG)
+     * 2. 滾輪表
+     * 3. 遮罩, symbol
+     * 4. 父節點
+     * @param {eReelGameType} type 遊戲類型
+     */
     public static reset(type: eReelGameType){
         this.gameType = type
+        this.reelContainer.zIndex = type == eReelGameType.normalGame? eNGLayer.reelContainer: eFGLayer.reelContainer
         this.setReelData(type)
         this.reelArr.map(reel => reel.reset())
 
