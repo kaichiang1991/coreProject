@@ -10,11 +10,17 @@ enum eAppLayer{
 
 enum eNGLayer{
     background,
-    reelContainer
+    sceneEffect,
+    UI_Bottom,
+    character,
+    reelContainer,
 }
 
 enum eFGLayer{
     background,
+    sceneEffect,
+    UI_Bottom,
+    character,
     reelContainer,
 }
 

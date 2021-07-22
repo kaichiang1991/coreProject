@@ -1,4 +1,6 @@
 import { App } from "@root/src"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
+import GameSceneManager from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -36,8 +38,8 @@ class LotteryInit extends GameState{
 
     enter(){
         // 整理數據
-        const {WinLineInfos} = GameSlotData.FGSpinData.SpinInfo
-        FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
+        const {WinLineInfos, Multiplier} = GameSlotData.FGSpinData.SpinInfo
+        FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + (curr.LineNo == 0? 0: curr.Win * Multiplier), 0)     // 不計算FG連線贏分，並乘上整盤的倍數
         FGLotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)
         this.change()
     }
@@ -50,19 +52,25 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
+        GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
+
         const {win, winlineInfos} = FGLotteryController
         await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)     // 先演大獎
         
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
 
+        const {Multiplier} = GameSlotData.FGSpinData.SpinInfo
         BetModel.getInstance().addWin(win)
-        await LineManager.playAllLineWin(winlineInfos)
-        await LineManager.playEachLine()
+        await LineManager.playAllLineWin(winlineInfos, Multiplier)
+        await GameSpineManager.playFG_OddsWin()
+        // await LineManager.playEachLine()            
         this.change()
     }
 
     change(){
+        
+        GameSpineManager.playNextFG_Odds()
         this.context.changeState(eFG_LotteryState.end)
     }
 }

@@ -13,6 +13,9 @@ const {Sprite} = PixiAsset
 export class LineManager{
 
     private static winlineArr: Array<ISSlotWinLineInfo>
+    private static showMultiple: boolean                // 這次贏分是否要顯示倍數
+    private static multiply: number
+
     private static eachLineTimeline: GSAPTimeline
     private static stopEachLineFn: Function
     // 若有演逐線則停止逐線 timeline，否則就單純清除線
@@ -36,20 +39,30 @@ export class LineManager{
 
     /**
      * 播放全線得獎動畫
-     * @param winlineArr 
+     * @param {Array<ISSlotWinLineInfo} winlineArr 贏分線陣列
+     * @param {number} [multiply=]  倍率 (沒有則會是 undefined)
      */
-    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>){      // Winline的結構要重做
+    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiply?: number){      // Winline的結構要重做
         this.winlineArr = winlineArr.slice()
+
+        this.showMultiple = multiply != undefined     // 決定要不要顯示倍數
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
-            Sleep(this.lineConfig.leastAllLineDuration),     // 最少演出時間
+            Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
             LineNumberManager.playLineNumberAnim(win),       // 線獎跑分
         )        
         
         await Promise.all(allPromise)
+
+        // 倍率的演出
+        if(this.showMultiple){
+            this.multiply = multiply
+            LineNumberManager.playLineWinMultNumber(this.multiply)
+        }
+
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
 
@@ -67,7 +80,6 @@ export class LineManager{
             return new Point(+x, +y)
         })
     }
-
 
     /**
      * 播放逐線動畫
@@ -90,6 +102,7 @@ export class LineManager{
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
                 this.playLine(LineNo)                                                           // 播放線獎
                 LineNumberManager.playLineNumber(Win)                                           // 播放分數
+                // this.showMultiple && LineNumberManager.playLineWinMultNumber(this.multiply)     // 播放線獎倍率
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
                 index = ++index % this.winlineArr.length
             })
@@ -111,9 +124,9 @@ export class LineManager{
     /** 清除所有得獎動畫 */
     private static clearLineEvent(){
         this.lineContainer.children.slice().map(child => child.destroy())
-        // GameSpineManager.clearLine()
         SymbolController.clearAllWinAnimation()         // 清除動畫
         LineNumberManager.clearLineNumber()             // 清除分數
+        LineNumberManager.clearLineWinMultNumber()      // 清除分數倍率
     }
 
     /**
@@ -121,7 +134,6 @@ export class LineManager{
      * @param {number} lineNo 第幾線
      */
     private static playLine(lineNo: number){
-        // GameSpineManager.playLine(ReelController.ReelContainer, lineNo)
         const line = this.lineContainer.addChild(new Sprite(this.getLineTextureName(lineNo)))
         line.anchor.set(.5)
     }

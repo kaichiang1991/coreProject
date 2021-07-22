@@ -17,7 +17,8 @@ import { NetworkManager } from './System/Network/NetworkManager'
 import GameSlotData from './Game/GameSlotData'
 
 export enum eGameEventName{
-    transitionDone = 'transitionDone'
+    transitionDone = 'transitionDone',
+    FG_Win = 'FG_Win',
 }
 
 // 顯示專案資訊

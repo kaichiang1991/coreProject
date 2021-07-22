@@ -1,0 +1,44 @@
+{"frames": {
+
+"Feature_RemainWord.png":
+{
+	"frame": {"x":1,"y":1,"w":304,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":5,"w":304,"h":45},
+	"sourceSize": {"w":305,"h":50}
+},
+"Logo.png":
+{
+	"frame": {"x":1,"y":48,"w":226,"h":94},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":0,"w":226,"h":94},
+	"sourceSize": {"w":240,"h":100}
+},
+"Transition_RoundWord.png":
+{
+	"frame": {"x":1,"y":246,"w":397,"h":159},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":81,"y":17,"w":397,"h":159},
+	"sourceSize": {"w":500,"h":200}
+},
+"Transition_WinWord.png":
+{
+	"frame": {"x":1,"y":144,"w":368,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":18,"y":0,"w":368,"h":100},
+	"sourceSize": {"w":400,"h":100}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Word.png",
+	"format": "RGBA8888",
+	"size": {"w":399,"h":406},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:92c3fb8187f3eced197162ee188c0764:f7ddc691c5b4fe6eb63a8c01fe79b60b:bebaf67f0971519bba208fd2eedb5207$"
+}
+}

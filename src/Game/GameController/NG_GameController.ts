@@ -1,7 +1,6 @@
 import { App } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
-import { Sprite } from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
@@ -43,8 +42,6 @@ class GameInit extends GameState{
     enter(){
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
         ReelController.reset(eReelGameType.normalGame)          // 初始化滾輪
-
-        // const sp = App.stage.addChild(Sprite.from('assets/img/3x3_M.png'))
         this.change()
     }
 

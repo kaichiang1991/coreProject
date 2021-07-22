@@ -123,7 +123,9 @@ class GameInit extends GameState{
         // 滾輪
         ReelController.reset(eReelGameType.freeGame)
         // 場次
-        FreeGameNumberManager.playRemainTimes(FGTotalTimes, GameSceneManager.context.getCurrent().RemainTimesBottom)
+        const {RemainTimesBottom, MultipleTimesBottom} = GameSceneManager.context.getCurrent()
+        FreeGameNumberManager.playRemainTimes(FGTotalTimes, RemainTimesBottom)
+        GameSpineManager.playFG_Odds(MultipleTimesBottom)
 
         // NG 盤面分數
         const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // 統計NG盤面的所有贏分
@@ -150,7 +152,7 @@ class GameStart extends GameState{
 class StartSpin extends GameState{
 
     async enter(){
-        FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
+        // FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
         FreeGameNumberManager.adjustRemainTimes(false)              // 減少剩餘場次
 
         const allSpin: Promise<void> = ReelController.startSpin()
@@ -207,6 +209,7 @@ class EndSpin extends GameState{
     exit(){
         EventHandler.dispatch(eEventName.activeBlack, {flag: false})
         LineManager.StopEachLineFn()
+        GameSpineManager.endFGCharacterWin()
     }
 }
 

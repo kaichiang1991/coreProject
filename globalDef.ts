@@ -199,7 +199,8 @@ switch(window.reelType){
         window.blackGraphic = [-235, 0, 700, 510]
 
         window.LineNumberDef = {
-            [eLineNumber.lineWin]: {pos: new PIXI.Point(120, 230)}
+            [eLineNumber.lineWin]: {pos: new PIXI.Point(120, 230)},
+            // [eLineNumber.multiply]: {pos: new PIXI.Point()}
         }
 
         window.FG_NumberDef = {

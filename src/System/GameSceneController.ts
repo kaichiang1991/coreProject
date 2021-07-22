@@ -1,8 +1,9 @@
-import { Container, Graphics } from "pixi.js-legacy";
+import { Container, Graphics, Point, Texture } from "pixi.js-legacy";
 import { App, eGameEventName } from "..";
 import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
 import config from '@root/config'
 import ReelController from "../Game/Reel/ReelController";
+import GameSpineManager from "./Assets/GameSpineManager";
 
 export enum eGameScene{
     loading     = 'loading',
@@ -169,14 +170,18 @@ class NormalGame extends GameScene{
         window.logoPos.copyTo(this.logo.position)
 
         this.bg = new Sprite('Scene_NG')
+        this.bg.zIndex = eNGLayer.background
         this.UI_Bottom = new Sprite()
-        this.bg.zIndex = this.UI_Bottom.zIndex = eNGLayer.background
+        this.UI_Bottom.zIndex = eNGLayer.UI_Bottom
     }
 
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
-        this.cont.addChild(this.bg, this.UI_Bottom)
         this.cont.sortableChildren = true
+
+        this.cont.addChild(this.bg, this.UI_Bottom)
+        GameSpineManager.playNGScene(this.cont)
+        GameSpineManager.playNGCharacter(this.cont)
 
         ReelController.ReelContainer.addChild(this.logo)
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
@@ -185,10 +190,15 @@ class NormalGame extends GameScene{
                 this.bg.position.set(-280, 0)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
+                GameSpineManager.setScene(false, eNGLayer.sceneEffect, new Point())                                       // 場景特效
+                GameSpineManager.setCharacter(eNGLayer.character, new Point(360, 280), new Point().set(1))                // 主視覺角色
+
             }else{
                 this.bg.position.set(0, -280)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
                 this.UI_Bottom.position.set(0, 600)
+                GameSpineManager.setScene(true, eNGLayer.sceneEffect, new Point(640, 360))                                 // 場景特效
+                GameSpineManager.setCharacter(eNGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
         }))()
     }
@@ -197,6 +207,9 @@ class NormalGame extends GameScene{
         // 子元件移除
         this.logo.destroy()
         this.bg.destroy()
+        this.UI_Bottom.destroy()
+        GameSpineManager.clearScene()
+        GameSpineManager.clearCharacter()
 
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
         EventHandler.off(eEventName.orientationChange, this.resizeFn)
@@ -212,12 +225,14 @@ class FreeGame extends GameScene{
     private remainTimesBottom: Sprite       // 剩餘場次的底板
     public get RemainTimesBottom(): Sprite {return this.remainTimesBottom}
     private multipleTimesBottom: Sprite     // 倍數的底板
+    public get MultipleTimesBottom(): Sprite {return this.multipleTimesBottom}
     private remainTimesText: Sprite         // 剩餘場次的文字
 
     pre(){
         this.bg = new Sprite('Scene_FG')
+        this.bg.zIndex = eFGLayer.background
         this.UI_Bottom = new Sprite()
-        this.bg.zIndex = this.UI_Bottom.zIndex = eFGLayer.background
+        this.UI_Bottom.zIndex = eFGLayer.UI_Bottom
 
         // 底板
         this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
@@ -231,10 +246,13 @@ class FreeGame extends GameScene{
     enter(){
         this.cont = App.stage.addChild(GameSceneManager.getSceneContainer())
         this.cont.addChild(this.bg, this.UI_Bottom)
-        this.cont.sortableChildren = true
+        this.cont.interactive = this.cont.sortableChildren = true
 
         ReelController.ReelContainer.addChild(this.remainTimesBottom, this.multipleTimesBottom)
         
+        GameSpineManager.playFGScene(this.cont)
+        GameSpineManager.playFGCharacter(this.cont)
+
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
             const {portrait} = config
             if(portrait){
@@ -244,6 +262,10 @@ class FreeGame extends GameScene{
                 
                 this.remainTimesBottom.position.set(-95, -145)
                 this.multipleTimesBottom.position.set(-95, -80)
+
+                GameSpineManager.setScene(false, eFGLayer.sceneEffect, new Point())                                       // 場景特效
+                GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 280), new Point().set(1))                // 主視覺角色
+
             }else{
                 this.bg.position.set(0, -280)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
@@ -251,12 +273,21 @@ class FreeGame extends GameScene{
 
                 this.remainTimesBottom.position.set(-305, -80)
                 this.multipleTimesBottom.position.set(115, -80)
+
+                GameSpineManager.setScene(true, eNGLayer.sceneEffect, new Point(640, 360))                                 // 場景特效
+                GameSpineManager.setCharacter(eFGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
         }))()
     }
 
     exit(){
         this.bg.destroy()
+        this.UI_Bottom.destroy()
+        this.remainTimesBottom.destroy()
+        this.multipleTimesBottom.destroy()
+        this.remainTimesText.destroy()
+        GameSpineManager.clearScene()
+
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
         EventHandler.off(eEventName.orientationChange, this.resizeFn)
     }

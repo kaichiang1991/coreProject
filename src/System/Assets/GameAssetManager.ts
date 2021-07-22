@@ -84,5 +84,7 @@ export default class GameAssetManager{
         await FreeGameNumberManager.init()
 
         // GameSpineManager.initLine()
+        GameSpineManager.initScene()
+        GameSpineManager.initCharacter()
     }
 }
