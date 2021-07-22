@@ -139,21 +139,37 @@ export default class GameSpineManager{
     //#endregion Scene
 
     //#region Transition
+    private static transition: Spine
+
     /**
      * 播放轉場卷軸動畫
      * 每次播放時創造一個新的
      * @param {Container} parent 父節點
-     * @returns {[Spine, Promise<void>]} [動畫節點, 進場動畫播放完畢]
+     * @returns {Promise<void>} 進場動畫播放完畢
      */
-    public static playTransition(parent: Container): [Spine, Promise<void>]{
-
+    public static async playTransitionIn(parent: Container): Promise<void>{
         const [transition, track] = Spine.playSpine(eSpineName.Transition, 'FG_Title_In')
         transition.addAnimation('FG_Title_Loop', true)
         transition.zIndex = eAppLayer.transition
         transition.name = 'transition'
         parent?.addChild(transition)
 
-        return [transition, waitTrackComplete(track)]
+        this.transition = transition
+        return waitTrackComplete(track)
+    }
+
+    /**
+     * 播放轉場出場動畫
+     * @returns {Promise<void>} 動畫演完
+     */
+    public static playTransitionOut(): Promise<void>{
+        return waitTrackComplete(this.transition.setAnimation('FG_Title_Out'))
+    }
+
+    /** 清除轉場動畫 */
+    public static clearTransition(){
+        this.transition.setEmptyAnimations()
+        this.transition.parent?.removeChild(this.transition)
     }
     //#endregion Transition
 
@@ -232,6 +248,12 @@ export default class GameSpineManager{
         this.currentIndex = 0
         // 其他乘數初始化
         this.ODDS_ARR.slice(1).map(num => this.FG_Odds.setAnimationWithIndex(this.ODDS_ARR.indexOf(num), `X${num}_Disable`, true))
+    }
+
+    /** 清除 FG 的倍數 */
+    public static clearFG_Odds(){
+        this.FG_Odds.setEmptyAnimations()
+        this.FG_Odds.parent?.removeChild(this.FG_Odds)
     }
     
     /**

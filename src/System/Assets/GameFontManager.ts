@@ -8,6 +8,7 @@ export enum eFontName{
     lineWin = 'SG_Win',
     lineWinMult = 'SG_Win',
     FGTitle = 'SG_Win',
+    FGTotalWin = 'SG_Win',
     FGRound = 'SG_Win',
     FGPlus = 'SG_Win',
     SG_Win = 'SG_Win',
@@ -65,6 +66,20 @@ export default class GameFontManager{
      */
     public static drawFreeGameTitleRoundNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
         const font: BitmapText = BitmapText.drawFont(name, eFontName.FGTitle, size, pos)
+        parent?.addChild(font)
+        return font
+    }
+
+    /**
+     * 畫 FreeGame 總贏分的數字
+     * @param {string} name 容器名稱
+     * @param {number | Point} pos 座標
+     * @param {Container} [parent] 父節點
+     * @param {number} [size = 32] 數字大小
+     * @returns {BitmapText}
+     */
+    public static drawFreeGameTotalWinNumber(name: string, pos: number | Point, parent?: Container, size: number = 32): BitmapText{
+        const font: BitmapText = BitmapText.drawFont(name, eFontName.FGTotalWin, size, pos)
         parent?.addChild(font)
         return font
     }

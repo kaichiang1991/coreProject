@@ -7,7 +7,8 @@ export enum eFGNumber{
     currentTimes,
     remainTimes,
     totalTimes,
-    plus
+    plus,
+    totalWin
 }
 
 export default class FreeGameNumberManager{
@@ -25,14 +26,15 @@ export default class FreeGameNumberManager{
 
         // 設定使用的設定檔
         this.useDef = window.FG_NumberDef[LocalizationManager.getLanguage()]
-        const {[eFGNumber.titleTimes]: title, [eFGNumber.currentTimes]: current, [eFGNumber.remainTimes]: remain, [eFGNumber.plus]: plus} = this.useDef
+        const {[eFGNumber.titleTimes]: title, [eFGNumber.currentTimes]: current, [eFGNumber.remainTimes]: remain, [eFGNumber.plus]: plus, [eFGNumber.totalWin]: totalWin} = this.useDef
 
         this.numArr[eFGNumber.titleTimes] = GameFontManager.drawFreeGameTitleRoundNumber('titleTimes', title.pos)          // 開頭場次
         this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)         // 現在場次
         this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos)            // 總共場次
-        ;[eFGNumber.currentTimes, eFGNumber.remainTimes].map(index => this.numArr[index]).map(font =>{                     // 場次數字共通設定
-            font.zIndex = eReelContainerLayer.FG_roundTimes
-        })
+        this.numArr[eFGNumber.totalWin] = GameFontManager.drawFreeGameTotalWinNumber('totalWin', totalWin.pos)             // 總贏分
+        // ;[eFGNumber.currentTimes, eFGNumber.remainTimes].map(index => this.numArr[index]).map(font =>{                     // 場次數字共通設定
+        //     font.zIndex = eReelContainerLayer.FG_roundTimes
+        // })
 
         this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos)
         this.numArr[eFGNumber.plus].zIndex = eReelContainerLayer.FG_plusTimes
@@ -56,6 +58,19 @@ export default class FreeGameNumberManager{
         this.numArr[eFGNumber.titleTimes].parent?.removeChild(this.numArr[eFGNumber.titleTimes])
     }
     //#endregion 獲得總場次
+
+    //#region 總贏分
+    public static playTotalWin(value: number, parent?: Container){
+        const font: BitmapText = this.numArr[eFGNumber.totalWin]
+        parent?.addChild(font)
+        font.text = MathTool.convertNumDisplay(value)
+    }
+
+    public static clearTotalWin(){
+        this.playTotalWin(0)
+        this.numArr[eFGNumber.totalWin].parent?.removeChild(this.numArr[eFGNumber.totalWin])
+    }
+    //#endregion 總贏分
 
     //#region 目前場次
     /**

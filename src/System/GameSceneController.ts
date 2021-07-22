@@ -283,9 +283,9 @@ class FreeGame extends GameScene{
     exit(){
         this.bg.destroy()
         this.UI_Bottom.destroy()
+        this.remainTimesText.destroy()
         this.remainTimesBottom.destroy()
         this.multipleTimesBottom.destroy()
-        this.remainTimesText.destroy()
         GameSpineManager.clearScene()
 
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開

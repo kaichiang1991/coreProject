@@ -63,7 +63,7 @@ class GameInit extends GameState{
         transitionCont.name = 'transition container'
         
         // 轉場提示動畫
-        const [tranSpine, inAnimDone] = GameSpineManager.playTransition(transitionCont)
+        const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
 
         // 展開文字
         const titleWord: Sprite = new Sprite('Transition_RoundWord.png')
@@ -83,9 +83,10 @@ class GameInit extends GameState{
 
         await inAnimDone    // 等待展開
 
+        const {FGTotalTimes} = GameSlotData.NGSpinData.SpinInfo
         const titleCont: Container = transitionCont.addChild(new Container())
-        FreeGameNumberManager.playTitleTimes(5, titleCont)      // 數字
-        titleWord.setParent(titleCont)                          // 文字
+        FreeGameNumberManager.playTitleTimes(FGTotalTimes, titleCont)      // 數字
+        titleWord.setParent(titleCont)                                     // 文字
         await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))
         //#endregion 轉場
 
@@ -93,33 +94,21 @@ class GameInit extends GameState{
         this.black.once('pointerdown', async ()=>{
             await Promise.all([
                 waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
-                waitTrackComplete(tranSpine.setAnimation('FG_Title_Out'))
+                GameSpineManager.playTransitionOut()
             ])            
             this.change()
         })
     }
 
     async change(){
-        FreeGameNumberManager.clearTitleTimes()
-        this.black.destroy()        // 收拾容器
+        FreeGameNumberManager.clearTitleTimes()         // 清除TotalWin 數字
+        GameSpineManager.clearTransition()              // 清除轉場
+        this.black.destroy()                            // 收拾容器
         EventHandler.off(eEventName.orientationChange, this.resizeFn)
-        
-        EventHandler.dispatch(eGameEventName.transitionDone)
-        // 對位圖
-        // const po = App.stage.addChild(Sprite.from('assets/img/FG_W.png'))
-        // po.zIndex = 999
-        // po.alpha = .3
-        // EventHandler.on(eEventName.orientationChange, ()=>{
-        //     if(config.portrait){
-        //         po.texture = Texture.from('assets/img/FG_M.png')
-        //     }else{
-        //         po.texture = Texture.from('assets/img/FG_W.png')
+        EventHandler.dispatch(eGameEventName.transitionDone)            // 通知場景已轉場完畢
 
-        //     }
-        // })
-
-        const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         //#region FG場景
+        const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         // 滾輪
         ReelController.reset(eReelGameType.freeGame)
         // 場次
@@ -215,26 +204,67 @@ class EndSpin extends GameState{
 
 class GameEnd extends GameState{
 
-    async enter(){
-        const title: Container = GameSceneManager.getSceneContainer().addChild(new Container())
-        title.name = 'title'
-        let text: Text
-        title.addChild(
-            new Graphics().beginFill(0xFFFFFF, .7).drawRect(0, 0, 720, 1280).endFill(),
-            text = new Text('恭喜贏分\n999999')
-        )
-        text.position.set(360, 300)
-        
-        await Sleep(2)
-        // 清除場次
-        FreeGameNumberManager.clearCurrentTimes()
-        FreeGameNumberManager.clearRemainTimes()
+    private black: Graphics
+    private resizeFn: IEventCallback
 
-        title.destroy()
+    async enter(){
+        //#region 轉場
+        // 黑底
+        this.black = App.stage.addChild(new Graphics().beginFill(0, .4).drawRect(0, 0, 1280, 1280).endFill())
+        this.black.zIndex = eAppLayer.transition
+        this.black.interactive = true
+        this.black.name = 'transition black'
+        
+        const transitionCont: Container = this.black.addChild(new Container())
+        transitionCont.name = 'transition container'
+
+        // 轉場提示動畫
+        const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
+
+        // 展開文字
+        const titleWord: Sprite = new Sprite('Transition_WinWord.png')
+        titleWord.anchor.set(.5)
+        titleWord.position.set(0, -85)
+
+        ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
+            const {portrait} = config
+            if(portrait){
+                transitionCont.scale.set(.9)
+                transitionCont.position.set(360, 640)
+            }else{
+                transitionCont.scale.set(1)
+                transitionCont.position.set(640, 360)
+            }
+        }))()
+
+        await inAnimDone
+
+        const titleCont: Container = transitionCont.addChild(new Container())
+        FreeGameNumberManager.playTotalWin(BetModel.getInstance().Win, titleCont)        // 數字
+        titleWord.setParent(titleCont)                          // 文字
+        await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))
+
+        await Sleep(2)          // 停留時間
+        await Promise.all([
+            waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
+            GameSpineManager.playTransitionOut()
+        ])
+        //#endregion 轉場
+
         this.change()
     }
 
     change(){
+        FreeGameNumberManager.clearTotalWin()        // 清除TotalWin 數字
+        GameSpineManager.clearTransition()           // 清除轉場
+        this.black.destroy()                         // 收拾容器
+        EventHandler.off(eEventName.orientationChange, this.resizeFn)
+
+        // 清除場次
+        // FreeGameNumberManager.clearCurrentTimes()
+        FreeGameNumberManager.clearRemainTimes()
+        GameSpineManager.clearFG_Odds()
+
         EventHandler.dispatch(eEventName.FG_End)
     }
 }
