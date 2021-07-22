@@ -1,4 +1,4 @@
-import { Container, Graphics, Point, Texture } from "pixi.js-legacy";
+import { Point, Texture } from "pixi.js-legacy";
 import { App, eGameEventName } from "..";
 import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
 import config from '@root/config'

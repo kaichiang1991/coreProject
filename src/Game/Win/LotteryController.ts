@@ -64,8 +64,7 @@ class LotteryAnim extends GameState{
         
         // 壓暗
         EventHandler.dispatch(eEventName.activeBlack, {flag: true})
-        if(!isBackFromFG)                                               // 因應流程，從FG回來的時候不加入計算
-            BetModel.getInstance().addWin(win)
+        BetModel.getInstance().addWin(win)
 
         await LineManager.playAllLineWin(winlineInfos)
         await LineManager.playEachLine()

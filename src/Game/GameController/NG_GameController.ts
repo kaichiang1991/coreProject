@@ -152,9 +152,14 @@ class EndSpin extends GameState{
             GameSceneManager.switchGameScene(eGameScene.normalGame)
             ReelController.reset(eReelGameType.normalGame)
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
-        }
 
-        isWin && await LotteryController.init(isFreeGame)
+            EventHandler.dispatch(eEventName.activeBlack, {flag: true})
+            await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
+            await LineManager.playFG_EachLine()
+        }else{            
+            isWin && await LotteryController.init(isFreeGame)
+        }
+        
         this.change()
     }
 

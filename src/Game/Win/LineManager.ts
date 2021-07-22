@@ -2,7 +2,7 @@ import { Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import { editConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
-import {plus} from 'number-precision'
+import {minus, plus} from 'number-precision'
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { mapRowIndex, reelCount, xOffsetArr, yOffsetArr } from "../Reel/SymbolDef";
 
@@ -75,8 +75,6 @@ export class LineManager{
         )        
         
         await Promise.all(allPromise)
-
-        // EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
     
     /**
@@ -133,6 +131,54 @@ export class LineManager{
         })
     }
 
+    
+    /**
+     * 播放FG回來後逐線動畫
+     * @returns 單線的話直接回傳 / 多線的話 timeline 開始跑了之後回傳
+     */
+     public static async playFG_EachLine(){
+        this.stopEachLineFn = null
+        if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
+            return
+        }
+
+        return new Promise<void>(res =>{
+
+            // 計算 FG 扣除 NG 贏分的總分
+            const FGWin: number = minus(BetModel.getInstance().Win, this.winlineArr.filter(winline => winline.LineNo != 0)
+            .reduce((pre, curr) => plus(pre, curr.Win), 0))
+            const {eachLineLight} = this.lineConfig
+
+            console.log('fg win', FGWin)
+            let index: number = 0
+            this.eachLineTimeline = gsap.timeline().repeat(-1)
+            .call(()=>{
+                this.clearLineEvent()
+                const {LineNo, Win, WinPosition} = this.winlineArr[index]
+                if(LineNo == 0){
+                    LineNumberManager.playLineNumber(FGWin)
+                }else{
+                    this.playLine(LineNo)                                                           // 播放線獎
+                    LineNumberManager.playLineNumber(Win)                                           // 播放分數
+                }
+                WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
+                index = ++index % this.winlineArr.length
+            })
+            .add(()=> {}, `+=${eachLineLight}`)
+            
+            .eventCallback('onStart', ()=> res())
+
+            .eventCallback('onComplete', ()=>{
+                this.clearLineEvent()
+            })
+            
+            this.stopEachLineFn = ()=>{
+                safe_kill_tween(this.eachLineTimeline, false)
+                this.eachLineTimeline = null
+            }
+        })
+    }
+
     /** 清除所有得獎動畫 */
     private static clearLineEvent(){
         this.lineContainer.children.slice().map(child => child.destroy())
@@ -146,6 +192,8 @@ export class LineManager{
      * @param {number} lineNo 第幾線
      */
     private static playLine(lineNo: number){
+        if(lineNo == 0)     // FG 不播線圖
+            return
         const line = this.lineContainer.addChild(new Sprite(this.getLineTextureName(lineNo)))
         line.anchor.set(.5)
     }
