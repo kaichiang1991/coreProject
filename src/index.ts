@@ -102,6 +102,7 @@ const gameEntry: Function = async ()=>{
     await UIManager.init(App.stage, config)
     GameSceneManager.switchGameScene(eGameScene.normalGame)
     NG_GameController.getInstance().init()
+    AppDebug.initDivPanel()
 }
 gameEntry()
 
