@@ -84,7 +84,7 @@ class GameScene implements IScene{
 }
 //#endregion
 
-const {AssetLoader, Sprite, Spine} = PixiAsset
+const {AssetLoader, Container, Sprite, Spine} = PixiAsset
 
 export default class GameSceneManager{
     private static sceneContainerArr: {[key: string]: Container} = {}
@@ -95,10 +95,7 @@ export default class GameSceneManager{
     public static init(){
 
         Object.keys(eGameScene).map(key => {
-            const cont: Container = new Container()
-            cont.zIndex = eAppLayer.sceneContainer
-            cont.name = key
-            this.sceneContainerArr[key] = cont
+            this.sceneContainerArr[key] = new Container(key, eAppLayer.sceneContainer)
         })
 
         this.context = new SceneContext()

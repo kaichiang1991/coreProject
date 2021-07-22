@@ -52,4 +52,4 @@ export default class AppDebug{
     }
 }
 
-window['AppDebug'] = AppDebug
+window.AppDebug = AppDebug

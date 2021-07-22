@@ -4,7 +4,7 @@ import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import { eAppLayer } from "@root/src/System/LayerDef"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
-import { Container, Graphics, Text, Texture } from "pixi.js-legacy"
+import {Point} from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
@@ -20,7 +20,7 @@ export enum eFG_GameState{
 }
 
 const {GameStateContext, createState, GameState} = StateModule
-const {Sprite} = PixiAsset
+const {Container, Graphics, Sprite} = PixiAsset
 
 export default class FG_GameController{
     private static instance: FG_GameController
@@ -54,13 +54,13 @@ class GameInit extends GameState{
     async enter(){
         //#region 轉場
         // 黑底
-        this.black = App.stage.addChild(new Graphics().beginFill(0, .4).drawRect(0, 0, 1280, 1280).endFill())
-        this.black.zIndex = eAppLayer.transition
+        this.black = App.stage.addChild(
+            new Graphics('transition black', eAppLayer.transition)
+            .drawColorRect(0, .4, new Point(), 1280, 1280) 
+        )
         this.black.interactive = true
-        this.black.name = 'transition black'
 
-        const transitionCont: Container = this.black.addChild(new Container())
-        transitionCont.name = 'transition container'
+        const transitionCont: Container = this.black.addChild(new Container('transition container'))
         
         // 轉場提示動畫
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
@@ -84,7 +84,7 @@ class GameInit extends GameState{
         await inAnimDone    // 等待展開
 
         const {FGTotalTimes} = GameSlotData.NGSpinData.SpinInfo
-        const titleCont: Container = transitionCont.addChild(new Container())
+        const titleCont: Container = transitionCont.addChild(new Container('titleCont'))
         FreeGameNumberManager.playTitleTimes(FGTotalTimes, titleCont)      // 數字
         titleWord.setParent(titleCont)                                     // 文字
         await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))
@@ -210,13 +210,13 @@ class GameEnd extends GameState{
     async enter(){
         //#region 轉場
         // 黑底
-        this.black = App.stage.addChild(new Graphics().beginFill(0, .4).drawRect(0, 0, 1280, 1280).endFill())
-        this.black.zIndex = eAppLayer.transition
+        this.black = App.stage.addChild(
+            new Graphics('transition black', eAppLayer.transition)
+            .drawColorRect(0, .4, new Point(), 1280, 1280)
+        )
         this.black.interactive = true
-        this.black.name = 'transition black'
         
-        const transitionCont: Container = this.black.addChild(new Container())
-        transitionCont.name = 'transition container'
+        const transitionCont: Container = this.black.addChild(new Container('transition container'))
 
         // 轉場提示動畫
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
@@ -239,7 +239,7 @@ class GameEnd extends GameState{
 
         await inAnimDone
 
-        const titleCont: Container = transitionCont.addChild(new Container())
+        const titleCont: Container = transitionCont.addChild(new Container('titleCont'))
         FreeGameNumberManager.playTotalWin(BetModel.getInstance().Win, titleCont)        // 數字
         titleWord.setParent(titleCont)                          // 文字
         await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))

@@ -1,13 +1,12 @@
-import { Container, Graphics, Point } from "pixi.js-legacy";
+import { Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import { editConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
 import {plus} from 'number-precision'
-import GameSpineManager from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import { mapRowIndex, reelCount, xOffsetArr, yOffsetArr } from "../Reel/SymbolDef";
 
-const {Sprite} = PixiAsset
+const {Container, Sprite} = PixiAsset
 
 /** 管理線獎演出 */
 export class LineManager{
@@ -29,9 +28,7 @@ export class LineManager{
         this.lineConfig = editConfig.line
 
         // 初始化放line的容器
-        this.lineContainer = ReelController.ReelContainer.addChild(new Container())
-        this.lineContainer.name = 'line container'
-        this.lineContainer.zIndex = eReelContainerLayer.line
+        this.lineContainer = ReelController.ReelContainer.addChild(new Container('line container', eReelContainerLayer.line))
 
         const yArr: Array<number> = yOffsetArr[mapRowIndex(0)]
         this.lineContainer.position.set(xOffsetArr[~~(reelCount / 2)], yArr[~~(yArr.length / 2)])
@@ -42,7 +39,7 @@ export class LineManager{
      * @param {Array<ISSlotWinLineInfo} winlineArr 贏分線陣列
      * @param {number} [multiply=]  倍率 (沒有則會是 undefined)
      */
-    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiply?: number){      // Winline的結構要重做
+    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiply?: number){      
         this.winlineArr = winlineArr.slice()
 
         this.showMultiple = multiply != undefined     // 決定要不要顯示倍數
@@ -66,6 +63,21 @@ export class LineManager{
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
 
+    public static async playFG_AllLineWin(winlineArr: Array<ISSlotWinLineInfo>, totalWin: number){
+        this.winlineArr = winlineArr.slice()
+        console.log('play fg all ', this.winlineArr, totalWin)
+        
+        this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
+        const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
+        allPromise.push(
+            Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
+            LineNumberManager.playLineNumberAnim(totalWin),                // 線獎跑分
+        )        
+        
+        await Promise.all(allPromise)
+
+        // EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
+    }
     
     /**
      * 取得所有不重複的位置

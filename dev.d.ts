@@ -13,6 +13,8 @@ declare module '*.json?edit'
 declare const assetsMd5: string
 
 // PixiAsset
+type Container = PixiAsset.Container
+type Graphics = PixiAsset.Graphics
 type Sprite = PixiAsset.Sprite
 type BitmapText = PixiAsset.BitmapText
 type Spine = PixiAsset.Spine
@@ -87,6 +89,7 @@ interface Window{
 
     // 正式用
     App: PIXI.Application
+    AppDebug: any
     FG_NumberDef: {[key: string]: {
         [key: number]: IDefConfig
     }}

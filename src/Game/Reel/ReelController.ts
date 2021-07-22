@@ -1,5 +1,5 @@
 import GameSceneManager from "@root/src/System/GameSceneController";
-import { Container, Graphics, Point } from "pixi.js-legacy";
+import { Point } from "pixi.js-legacy";
 import Reel, { eListeningState } from "./Reel";
 import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState, reelContPos_land, reelContPos_port } from "./SymbolDef";
 import { editConfig } from "@root/src";
@@ -17,7 +17,7 @@ export enum eReelGameType{
 
 export let spinConfig: ISpinConfig
 
-const {Sprite} = PixiAsset
+const {Container, Graphics, Sprite} = PixiAsset
 
 export default class ReelController{
 
@@ -79,8 +79,7 @@ export default class ReelController{
 
     /** 初始化滾輪的容器，方便之後縮放 */
     private static initReelContainer(){
-        this.reelContainer = new Container()
-        this.reelContainer.name = 'reel container'
+        this.reelContainer = new Container('reel container')
         this.reelContainer.sortableChildren = true
         this.reelContainer.pivot.copyFrom(reelContPivot)
         this.reelContainer.interactive = this.reelContainer.buttonMode = true
@@ -130,10 +129,10 @@ export default class ReelController{
     private static initBlackCover(){
         // ToDo 之後會由美術出圖
         const [x, y, width, height] = window.blackGraphic
-        this.blackCover = this.reelContainer.addChild(new Graphics()
-            .beginFill(0x000000, .5).drawRect(x, y, width, height).endFill()
+        this.blackCover = this.reelContainer.addChild(
+            new Graphics('black cover', eReelContainerLayer.black).drawColorRect(0, .5, new Point(x, y), width, height)
         )
-        this.blackCover.zIndex = eReelContainerLayer.black
+
         EventHandler.on(eEventName.activeBlack, (ctx) =>{
             if(ctx.flag){
                 this.reelContainer.addChild(this.blackCover)
