@@ -1,4 +1,4 @@
-import { App } from "@root/src"
+import { App, eGameEventName } from "@root/src"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -63,7 +63,7 @@ class LotteryAnim extends GameState{
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)       // 演出 bigWin
         
         // 壓暗
-        EventHandler.dispatch(eEventName.activeBlack, {flag: true})
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
         BetModel.getInstance().addWin(win)
 
         await LineManager.playAllLineWin(winlineInfos)

@@ -1,4 +1,4 @@
-import { App } from "@root/src"
+import { App, eGameEventName } from "@root/src"
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
@@ -58,7 +58,7 @@ class LotteryAnim extends GameState{
         await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)     // 先演大獎
         
         // 壓暗
-        EventHandler.dispatch(eEventName.activeBlack, {flag: true})
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
 
         const {Multiplier} = GameSlotData.FGSpinData.SpinInfo
         BetModel.getInstance().addWin(win)

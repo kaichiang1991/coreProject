@@ -17,6 +17,7 @@ import { NetworkManager } from './System/Network/NetworkManager'
 import GameSlotData from './Game/GameSlotData'
 
 export enum eGameEventName{
+    activeBlackCover = 'activeBlackCover',      // 啟動贏分的黑色遮罩
     transitionDone = 'transitionDone',
     FG_Win = 'FG_Win',
 }

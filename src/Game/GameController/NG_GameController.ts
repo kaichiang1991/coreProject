@@ -1,4 +1,4 @@
-import { App } from "@root/src"
+import { App, eGameEventName } from "@root/src"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
@@ -77,7 +77,7 @@ class GameStart extends GameState{
     }
 
     exit(){
-        EventHandler.dispatch(eEventName.activeBlack, {flag: false})
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
     }
 
@@ -153,7 +153,7 @@ class EndSpin extends GameState{
             ReelController.reset(eReelGameType.normalGame)
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
 
-            EventHandler.dispatch(eEventName.activeBlack, {flag: true})
+            EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
             await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
         }else{            
@@ -180,14 +180,14 @@ class EndSpin extends GameState{
      * 播放 FG 或 BG 得獎符號
      */
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
-        EventHandler.dispatch(eEventName.activeBlack, {flag: true})        // 壓黑
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))        // 播放 symbol 得獎
         .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
 
         await Promise.all(allPromise)
         SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
-        EventHandler.dispatch(eEventName.activeBlack, {flag: false})
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
     }
 }
 

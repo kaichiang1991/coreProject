@@ -2,7 +2,7 @@ import GameSceneManager from "@root/src/System/GameSceneController";
 import { Point } from "pixi.js-legacy";
 import Reel, { eListeningState } from "./Reel";
 import { reelCount, defaultStopOrder, reelContPivot, eSymbolName, eSymbolState, reelContPos_land, reelContPos_port } from "./SymbolDef";
-import { editConfig } from "@root/src";
+import { editConfig, eGameEventName } from "@root/src";
 import config from '@root/config'
 import { eFGLayer, eNGLayer, eReelContainerLayer } from "@root/src/System/LayerDef";
 import { eReelType } from "@root/globalDef";
@@ -30,7 +30,7 @@ export default class ReelController{
     private static reelArr: Array<Reel>
     private static mask: Sprite | Array<Sprite>
     public static get Mask(): Sprite | Array<Sprite> {return this.mask}
-    private static blackCover: Graphics
+    private static blackCover: Sprite
 
     private static stopOrder: Array<number>
 
@@ -74,7 +74,16 @@ export default class ReelController{
         }
 
         // 初始化旋轉 resize 事件
-        (this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=> this.resize()))()
+        (this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=> {
+            const {portrait} = config
+            if(portrait){
+                reelContPos_port.copyTo(this.reelContainer.position)
+                this.reelContainer.scale.set(window.reelContScale)
+            }else{
+                reelContPos_land.copyTo(this.reelContainer.position)
+                this.reelContainer.scale.set(1)
+            }
+        }))()
     }
 
     /** 初始化滾輪的容器，方便之後縮放 */
@@ -127,20 +136,20 @@ export default class ReelController{
 
     /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */
     private static initBlackCover(){
-        // ToDo 之後會由美術出圖
-        const [x, y, width, height] = window.blackGraphic
-        this.blackCover = this.reelContainer.addChild(
-            new Graphics('black cover', eReelContainerLayer.black).drawColorRect(0, .5, new Point(x, y), width, height)
-        )
-
-        EventHandler.on(eEventName.activeBlack, (ctx) =>{
+        this.blackCover = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
+        this.blackCover.zIndex = eReelContainerLayer.black
+        this.blackCover.name = 'blackCover'
+        this.blackCover.position.copyFrom(window.reelMaskPos)
+        this.blackCover.alpha = .5
+        
+        EventHandler.on(eGameEventName.activeBlackCover, (ctx) =>{
             if(ctx.flag){
                 this.reelContainer.addChild(this.blackCover)
             }else{
                 this.blackCover.parent?.removeChild(this.blackCover)
             }
         })
-        EventHandler.dispatch(eEventName.activeBlack, {flag: false})        // 一開始先隱藏
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})        // 一開始先隱藏
     }
 
     /**
@@ -160,17 +169,6 @@ export default class ReelController{
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
         const maskArr: Array<Sprite> = !Array.isArray(this.mask)? [this.mask]: this.mask
         this.reelContainer.addChild(...maskArr)
-    }
-
-    private static resize(){
-        const {portrait} = config
-        if(portrait){
-            reelContPos_port.copyTo(this.reelContainer.position)
-            this.reelContainer.scale.set(window.reelContScale)
-        }else{
-            reelContPos_land.copyTo(this.reelContainer.position)
-            this.reelContainer.scale.set(1)
-        }
     }
 
     //#region 控制滾輪

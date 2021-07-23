@@ -97,4 +97,5 @@ interface Window{
     logoPos: PIXI.Point
     reelContScale: number
     reelBgPos: PIXI.Point
+    reelMaskPos: PIXI.Point
 }

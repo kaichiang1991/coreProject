@@ -144,6 +144,8 @@ class GameStart extends GameState{
 class StartSpin extends GameState{
 
     async enter(){
+        await new Promise<void>(res => GameSceneManager.getSceneContainer().once('pointerdown', res))
+
         // FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
         FreeGameNumberManager.adjustRemainTimes(false)              // 減少剩餘場次
 
@@ -199,7 +201,7 @@ class EndSpin extends GameState{
     }
     
     exit(){
-        EventHandler.dispatch(eEventName.activeBlack, {flag: false})
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
         GameSpineManager.endFGCharacterWin()
     }
