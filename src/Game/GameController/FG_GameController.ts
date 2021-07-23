@@ -9,6 +9,7 @@ import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
 import StickSymbolController from '../Reel/StickSymbolController'
+import { eSymbolName } from '../Reel/SymbolDef'
 import FGLotteryController from "../Win/FGLotteryController"
 import { LineManager } from "../Win/LineManager"
 
@@ -182,14 +183,17 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const {WinType, FGRemainTimes} = GameSlotData.FGSpinData.SpinInfo
+        const {WinLineInfos, WinType, FGRemainTimes} = GameSlotData.FGSpinData.SpinInfo
         const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
         // 演加場次
         const plus: number = FGRemainTimes - FreeGameNumberManager.RemainTimes
-        if(plus > 0){
-            await FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
+        if(plus > 0){               // 用場次判斷，避免有中FG，卻擋掉場次上限的問題
+            await Promise.all([
+                this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0]),
+                FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
+            ])
             FreeGameNumberManager.adjustRemainTimes(true, plus)
         }
         isWin && await FGLotteryController.init()
@@ -204,6 +208,29 @@ class EndSpin extends GameState{
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
         GameSpineManager.endFGCharacterWin()
+    }
+
+    /**
+     * 取得包含某個symbol的winline
+     * @param symbol 要包含的symbol
+     * @returns {ISSlotWinLineInfo}
+     */
+    private getWinlineBySymbol(winlineInfos: Array<ISSlotWinLineInfo>, symbol: eSymbolName): Array<ISSlotWinLineInfo>{
+        return winlineInfos.filter(winline => winline.SymbolID == symbol)
+    }
+
+    /**
+     * 播放 FG 或 BG 得獎符號
+     */
+    private async playSpecialSymbol(winline: ISSlotWinLineInfo){
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
+
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 1, true))        // 播放 symbol 得獎
+        .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
+
+        await Promise.all(allPromise)
+        SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
     }
 }
 

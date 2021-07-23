@@ -128,7 +128,7 @@ export default class ReelController{
             break
 
             case eReelType._3x3_reel:
-                this.mask = this.reelContainer.addChild(new Sprite('Reel_Back.png'))
+                this.mask = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
                 this.mask.position.copyFrom(window.reelBgPos)
             break
         } 
@@ -137,6 +137,7 @@ export default class ReelController{
     /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */
     private static initBlackCover(){
         this.blackCover = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
+        this.blackCover.tint = 0x000000                 // 美術出白色，方便遮罩也可以用
         this.blackCover.zIndex = eReelContainerLayer.black
         this.blackCover.name = 'blackCover'
         this.blackCover.position.copyFrom(window.reelMaskPos)

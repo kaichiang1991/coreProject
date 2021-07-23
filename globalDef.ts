@@ -209,7 +209,7 @@ switch(window.reelType){
                 [eFGNumber.currentTimes]: {pos: new PIXI.Point(0, -65)},
                 // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)},
                 [eFGNumber.remainTimes]: {pos: new PIXI.Point(360, 10)},
-                [eFGNumber.plus]: {pos: new PIXI.Point(400, -65)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(405, 10)},
                 [eFGNumber.totalWin]: {pos: new PIXI.Point(0, -15)}
             },
         
@@ -218,7 +218,7 @@ switch(window.reelType){
                 [eFGNumber.currentTimes]: {pos: new PIXI.Point(0, -65)},
                 // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)},
                 [eFGNumber.remainTimes]: {pos: new PIXI.Point(360, 10)},
-                [eFGNumber.plus]: {pos: new PIXI.Point(400, -65)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(405, 10)},
                 [eFGNumber.totalWin]: {pos: new PIXI.Point(0, -25)}
             },
         }

@@ -26,10 +26,10 @@
 },
 "Reel_Mask.png":
 {
-	"frame": {"x":1,"y":450,"w":702,"h":515},
+	"frame": {"x":1,"y":450,"w":702,"h":505},
 	"rotated": false,
 	"trimmed": true,
-	"spriteSourceSize": {"x":99,"y":66,"w":702,"h":515},
+	"spriteSourceSize": {"x":99,"y":70,"w":702,"h":505},
 	"sourceSize": {"w":900,"h":650}
 },
 "UI_Bottom_M.png":
@@ -53,8 +53,8 @@
 	"version": "1.0",
 	"image": "Game.png",
 	"format": "RGBA8888",
-	"size": {"w":1872,"h":966},
+	"size": {"w":1872,"h":956},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:52581156d968ce953b0cfa629c60947c:7e0f8540a95eeacb7b6caf6ebb408c9d:dcdce059afe456f9b7882094ec76be97$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b33e5b7b1eb2ba45bd6f906e93d1e3c6:c88d94554630fac43961bc86ff85100b:dcdce059afe456f9b7882094ec76be97$"
 }
 }

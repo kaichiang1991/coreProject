@@ -32,9 +32,6 @@ export default class FreeGameNumberManager{
         this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)         // 現在場次
         this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos)            // 總共場次
         this.numArr[eFGNumber.totalWin] = GameFontManager.drawFreeGameTotalWinNumber('totalWin', totalWin.pos)             // 總贏分
-        // ;[eFGNumber.currentTimes, eFGNumber.remainTimes].map(index => this.numArr[index]).map(font =>{                     // 場次數字共通設定
-        //     font.zIndex = eReelContainerLayer.FG_roundTimes
-        // })
 
         this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos)
         this.numArr[eFGNumber.plus].zIndex = eReelContainerLayer.FG_plusTimes
