@@ -142,7 +142,7 @@ export default class GameSpineManager{
      */
     public static playFGScene(parent: Container){
         parent?.addChild(this.scene)
-        this.scene.setAnimation('FG_Loop2', true)
+        this.scene.setAnimation('FG_Loop', true)
     }
     //#endregion Scene
 

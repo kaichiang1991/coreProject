@@ -2,42 +2,42 @@
 
 "Line_01.png":
 {
-	"frame": {"x":701,"y":1,"w":696,"h":17},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":246,"w":696,"h":17},
+	"frame": {"x":0,"y":0,"w":700,"h":510},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":510},
 	"sourceSize": {"w":700,"h":510}
 },
 "Line_02.png":
 {
-	"frame": {"x":720,"y":1,"w":696,"h":16},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":80,"w":696,"h":16},
+	"frame": {"x":700,"y":0,"w":700,"h":510},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":510},
 	"sourceSize": {"w":700,"h":510}
 },
 "Line_03.png":
 {
-	"frame": {"x":738,"y":1,"w":696,"h":16},
-	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":413,"w":696,"h":16},
+	"frame": {"x":0,"y":510,"w":700,"h":510},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":510},
 	"sourceSize": {"w":700,"h":510}
 },
 "Line_04.png":
 {
-	"frame": {"x":1,"y":1,"w":698,"h":510},
+	"frame": {"x":700,"y":510,"w":700,"h":510},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":0,"w":698,"h":510},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":510},
 	"sourceSize": {"w":700,"h":510}
 },
 "Line_05.png":
 {
-	"frame": {"x":1,"y":513,"w":698,"h":510},
+	"frame": {"x":0,"y":1020,"w":700,"h":510},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":2,"y":0,"w":698,"h":510},
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":510},
 	"sourceSize": {"w":700,"h":510}
 }},
 "animations": {
@@ -48,8 +48,8 @@
 	"version": "1.0",
 	"image": "Line.png",
 	"format": "RGBA8888",
-	"size": {"w":755,"h":1024},
+	"size": {"w":1400,"h":1530},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:808513e7ff896277a5a5b2b9e394f839:7ad6b7de47118799c043e9a04928cdec:5171d4980b679e3b75c03c8f830fc695$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ce5094f570b7a7c9f2345cacb77b0444:7ad6b7de47118799c043e9a04928cdec:5171d4980b679e3b75c03c8f830fc695$"
 }
 }
