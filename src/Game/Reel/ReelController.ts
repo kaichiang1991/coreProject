@@ -348,5 +348,18 @@ export class SymbolController{
         await Sleep(.7)
         await Promise.all(posArr.map(pos => StickSymbolController.playStick(pos.x, pos.y, eSymbolName.WD)))
     }
+
+    /** 播放 FG stick 符號 */
+    public static async playFGStick(){
+        const stickArr: Array<StickSymbol> = new Array<StickSymbol>()
+        const allPromise: Array<Promise<void>> = [new Point(1, 2), new Point(1, 1), new Point(1, 0)].map(async (pos, index) => {
+            const [stick, promise] = await StickSymbolController.playStickWD(pos.x, pos.y, .5 * index)
+            stickArr.push(stick)
+            return promise
+        })
+
+        await Promise.all(allPromise)
+        stickArr.map(stick => stick.setLayer())
+    }
     //#endregion Stick
 }

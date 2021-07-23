@@ -69,8 +69,8 @@ class LotteryAnim extends GameState{
     }
 
     change(){
-        
         GameSpineManager.playNextFG_Odds()
+        LineManager.StopEachLineFn = null       // 清除逐縣fn，確保下次stopEachLineFn 時，不會呼叫錯
         this.context.changeState(eFG_LotteryState.end)
     }
 }

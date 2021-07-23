@@ -9,7 +9,7 @@ const {Spine} = PixiAsset
 
 export enum eSpineName{
     symbol = 'Symbol',
-    line = 'line',
+    Stick = 'Stick',
     Scene = 'Scene',
     Transition = 'Transition',
     Character = 'Character',
@@ -20,7 +20,7 @@ export default class GameSpineManager{
 
     private static spineList: ISpineList = {
         [eSpineName.symbol]: 'img/SymbolAnim',
-        [eSpineName.line]: 'img/Line',
+        [eSpineName.Stick]: 'img/Stick',
         [eSpineName.Scene]: 'img/Scene',
         [eSpineName.Transition]: 'img/Transition',
         [eSpineName.Character]: 'img/Character',
@@ -44,54 +44,62 @@ export default class GameSpineManager{
         await Spine.init(this.spineList)
     }
 
+    //#region Symbol
     public static playSymbol(parent: Container): [Spine, TrackEntry]{
         const [spine, track] = Spine.playSpine(eSpineName.symbol, 'Symbol_O1_03', true)
         spine.name = 'symbol'
         parent.addChild(spine)
         return [spine, track]
     }
+    //#endregion
 
-    //#region Line
-    private static line: Spine
-
-    public static initLine(){
-        this.line = Spine.playSpine(eSpineName.line)[0]
-        this.line.zIndex = eReelContainerLayer.line
-        this.line.pivot.set(640, 360)
-        reelContPivot.copyTo(this.line.position)
+    //#region Stick
+    public static playStick(): Spine{
+        const [spine] = Spine.playSpine(eSpineName.Stick)
+        return spine
     }
+    //#endregion Stick
 
-    private static getLineAnim(lineNo: number): string{
-        return 'Line_0' + lineNo
-    }
+    // //#region Line
+    // private static line: Spine
 
-    public static playLine(parent: Container, lineNo: number){
-        if(!this.line){
-            Debug.error('playLine no line')
-            return
-        }
+    // public static initLine(){
+    //     this.line = Spine.playSpine(eSpineName.line)[0]
+    //     this.line.zIndex = eReelContainerLayer.line
+    //     this.line.pivot.set(640, 360)
+    //     reelContPivot.copyTo(this.line.position)
+    // }
 
-        this.line.setParent(parent)
-        this.line.setAnimationWithLatestIndex(this.getLineAnim(lineNo))
-    }
+    // private static getLineAnim(lineNo: number): string{
+    //     return 'Line_0' + lineNo
+    // }
 
+    // public static playLine(parent: Container, lineNo: number){
+    //     if(!this.line){
+    //         Debug.error('playLine no line')
+    //         return
+    //     }
 
-    public static playSingleLine(parent: Container, lineNo: number){
-        this.clearLine()
+    //     this.line.setParent(parent)
+    //     this.line.setAnimationWithLatestIndex(this.getLineAnim(lineNo))
+    // }
 
-        parent.addChild(this.line)
-        this.line?.setAnimation('Line_0' + lineNo)
-    }
+    // public static playSingleLine(parent: Container, lineNo: number){
+    //     this.clearLine()
 
-    public static clearLine(){
-        if(!this.line){
-            Debug.warn('clearLine no line.')
-            return
-        }
-        this.line.setEmptyAnimations()
-        this.line.parent?.removeChild(this.line)
-    }
-    //#endregion Line
+    //     parent.addChild(this.line)
+    //     this.line?.setAnimation('Line_0' + lineNo)
+    // }
+
+    // public static clearLine(){
+    //     if(!this.line){
+    //         Debug.warn('clearLine no line.')
+    //         return
+    //     }
+    //     this.line.setEmptyAnimations()
+    //     this.line.parent?.removeChild(this.line)
+    // }
+    // //#endregion Line
 
     //#region Scene
     private static scene: Spine

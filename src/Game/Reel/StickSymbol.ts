@@ -1,3 +1,4 @@
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import ReelController from "./ReelController";
 import Symbol from "./Symbol";
@@ -28,11 +29,12 @@ export default class StickSymbol extends Symbol{
     private id: string
     public get ID(): string { return this.id }
 
+    private WD_Spine: Spine     // 特例，stick WD 符號的動畫內沒有得獎動畫
+
     constructor(){
         super()
 
-        this.sprite = this.addChild(new Sprite(this.getTextureName(eSymbolName.H1, eSymbolState.Normal)))
-        this.sprite.anchor.set(.5)
+        this.WD_Spine = this.addChild(GameSpineManager.playStick())
         this.reset()
     }
 
@@ -58,12 +60,36 @@ export default class StickSymbol extends Symbol{
     }
 
     /**
+     * 播放 stick WD 跳出的動畫，並接著播 loop
+     * @param {string} id ID
+     * @param {number} delay 延遲的播放時間
+     * @returns {[StickSymbol, Promise<void>]} [符號本身，跳出動畫演完]
+     */
+    public async playWD(id: string, delay: number): Promise<[StickSymbol, Promise<void>]>{
+        this.reset()
+
+        await Sleep(delay)
+        this.zIndex = eReelContainerLayer.winAnimation      // 為了演出在 upperStick 上面
+        this.id = id
+        this.symbolId = eSymbolName.WD
+        const track = this.WD_Spine.setAnimation('WD_In')
+        this.WD_Spine.addAnimation('WD_Loop', true)
+
+        const [reelIndex, symbolIndex] = StickSymbol.parseID(this.id)
+        this.position.set(xOffsetArr[mapColumnIndex(reelIndex)], yOffsetArr[mapRowIndex(reelIndex)][symbolIndex+1])
+        
+        this.addChild(this.WD_Spine)
+        ReelController.ReelContainer.addChild(this)
+        return [this, waitTrackComplete(track)]
+    }
+
+
+    /**
      * 播放得獎動畫
      * @param times 次數 
      */
     public async playWinAnimation(times: number){
         return new Promise<void>(res =>{
-
             this.state = eSymbolState.Win
             this.setLayer()
             this.sprite.visible = false         // 隱藏底下的 symbol 單圖
@@ -81,14 +107,29 @@ export default class StickSymbol extends Symbol{
         })
     }
 
+    /** 清除得獎動畫 */
+    public clearWinAnimation(){
+        this.state = eSymbolState.Normal
+        this.animSpine.setEmptyAnimations()
+        this.animSpine.parent?.removeChild(this.animSpine)
+        // this.sprite.visible = true      // 顯示底下的 symbol
+        this.setLayer()
+        // this.activeMask(true)
+    }
+
     /** 根據狀態設定圖層 */
-    protected setLayer(){
+    public setLayer(){
         this.zIndex = this.state == eSymbolState.Win? eReelContainerLayer.winAnimation: eReelContainerLayer.stickSymbol
     }
 
     /** 重設stickSymbol */
     public reset(){
         this.id = null
+        this.symbolId = null
+
+        this.animSpine.setEmptyAnimations()
+        this.WD_Spine.setEmptyAnimations()
+        this.removeChild(this.sprite, this.animSpine, this.WD_Spine)
         this.parent?.removeChild(this)
     }
 }

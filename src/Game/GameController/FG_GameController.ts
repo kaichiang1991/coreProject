@@ -8,6 +8,7 @@ import {Point} from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
 import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
+import StickSymbolController from '../Reel/StickSymbolController'
 import FGLotteryController from "../Win/FGLotteryController"
 import { LineManager } from "../Win/LineManager"
 
@@ -122,7 +123,9 @@ class GameInit extends GameState{
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
         //#endregion FG場景
 
-        await Sleep(1)
+        await SymbolController.playFGStick()        // 播放 FG Stick
+
+        // await Sleep(1)
         this.context.changeState(eFG_GameState.start)
     }
 }
@@ -264,6 +267,9 @@ class GameEnd extends GameState{
         // FreeGameNumberManager.clearCurrentTimes()
         FreeGameNumberManager.clearRemainTimes()
         GameSpineManager.clearFG_Odds()
+
+        // 清除 FG 特色
+        StickSymbolController.clearAll()
 
         EventHandler.dispatch(eEventName.FG_End)
     }

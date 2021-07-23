@@ -19,7 +19,7 @@ export class LineManager{
     private static stopEachLineFn: Function
     // 若有演逐線則停止逐線 timeline，否則就單純清除線
     public static get StopEachLineFn(): Function { return this.stopEachLineFn || this.clearLineEvent }
-
+    public static set StopEachLineFn(value: Function)   {this.stopEachLineFn = value}
     private static lineConfig: ILineConfig
 
     private static lineContainer: Container
@@ -65,7 +65,6 @@ export class LineManager{
 
     public static async playFG_AllLineWin(winlineArr: Array<ISSlotWinLineInfo>, totalWin: number){
         this.winlineArr = winlineArr.slice()
-        console.log('play fg all ', this.winlineArr, totalWin)
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
@@ -149,7 +148,6 @@ export class LineManager{
             .reduce((pre, curr) => plus(pre, curr.Win), 0))
             const {eachLineLight} = this.lineConfig
 
-            console.log('fg win', FGWin)
             let index: number = 0
             this.eachLineTimeline = gsap.timeline().repeat(-1)
             .call(()=>{

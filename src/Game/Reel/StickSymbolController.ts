@@ -3,7 +3,7 @@ import { eSymbolName } from "./SymbolDef"
 
 export default class StickSymbolController{
 
-    private static readonly MAX_STICK_COUNT: number = 15
+    private static readonly MAX_STICK_COUNT: number = 3
     private static allStickArr: Array<StickSymbol>          // 所有 stickSymbol 存放的地方 (未使用)
     private static usedStickArr: Array<StickSymbol>         // 在使用中的 StickSymbol 
 
@@ -30,6 +30,30 @@ export default class StickSymbolController{
         symbol = this.allStickArr.pop().play(id, symbolId)
         this.usedStickArr.push(symbol)
         return symbol
+    }
+
+    /**
+     * 播放 stick WD 進場動畫
+     * @param {number} reelIndex 第幾輪
+     * @param {number} symbolIndex 第幾顆
+     * @param {number} delay 延遲時間
+     * @returns {[StickSymbol, Promise<void>]} Stick符號，演完的Promise
+     */
+    public static async playStickWD(reelIndex: number, symbolIndex: number, delay: number): Promise<[StickSymbol, Promise<void>]>{
+        const id: string = StickSymbol.calcID(reelIndex, symbolIndex)
+        // 檢查有沒有在使用中
+        let symbol: StickSymbol = this.getUsedStick(id)
+        if(symbol){
+            Debug.warn('playStickWD', 'stick exist', reelIndex, symbolIndex)
+            return null
+        }
+
+        let inAnimDone: Promise<void>
+        // 從庫存的陣列中取出一個使用
+        [symbol, inAnimDone] = await this.allStickArr.pop().playWD(id, delay)
+        this.usedStickArr.push(symbol)
+
+        return [symbol, inAnimDone]
     }
 
     /**
