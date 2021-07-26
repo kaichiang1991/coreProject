@@ -35,19 +35,19 @@ declare namespace PixiAsset {
         static loadAsset(args: IAssetStruct | Array<IAssetStruct>): Promise<void>;
         /**
          * 取得 resource
-         * @param key 名稱
+         * @param {string} key 名稱，若為空值則不印出錯誤訊息
          * @returns 在 loader resource 裡的資源 （沒有則回傳 undefined)
          */
         static getAsset(key: string): PIXI.LoaderResource;
         /**
          * 取得在 TextureCache 裡面的貼圖
-         * @param key 名稱
+         * @param {string} key 名稱，若為空值則不印出錯誤訊息
          * @returns 在 TextureCache 裡的資源 （沒有則回傳 undefined)
          */
         static getTexture(key: string): PIXI.Texture;
         /**
          * 處理加載完成的資源
-         * @param type
+         * @param {IAssetStruct} arg
          */
         private static parseAsset;
         /**
@@ -89,6 +89,45 @@ interface IAnimSpriteConfig {
     autoPlay?: boolean;
 }
 declare namespace PixiAsset {
+    /** 繼承 Container */
+    class Container extends PIXI.Container {
+        /**
+         * @param {string} [name=] 容器名稱
+         * @param {number} [zIndex=0] 圖層
+         */
+        constructor(name?: string, zIndex?: number);
+    }
+    /** 繼承 Graphics */
+    class Graphics extends PIXI.Graphics {
+        /**
+         * @param {string} [name=] 容器名稱
+         * @param {number} [zIndex=0] 圖層
+         * @param {PIXI.Point} [pos={0,0}] 座標
+         * @param {PIXI.GraphicsGeometry} [geometry=]
+         */
+        constructor(name?: string, zIndex?: number, pos?: PIXI.Point, geometry?: PIXI.GraphicsGeometry);
+        /**
+         * 畫一個園
+         * @param {number} color 顏色
+         * @param {number} alpha 透明度
+         * @param {PIXI.Point} center 圓心
+         * @param {number} radius 半徑
+         * @returns {Graphics}
+         */
+        drawColorCircle(color: number, alpha: number, center: PIXI.Point, radius: number): Graphics;
+        /**
+         * 畫一個矩形 (圓角矩形)
+         * @param {number} color 顏色
+         * @param {number} alpha 透明度
+         * @param {PIXI.Point} leftTop 左上角的座標
+         * @param {number} width 寬
+         * @param {number} height 高
+         * @param {number} [radius=0] 圓角尺寸
+         * @returns {Graphics}
+         */
+        drawColorRect(color: number, alpha: number, leftTop: PIXI.Point, width: number, height: number, radius?: number): Graphics;
+    }
+    /** 繼承 Sprite */
     class Sprite extends PIXI.Sprite {
         /**
          * @param key 存在 TextureCache 內的貼圖名稱
@@ -100,7 +139,7 @@ declare namespace PixiAsset {
         /**
          * 初始化 Animated Sprite
          * 讀取至 loader，並初始化該動畫用到的圖片名稱
-         * @param list
+         * @param {IAnimSpriteList} list
          * @example
          * AnimatedSprite.init({
          *      'key1': {
@@ -113,15 +152,15 @@ declare namespace PixiAsset {
         static init(list: IAnimSpriteList): Promise<void>;
         /**
          * 播放動畫
-         * @param animName 動畫名稱
-         * @param config 相關設定
+         * @param {string} animName 動畫名稱
+         * @param {IAnimSpriteConfig} [config=] 相關設定
          * @returns 動畫元件
          */
         static playAnimation(animName: string, config?: IAnimSpriteConfig): AnimatedSprite;
         /**
          * 單個 AnimatedSprite 的建構
          * @param {Array<string> | Array<PIXI.Texture> | Array<PIXI.AnimatedSprite.FrameObject>} textures 圖片名稱陣列 / 貼圖陣列 / 動畫結構陣列
-         * @param autoUpdate
+         * @param {boolean} [autoUpdate=true]
          */
         constructor(textures: Array<string> | Array<PIXI.Texture> | Array<PIXI.AnimatedSprite.FrameObject>, autoUpdate?: boolean);
     }
@@ -134,7 +173,7 @@ declare namespace PixiAsset {
     class Spine extends PIXI.spine.Spine {
         /**
          * 初始化會用到的 spine
-         * @param lists
+         * @param {ISpineList} lists
          * @example
          *  Spine.init({
          *      'key1': 'json path1',
@@ -144,9 +183,9 @@ declare namespace PixiAsset {
         static init(lists: ISpineList): Promise<void>;
         /**
          * 播放 spine 動畫
-         * @param name init 時帶入的名稱
-         * @param animName 動畫名稱 ( 若沒有要播動畫，只是要創建spine，則不用帶)
-         * @param loop 循環
+         * @param {string} name init 時帶入的名稱
+         * @param {string} [animName=] 動畫名稱 ( 若沒有要播動畫，只是要創建spine，則不用帶)
+         * @param {true} [loop=false] 循環
          * @returns {[Spine, PIXI.spine.core.TrackEntry]}
          */
         static playSpine(name: string, animName?: string, loop?: boolean): [Spine, PIXI.spine.core.TrackEntry];
@@ -155,22 +194,22 @@ declare namespace PixiAsset {
          */
         constructor(name: string);
         /**
-         * 設定第0軌播放動畫
-         * @param animName 動畫名稱
+         * 設定第 0 軌播放動畫
+         * @param {string} animName 動畫名稱
          * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
         setAnimation(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 設定最新一軌播放動畫
-         * @param animName 動畫名稱
+         * @param {string} animName 動畫名稱
          * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
         setAnimationWithLatestIndex(animName: string, loop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 設定第 n 軌播放動畫
-         * @param animName 動畫名稱
+         * @param {string} animName 動畫名稱
          * @param {boolean} [loop = false] 循環
          * @returns {PIXI.spine.core.TrackEntry}
          */
@@ -181,22 +220,24 @@ declare namespace PixiAsset {
          * @param {boolean} [loop = false] 循環
          * @param {number} [delay = 0] 延遲時間
          * @param {number} [mixDuration = 0] 交疊時間
+         * @param {boolean} [forceCancelLoop=true] 強制結束當前動畫的loop
          * @returns {PIXI.spine.core.TrackEntry}
          */
-        addAnimation(animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        addAnimation(animName: string, loop?: boolean, delay?: number, mixDuration?: number, forceCancelLoop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 在第 n 軌後接著播放動畫
-         * @param trackIndex 第幾軌
-         * @param animName 動畫名稱
+         * @param {number} trackIndex 第幾軌
+         * @param {string} animName 動畫名稱
          * @param {boolean} [loop = false] 循環
          * @param {number} [delay = 0] 延遲時間
          * @param {number} [mixDuration = 0] 交疊時間
+         * @param {boolean} [forceCancelLoop=true] 強制結束當前動畫的loop
          * @returns {PIXI.spine.core.TrackEntry}
          */
-        addAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean, delay?: number, mixDuration?: number): PIXI.spine.core.TrackEntry;
+        addAnimationWithIndex(trackIndex: number, animName: string, loop?: boolean, delay?: number, mixDuration?: number, forceCancelLoop?: boolean): PIXI.spine.core.TrackEntry;
         /**
          * 清除指定軌動畫
-         * @param trackIndex 第幾軌
+         * @param {number} trackIndex 第幾軌
          * @param {number} [mixDuration = 0] 取消的融合時間
          */
         setEmptyAnimation(trackIndex: number, mixDuration?: number): void;
@@ -228,6 +269,7 @@ interface ISoundList {
     [key: string]: string;
 }
 declare namespace PixiAsset {
+    /** 音效管理 */
     class PixiSound {
         /**
          * 初始化要使用到的音效
@@ -236,52 +278,52 @@ declare namespace PixiAsset {
         static init(lists: ISoundList): Promise<void>;
         /**
          * 撥放音效
-         * @param alias
-         * @param {PlayOptions} option 撥放的選項
+         * @param {string} alias 讀取時的別稱
+         * @param {PlayOptions} [option=] 撥放的選項
          * @returns {IMediaInstance} 撥放的 instance
          */
         static play(alias: string, option?: PlayOptions): IMediaInstance;
         /**
          * 靜音所有音效
-         * @param flag 開關
+         * @param {boolean} flag 開關
          */
         static muteAll(flag: boolean): void;
         /**
          * 根據名稱暫停所有音效
-         * @param name
+         * @param {string} name
          */
         static pauseByName(name: string): void;
         /**
          * 根據名稱繼續所有音效
-         * @param name
+         * @param {string} name
          */
         static resumeByName(name: string): void;
         /**
          * 根據名稱停止所有音效
          * 停止後就不能再使用 resume
-         * @param name
+         * @param {string} name
          */
         static stopByName(name: string): void;
         /**
          * 根據名稱修改音量
-         * @param name 名稱
-         * @param value 0-1
+         * @param {string} name 名稱
+         * @param {number} value 0-1
          */
         static setVolumeByName(name: string, value: number): void;
         /**
          * 暫停特定的音效 instance
-         * @param instance
+         * @param {IMediaInstance} instance
          */
         static pauseByInstance(instance: IMediaInstance): void;
         /**
          * 繼續特定的音效 instance
-         * @param instance
+         * @param {IMediaInstance} instance
          */
         static resumeByInstance(instance: IMediaInstance): void;
         /**
          * 停止特定的音效 instance
          * 停止後要指定原本的 instance 為 null，否則stop 會摧毀 instance._media 造成錯誤
-         * @param instance
+         * @param {IMediaInstance} instance
          * @returns null
          * @example
          *      let a: IMediaInstance = PixiSound.play('sound-alias')
@@ -290,8 +332,8 @@ declare namespace PixiAsset {
         static stopByInstance(instance: IMediaInstance): any;
         /**
          * 調整單一音效的音量
-         * @param instance
-         * @param value 0-1
+         * @param {IMediaInstance} instance
+         * @param {number} value 0-1
          */
         static setVolumeByInstance(instance: IMediaInstance, value: number): void;
     }
@@ -367,24 +409,28 @@ declare namespace PixiAsset {
     class BitmapText extends PIXI.BitmapText {
         /**
          * 初始化字型
-         * @param list 要初始化的list
+         * @param {IBitmapTextList} list 要初始化的list
          */
         static init(list: IBitmapTextList): Promise<void>;
         /**
          * 畫字型
-         * @param name 字型容器名稱
-         * @param fontName 字型名稱
-         * @param fontSize 字型大小
-         * @param {number | PIXI.Point} pos
-         * @param {number | PIXI.Point} anchor
-         * @param style
-         * @returns
+         * @param {string} name 字型容器名稱
+         * @param {string} fontName 字型名稱
+         * @param {number} fontSize 字型大小
+         * @param {number | PIXI.Point} pos 位置
+         * @param {number | PIXI.Point} anchor 描點
+         * @param {IBitmapTextStyle} style 選項
+         * @returns {BitmapText}
          */
         static drawFont(name: string, fontName: string, fontSize: number, pos?: number | PIXI.Point, anchor?: number | PIXI.Point, style?: IBitmapTextStyle): BitmapText;
+        /**
+         * @param {string} name 容器名稱
+         * @param {IBitmapTextStyle} style
+         */
         constructor(name: string, style: IBitmapTextStyle);
         /**
          * 利用字型名稱變換數字的貼圖
-         * @param fontName 字型名稱
+         * @param {string} fontName 字型名稱
          */
         setTexture(fontName: string): void;
     }
@@ -406,46 +452,45 @@ declare namespace PixiAsset {
         /**
          * 初始化 particles
          * 要使用的圖要另外載入
-         * @param fps 遊戲的 fps
+         * @param {numer} fps 遊戲的 fps
          * @param {IParticleList} list 粒子emitter的list
          */
         static init(fps: number, list: IParticleList): Promise<void>;
         /**
          * 播放單圖的粒子
-         * @param parent 父節點
-         * @param emitterName 粒子名稱
-         * @param textureName 貼圖名稱
+         * @param {Container} parent 父節點
+         * @param {string} emitterName 粒子名稱
+         * @param {string} textureName 貼圖名稱
          * @param {IParticleConfig} config 相關設定
-         * @returns 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
+         * @returns {ParticleEmitter} 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
          */
         static playParticle(parent: PIXI.Container, emitterName: string, textureName: string, config?: IParticleConfig): ParticleEmitter;
         /**
          * 播放序列圖的粒子
-         * @param parent 父節點
-         * @param emitterName 粒子名稱
-         * @param spritesheetName 序列圖在 loader 裡面的名稱
+         * @param {Container} parent 父節點
+         * @param {string} emitterName 粒子名稱
+         * @param {string} spritesheetName 序列圖在 loader 裡面的名稱
          * @param {IParticleConfig} config 相關設定
-         * @returns 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
+         * @returns {ParticleEmitter} 粒子Emitter / 若要取得粒子的父節點可以使用 emitter.parent
          */
         static playAnimatedParticle(parent: PIXI.Container, emitterName: string, spritesheetName: string, config?: IParticleConfig): ParticleEmitter;
         /**
          * 取得複數的粒子美術資源
          * 用隨機的序列圖順序
-         * @param count 要幾組隨機順序
+         * @param {number} count 要幾組隨機順序
          * @param {Array<string | PIXI.Texture>} textures 貼圖/貼圖名稱 陣列
-         * @param framerate 貼圖的 framerate
-         * @param loop
-         * @returns 序列圖美術陣列
+         * @param {number | 'matchLife'} [framerate=this.fps] 貼圖的 framerate
+         * @param {boolean} [loop=true] 循環播放
+         * @returns {PIXI.particles.AnimatedParticleArt} 序列圖美術陣列
          */
         private static getMultAnimatedParticleArt;
         /**
          * 取得粒子美術資源
          * @param {Array<string | PIXI.Texture>} textures 貼圖/貼圖名稱 陣列
-         * @param framerate 貼圖的 framerate
-         * @param loop
-         * @returns 序列圖美術
+         * @param {number | 'matchLife'} [framerate=this.fps] 貼圖的 framerate
+         * @param {boolean} loop 循環播放
+         * @returns {PIXI.particles.AnimatedParticleArt} 序列圖美術
          */
         private static getAnimatedParticleArt;
     }
 }
-{};

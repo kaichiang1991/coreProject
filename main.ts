@@ -14,6 +14,7 @@ function initPixi(){
 }
 
 EventHandler.init()
+Debug.init(eDebugLevel.Log | eDebugLevel.Warn | eDebugLevel.Error)
 
 initPixi()
 // modSlotGame.LibExample.init(App.stage)

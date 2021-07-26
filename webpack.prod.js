@@ -61,7 +61,8 @@ module.exports = merge(common, {
             test: /\.(png)$/i,
             minimizerOptions: {
                 plugins: [
-                    ['optipng', { optimizationLevel: 5 }]
+                    // ['optipng', { optimizationLevel: 5 }]
+                    'pngquant'
                 ]
             }
         })

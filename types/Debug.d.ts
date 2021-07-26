@@ -18,7 +18,7 @@ declare class Debug {
      *  Debug.init(eDebugLevel.Log | eDebugLevel.Warn)      // 只打開 Log 和 Warn 的顯示
      *  Debug.init(eDebugLevel.Error)           // 只顯示 錯誤訊息
      */
-    static init(App: PIXI.Application, level: number): void;
+    static init(level: number): void;
     /** 印出 Log */
     static log(...args: Array<any>): void;
     /** 印出 警告訊息 */
@@ -49,15 +49,14 @@ declare class Debug {
     private static readonly DEFAULT_FPS_OBJ;
     private static fpsObj;
     private static tickerEvent;
-    static get On(): string;
-    static get Off(): string;
     /** 創建 Debug Panel */
     private static createPanel;
     /**
      * 開關 Debug Panel
-     * @param flag
+     * @param {boolean} flag 開關
+     * @param {PIXI.Application} [App=]
      */
-    static activePanel(flag: boolean): void;
+    static activePanel(flag: boolean, App?: PIXI.Application): void;
     /**
      * 顯示 Debug 內容
      * @param content
