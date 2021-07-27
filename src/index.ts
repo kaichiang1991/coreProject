@@ -95,7 +95,8 @@ const gameEntry: Function = async ()=>{
     const {href} = url.parse(document.URL)
     const dispatchObj: Object = {gameCode: 'BN' + gameConfig.GameID, gameLanguage: LocalizationManager.getLanguage()}
     EventHandler.on(eEventName.openGameInfo, ()=>{
-        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, url: url.resolve(href, '../GameCommon/GameInfo/index.html')})
+        console.log(url.resolve(href, `../GameCommon/GameInfo/${dispatchObj['gameCode']}.html`))
+        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, url: url.resolve(href, `../GameCommon/GameInfo/${dispatchObj['gameCode']}.html`)})
     })
     EventHandler.on(eEventName.openHistory, ()=>{
         EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, gameToken: ParameterParse.UrlParser.token, betQuery: ParameterParse.UrlParser.betQuery, url: url.resolve(href, '../GameCommon/GameResult/index.html')})

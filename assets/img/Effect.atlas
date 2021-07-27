@@ -1,0 +1,122 @@
+
+Effect.png
+size: 932,976
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spine/back/1
+  rotate: false
+  xy: 698, 460
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+spine/long box/1
+  rotate: false
+  xy: 2, 350
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+spine/long box/2
+  rotate: false
+  xy: 350, 350
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+spine/long box/3
+  rotate: true
+  xy: 2, 2
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+
+Effect2.png
+size: 980,700
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spine/back/2
+  rotate: true
+  xy: 2, 466
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+spine/back/3
+  rotate: true
+  xy: 2, 234
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+spine/back/4
+  rotate: false
+  xy: 516, 184
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+spine/back/5
+  rotate: false
+  xy: 748, 184
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+spine/back/6
+  rotate: true
+  xy: 2, 2
+  size: 230, 512
+  orig: 230, 512
+  offset: 0, 0
+  index: -1
+
+Effect3.png
+size: 700,976
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spine/long box/4
+  rotate: false
+  xy: 2, 350
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+spine/long box/5
+  rotate: false
+  xy: 350, 350
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+spine/long box/6
+  rotate: true
+  xy: 2, 2
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+
+Effect4.png
+size: 700,628
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spine/long box/7
+  rotate: false
+  xy: 2, 2
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
+spine/long box/8
+  rotate: false
+  xy: 350, 2
+  size: 346, 622
+  orig: 346, 622
+  offset: 0, 0
+  index: -1
