@@ -205,11 +205,11 @@ switch(window.reelType){
 
         window.FG_NumberDef = {
             [eLanguage.ENG]: {
-                [eFGNumber.titleTimes]: {pos: new PIXI.Point(-210, -55)},
+                [eFGNumber.titleTimes]: {pos: new PIXI.Point(-225, -85)},
                 [eFGNumber.currentTimes]: {pos: new PIXI.Point(0, -65)},
                 // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)},
-                [eFGNumber.remainTimes]: {pos: new PIXI.Point(360, 10)},
-                [eFGNumber.plus]: {pos: new PIXI.Point(405, 10)},
+                [eFGNumber.remainTimes]: {pos: new PIXI.Point(365, 27)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(425, 27)},
                 [eFGNumber.totalWin]: {pos: new PIXI.Point(0, -15)}
             },
         
@@ -217,8 +217,8 @@ switch(window.reelType){
                 [eFGNumber.titleTimes]: {pos: new PIXI.Point(-210, -55)},
                 [eFGNumber.currentTimes]: {pos: new PIXI.Point(0, -65)},
                 // [eFGNumber.totalTimes]: {pos: new PIXI.Point(400, 115)},
-                [eFGNumber.remainTimes]: {pos: new PIXI.Point(360, 10)},
-                [eFGNumber.plus]: {pos: new PIXI.Point(405, 10)},
+                [eFGNumber.remainTimes]: {pos: new PIXI.Point(360, 27)},
+                [eFGNumber.plus]: {pos: new PIXI.Point(415, 27)},
                 [eFGNumber.totalWin]: {pos: new PIXI.Point(0, -25)}
             },
         }

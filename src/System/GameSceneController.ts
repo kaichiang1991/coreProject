@@ -189,8 +189,7 @@ class NormalGame extends GameScene{
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
                 GameSpineManager.setScene(false, eNGLayer.sceneEffect, new Point())                                       // 場景特效
-                GameSpineManager.setCharacter(eNGLayer.character, new Point(360, 280), new Point().set(1))                // 主視覺角色
-
+                GameSpineManager.setCharacter(eNGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
             }else{
                 this.bg.position.set(640, 360)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
@@ -234,8 +233,9 @@ class FreeGame extends GameScene{
 
         // 底板
         this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
+        this.remainTimesBottom.zIndex = eReelContainerLayer.featureRemainBottom
         this.multipleTimesBottom = new Sprite('Feature_TopPlate.png')
-        this.remainTimesBottom.zIndex = this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom
+        this.multipleTimesBottom.zIndex = eReelContainerLayer.featureOddsBottom
         // 底板文字
         this.remainTimesText = this.remainTimesBottom.addChild(new Sprite('Feature_RemainWord.png'))
         this.remainTimesText.position.set(30, 15)
@@ -262,7 +262,7 @@ class FreeGame extends GameScene{
                 this.multipleTimesBottom.position.set(-95, -80)
 
                 GameSpineManager.setScene(false, eFGLayer.sceneEffect, new Point())                                       // 場景特效
-                GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 280), new Point().set(1))                // 主視覺角色
+                GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
 
             }else{
                 this.bg.position.set(0, -280)

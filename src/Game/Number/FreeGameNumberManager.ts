@@ -1,5 +1,4 @@
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
-import { eReelContainerLayer } from "@root/src/System/LayerDef"
 import { Container } from "pixi.js-legacy"
 
 export enum eFGNumber{
@@ -30,11 +29,10 @@ export default class FreeGameNumberManager{
 
         this.numArr[eFGNumber.titleTimes] = GameFontManager.drawFreeGameTitleRoundNumber('titleTimes', title.pos)          // 開頭場次
         this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)         // 現在場次
-        this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos)            // 總共場次
+        this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos, null, 16)  // 剩餘場次
         this.numArr[eFGNumber.totalWin] = GameFontManager.drawFreeGameTotalWinNumber('totalWin', totalWin.pos)             // 總贏分
 
-        this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos)
-        this.numArr[eFGNumber.plus].zIndex = eReelContainerLayer.FG_plusTimes
+        this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos, null, 16)              // 加場次
     }
 
     //#region 獲得總場次

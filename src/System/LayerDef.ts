@@ -33,9 +33,8 @@ enum eReelContainerLayer{
     black = 1000,
     reelFrame,
     logo,
-    featureBottom = logo,
-    FG_roundTimes = logo,
-    FG_plusTimes,
+    featureOddsBottom,
+    featureRemainBottom,     // 因為加場次數字在剩餘場次的底板上，所以剩餘次數底板要在上面
 
     endSpinAnim,
     winAnimation,

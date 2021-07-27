@@ -5,21 +5,21 @@ const {BitmapText} = PixiAsset
 
 export enum eFontName{
     // ToDo 確認字型後要改
-    lineWin = 'SG_Win',
-    lineWinMult = 'SG_Win',
-    FGTitle = 'SG_Win',
-    FGTotalWin = 'SG_Win',
-    FGRound = 'SG_Win',
-    FGPlus = 'SG_Win',
-    SG_Win = 'SG_Win',
+    lineWin = 'Font_LineWin',
+    lineWinMult = 'Font_FG_Multi',
+    FG_Number = 'Font_FG_Number',
+    FGTitle = FG_Number,
+    FGTotalWin = FG_Number,
+    FGRound = FG_Number,
+    FGPlus = FG_Number,
 }
 
 export default class GameFontManager{
     
     private static fontList: IBitmapTextList = {
-        // [eFontName.SG_Bet] : 'font/SG_Bet_fnt',
-        [eFontName.SG_Win] : 'font/SG_Win_fnt',
-        // [eFontName.Win] : 'font/Win_fnt',
+        [eFontName.lineWin]: 'font/Font_LineWin',
+        [eFontName.FG_Number]: 'font/Font_FG_Number',
+        [eFontName.lineWinMult]: 'font/Font_FG_Multi',
     }
 
     public static async init(){
