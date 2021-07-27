@@ -20,6 +20,9 @@ export enum eGameEventName{
     activeBlackCover = 'activeBlackCover',      // 啟動贏分的黑色遮罩
     transitionDone = 'transitionDone',
     FG_Win = 'FG_Win',
+    FG_End = 'FG_End',
+    NG_lotteryEnd = 'NG_lotteryEnd',
+    FG_lotteryEnd = 'FG_lotteryEnd',
 }
 
 // 顯示專案資訊

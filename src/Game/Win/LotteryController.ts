@@ -24,7 +24,7 @@ export default class LotteryController{
     public static async init(backFromFG: boolean){
         return new Promise<void>(res =>{
 
-            EventHandler.once(eEventName.NG_lotteryEnd, ()=> res())
+            EventHandler.once(eGameEventName.NG_lotteryEnd, ()=> res())
 
             this.isBackFromFG = backFromFG      // 設定是否從 FG 回來
 
@@ -83,6 +83,6 @@ class LotteryEnd extends GameState{
     }
 
     change(){
-        EventHandler.dispatch(eEventName.NG_lotteryEnd)
+        EventHandler.dispatch(eGameEventName.NG_lotteryEnd)
     }
 }

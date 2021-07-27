@@ -17,7 +17,6 @@ const {AssetLoader} = PixiAsset
 export default class GameAssetManager{
 
     private static pngList: {[key: string]: string} = {     // 單圖的檔案名稱
-        'logo': 'img/logo.png',
         'Scene_NG': 'img/Scene_NG.png',
         'Scene_FG': 'img/Scene_FG.png',
     }

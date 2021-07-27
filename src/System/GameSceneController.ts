@@ -168,6 +168,7 @@ class NormalGame extends GameScene{
 
         this.bg = new Sprite('Scene_NG')
         this.bg.zIndex = eNGLayer.background
+        this.bg.anchor.set(.5)
         this.UI_Bottom = new Sprite()
         this.UI_Bottom.zIndex = eNGLayer.UI_Bottom
     }
@@ -184,14 +185,14 @@ class NormalGame extends GameScene{
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
             const {portrait} = config
             if(portrait){
-                this.bg.position.set(-280, 0)
+                this.bg.position.set(360, 640)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
                 GameSpineManager.setScene(false, eNGLayer.sceneEffect, new Point())                                       // 場景特效
                 GameSpineManager.setCharacter(eNGLayer.character, new Point(360, 280), new Point().set(1))                // 主視覺角色
 
             }else{
-                this.bg.position.set(0, -280)
+                this.bg.position.set(640, 360)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
                 this.UI_Bottom.position.set(0, 600)
                 GameSpineManager.setScene(true, eNGLayer.sceneEffect, new Point(640, 360))                                 // 場景特效

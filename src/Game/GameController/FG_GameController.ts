@@ -32,7 +32,7 @@ export default class FG_GameController{
 
     public async init(){
         return new Promise<void>(res => {
-            EventHandler.once(eEventName.FG_End, ()=> res())
+            EventHandler.once(eGameEventName.FG_End, ()=> res())
 
             // 註冊狀態機
             const context: GameStateContext = new GameStateContext()
@@ -300,6 +300,6 @@ class GameEnd extends GameState{
         // 清除 FG 特色
         StickSymbolController.clearAll()
 
-        EventHandler.dispatch(eEventName.FG_End)
+        EventHandler.dispatch(eGameEventName.FG_End)
     }
 }
