@@ -120,6 +120,7 @@ class StartSpin extends GameState{
             this.stopEvent()
         }
 
+        ReelController.checkFGListening(SpinInfo)
         window['arr'] && ReelController.setListening(...window['arr'])              // 設定一般聽牌
         window['sarr'] && ReelController.setSpecialListening(...window['sarr'])     // 設定特殊聽牌
         ReelController.stopSpin()

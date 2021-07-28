@@ -250,6 +250,20 @@ export default class ReelController{
 
     //#region 聽牌
     /**
+     * 檢查 FG 聽牌 (每款遊戲不一樣)
+     * 若有聽牌則自動設定聽牌流程
+     * @param {ISSlotSpinInfo} spinInfo 盤面資訊
+     */
+    public static checkFGListening(spinInfo: ISSlotSpinInfo){
+        const count: number = spinInfo.ScreenOrg.slice(0, 2).filter(arr => arr.find(symbol => symbol == eSymbolName.FG)).length
+        if(count < 2)
+            return
+
+        // 有聽牌
+        this.setListening(2)
+    }
+
+    /**
      * 設定一般的聽牌
      * @param {...Array<number>} indexArr 要聽牌的輪
      */

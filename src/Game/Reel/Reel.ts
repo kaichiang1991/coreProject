@@ -4,6 +4,7 @@ import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
 import strip from '@root/strip.json?edit'
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 
 export enum eListeningState{
     none,       // 沒有聽牌
@@ -47,6 +48,7 @@ export default class Reel{
     private listeningSpeedUpDone: boolean   // 聽牌加速完
     private listeningSpeed: number          // 聽牌時速度
     private listeningTween: gsap.core.Tween // 設定聽牌速度的 tween
+    private reelExpect: Spine               // 聽牌特效
 
     // 結果
     private resultArr: Array<number>    // 結果陣列
@@ -187,6 +189,7 @@ export default class Reel{
         .to(this.symbolArr, {ease: Power0.easeNone, y: `+=${downDistance >= 0? downDistance: 0}`, duration: downDuration})      // 下移
         .call(()=>{
             // 到底部
+            this.stopReelExpect()
         })
         .to(this.symbolArr, {duration: spinConfig.bounceBackDuration, y: `-=${upDistance}`})        // 上移
 
@@ -252,6 +255,18 @@ export default class Reel{
     public setListeningEffect(){
         this.listeningTween = gsap.to(this, {ease: Power2.easeOut, duration: spinConfig.listeningDelay, listeningSpeed: spinConfig.listeningSpeed})
         .eventCallback('onComplete', ()=> this.listeningSpeedUpDone = true)
+
+        this.playReelExpect()
+    }
+
+    /** 播放期待框效果 */
+    public playReelExpect(){
+        this.reelExpect = GameSpineManager.playReelExpect(ReelController.ReelContainer, this.reelIndex)
+    }
+
+    /** 停止期待框效果 */
+    public stopReelExpect(){
+        this.reelExpect?.setEmptyAnimations()
     }
     //#endregion
 
