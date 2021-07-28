@@ -67,10 +67,7 @@ export default class GameAssetManager{
     private static async loadDone(){
         // 初始化 BetModel
         const {SlotInitData: {MoneyFractionMultiple, Denom, BetUnit, BetMultiples, Line}, JoinGameData: {Balance}} = GameSlotData
-        if(window.useServerData)
-            BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame? Line: undefined)
-        else    // ToDo
-            BetModel.init(1000, [1,2, 5, 10, 25, 50, 100], 1000000, 1000, 100, 3)
+        BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame, Line)
 
         MathTool.init(BetModel)
         await BigWinManager.init(App, config, [20, 50, 100, 200])   // ToDo 之後可能從 server 拿間隔

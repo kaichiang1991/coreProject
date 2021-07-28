@@ -1,13 +1,15 @@
 declare class BetModel {
     private static instance;
     static getInstance(): BetModel;
+    private static isLineGame;
+    static get IsLineGame(): boolean;
     private static line;
     static get Line(): number;
     private static moneyFractionMultiple;
     static get MoneyFractionMultiple(): number;
     private static denom;
     static get Denom(): number;
-    static init(betUnit: number, betInterval: Array<number>, credit: number, moneyFractionMultiple: number, denom: number, line?: number): void;
+    static init(betUnit: number, betInterval: Array<number>, credit: number, moneyFractionMultiple: number, denom: number, isLineGame: boolean, line: number): void;
     constructor(betUnit: number, betInterval: Array<number>, credit: number);
     private betIndex;
     private betUnit;
