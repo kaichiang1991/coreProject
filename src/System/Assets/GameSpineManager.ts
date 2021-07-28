@@ -2,7 +2,7 @@ import lazyLoad from "@root/src/Tool/lazyLoad"
 import config from '@root/config'
 import { App } from "@root/src"
 import { Container, Point } from "pixi.js-legacy"
-import { eAppLayer, eReelContainerLayer } from "../LayerDef"
+import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "../LayerDef"
 import { mapRowIndex, reelContPivot, xOffsetArr, yOffsetArr } from "@root/src/Game/Reel/SymbolDef"
 
 const {Spine} = PixiAsset
@@ -10,7 +10,7 @@ const {Spine} = PixiAsset
 export enum eSpineName{
     symbol = 'Symbol',
     Stick = 'Stick',
-    ReelExpect = 'Effect',
+    ReelExpect = 'ReelExpect',
     Scene = 'Scene',
     Transition = 'Transition',
     Character = 'Character',
@@ -22,7 +22,7 @@ export default class GameSpineManager{
     private static spineList: ISpineList = {
         [eSpineName.symbol]: 'img/SymbolAnim',
         [eSpineName.Stick]: 'img/Stick',
-        [eSpineName.ReelExpect]: 'img/Effect',
+        [eSpineName.ReelExpect]: 'img/ReelExpect',
         [eSpineName.Scene]: 'img/Scene',
         [eSpineName.Transition]: 'img/Transition',
         [eSpineName.Character]: 'img/Character',
@@ -64,7 +64,7 @@ export default class GameSpineManager{
 
     //#region 期待框
     public static playReelExpect(parent: Container, reelIndex: number){
-        const [spine] = Spine.playSpine(eSpineName.ReelExpect, 'Box', true)
+        const [spine] = Spine.playSpine(eSpineName.ReelExpect, 'ReelExpect', true)
         parent.addChild(spine)
         spine.position.set(xOffsetArr[reelIndex], yOffsetArr[mapRowIndex(reelIndex)][2])
         spine.zIndex = eReelContainerLayer.reelExpect
@@ -123,14 +123,13 @@ export default class GameSpineManager{
 
     /**
      * 設定場景特效
-     * @param {boolean} visible 可見
-     * @param {number} zIndex 圖層
-     * @param {Point} pos 位置
+     * @param {boolean} portrait 是否垂直
+     * @param {boolean} normalGame 是否為 normal game
      */
-    public static setScene(visible: boolean, zIndex: number, pos: Point){
-        this.scene.visible = visible
-        this.scene.zIndex = zIndex
-        this.scene.position.copyFrom(pos)
+    public static setScene(portrait: boolean, normalGame: boolean){
+        this.scene.position.copyFrom(portrait? new Point(360, 640): new Point(640, 360))
+        this.scene.zIndex = normalGame? eNGLayer.sceneEffect: eFGLayer.sceneEffect
+        this.scene.setAnimation(`${normalGame? 'NG': 'FG'}_Loop_${portrait? 'M': 'W'}`, true)
     }
 
     /** 清除場景特效 */
@@ -145,7 +144,6 @@ export default class GameSpineManager{
      */
     public static playNGScene(parent: Container){
         parent?.addChild(this.scene)
-        this.scene.setAnimation('NG_Loop', true)
     }
 
     /**
@@ -154,7 +152,6 @@ export default class GameSpineManager{
      */
     public static playFGScene(parent: Container){
         parent?.addChild(this.scene)
-        this.scene.setAnimation('FG_Loop', true)
     }
     //#endregion Scene
 

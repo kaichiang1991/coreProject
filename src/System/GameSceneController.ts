@@ -188,15 +188,14 @@ class NormalGame extends GameScene{
                 this.bg.position.set(360, 640)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
-                GameSpineManager.setScene(false, eNGLayer.sceneEffect, new Point())                                       // 場景特效
                 GameSpineManager.setCharacter(eNGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
             }else{
                 this.bg.position.set(640, 360)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
                 this.UI_Bottom.position.set(0, 600)
-                GameSpineManager.setScene(true, eNGLayer.sceneEffect, new Point(640, 360))                                 // 場景特效
                 GameSpineManager.setCharacter(eNGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
+            GameSpineManager.setScene(portrait, true)                                       // 場景特效
         }))()
     }
 
@@ -261,7 +260,6 @@ class FreeGame extends GameScene{
                 this.remainTimesBottom.position.set(-95, -145)
                 this.multipleTimesBottom.position.set(-95, -80)
 
-                GameSpineManager.setScene(false, eFGLayer.sceneEffect, new Point())                                       // 場景特效
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
 
             }else{
@@ -272,9 +270,9 @@ class FreeGame extends GameScene{
                 this.remainTimesBottom.position.set(-305, -80)
                 this.multipleTimesBottom.position.set(115, -80)
 
-                GameSpineManager.setScene(true, eNGLayer.sceneEffect, new Point(640, 360))                                 // 場景特效
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
+            GameSpineManager.setScene(portrait, false)                                       // 場景特效
         }))()
     }
 
