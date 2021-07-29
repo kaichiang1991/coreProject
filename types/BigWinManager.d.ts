@@ -14,7 +14,9 @@ declare class BigWinManager {
     private static winInterval;
     private static winType;
     private static word;
+    private static number;
     private static parent;
+    private static bigWinCont;
     private static resizeFn;
     /**
      * 初始化 BigWinManager

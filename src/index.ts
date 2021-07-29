@@ -72,8 +72,8 @@ const gameEntry: Function = async ()=>{
 
     Entry.init(App, config)
     AppDebug.init()
-    // ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
-    ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
+    ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
+    // ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()

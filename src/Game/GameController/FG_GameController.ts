@@ -159,13 +159,15 @@ class StartSpin extends GameState{
         // 接收server 資料 
         GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
 
-        const {ScreenOutput, ScreenOrg, SymbolResult} = GameSlotData.FGSpinData.SpinInfo
+        const {SpinInfo} = GameSlotData.FGSpinData
+        const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)
 
         if(SlotUIManager.IsAutoSpeed){
             ReelController.StopNowEvent()
         }
-
+        
+        ReelController.checkFGListening(SpinInfo)
         ReelController.stopSpin()
 
         await allSpin
