@@ -205,7 +205,7 @@ class EndSpin extends GameState{
     exit(){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
-        GameSpineManager.endFGCharacterWin()
+        // GameSpineManager.endFGCharacterWin()
     }
 
     /**

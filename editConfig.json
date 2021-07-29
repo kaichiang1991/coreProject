@@ -13,6 +13,6 @@
     },
     "line": {
         "leastAllLineDuration": 1,
-        "eachLineLight": 0.6
+        "eachLineLight": 0.8
     }
 }
