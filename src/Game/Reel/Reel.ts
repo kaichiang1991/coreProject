@@ -266,7 +266,7 @@ export default class Reel{
 
     /** 停止期待框效果 */
     public stopReelExpect(){
-        this.reelExpect?.setEmptyAnimations()
+        this.reelExpect?.destroy()
     }
     //#endregion
 

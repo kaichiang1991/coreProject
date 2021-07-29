@@ -80,13 +80,15 @@ var mapRowIndex: {(reelIndex: number): number}
  */
 var mapColumnIndex: {(reelIndex: number): number}
 
+const {width, height} = window.reelContSize
+
 switch(window['reelType']){
     case eReelType._3x5_reel:
         reelCount = 5
         reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3, 3, 3]
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2, 3, 4]
 
-        reelContPivot = new Point(860 / 2, 480 / 2)
+        reelContPivot = new Point(width / 2, height / 2)
         reelContPos_land = new Point(674, 357)
         reelContPos_port = new Point(360, 704)
         xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
@@ -106,7 +108,7 @@ switch(window['reelType']){
         reelSymbolCount = Array(reelCount).fill(1)     
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      
 
-        reelContPivot = new Point(860 / 2, 480 / 2)
+        reelContPivot = new Point(width / 2, height / 2)
         reelContPos_land = new Point(674, 357)
         reelContPos_port = new Point(360, 704)
 
@@ -132,7 +134,7 @@ switch(window['reelType']){
         reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3]
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2]
         
-        reelContPivot = new Point(700 / 2, 510 / 2)
+        reelContPivot = new Point(width / 2, height / 2)
         reelContPos_land = new Point(875, 340)
         reelContPos_port = new Point(595, 635)
         xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)

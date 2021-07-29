@@ -73,6 +73,7 @@ interface IGameConfig{
 // 定義內容 結構
 interface IDefConfig{
     pos?: PIXI.Point
+    anchor?: PIXI.Point
 }
 
 // windows 結構
@@ -98,4 +99,6 @@ interface Window{
     reelContScale: number
     reelBgPos: PIXI.Point
     reelMaskPos: PIXI.Point
+
+    reelContSize: PIXI.ISize
 }

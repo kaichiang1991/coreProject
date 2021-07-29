@@ -1,7 +1,6 @@
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
-import { eReelContainerLayer } from "@root/src/System/LayerDef"
 import { Point } from "pixi.js-legacy"
-import ReelController from "../Reel/ReelController"
+import { LineManager } from "../Win/LineManager"
 
 export enum eLineNumber{
     lineWin,
@@ -18,37 +17,43 @@ export default class LineNumberManager{
 
         this.numArr[eLineNumber.lineWin] = GameFontManager.drawLineWinNumber('lineNumber', lineWin.pos)
         this.numArr[eLineNumber.multiply] = GameFontManager.drawLineWinMultipleNumber('lineWinMult', lineWin.pos)
-        
-        ;[eLineNumber.lineWin, eLineNumber.multiply].map(index => this.numArr[index].zIndex = eReelContainerLayer.lineNumber)
+    
+        ;[eLineNumber.lineWin, eLineNumber.multiply].map(index => (<Point>this.numArr[index].anchor).copyFrom(lineWin.anchor))
     }
 
     //#region 線獎數字 lineWinNumber
     /**
      * 播放線獎分數跑分
+     * @param {Container} parent 父節點
      * @param {number} value 要跑的分數
+     * @param {number} [multiple=] 線的倍數
      */
-    public static async playLineNumberAnim(value: number){
+    public static async playLineNumberAnim(parent: Container, value: number, multiple?: number){
+        const playMultiple: boolean = multiple != undefined
         const font: BitmapText = this.numArr[eLineNumber.lineWin]
-        ;(<Point>font.anchor).set(.5)
-        ReelController.ReelContainer.addChild(font)
+        parent.addChild(font)
+
         const duration: number = 1 // 跑分時間
         const config: {value: number} = {value: 0}
         await waitTweenComplete(
             gsap.to(config, {duration, value, onUpdate: ()=>{
                 font.text = MathTool.convertNumDisplay(config.value)       // 更新數字
+                playMultiple && this.playLineWinMultNumber(parent, multiple)
+                LineManager.LineNumResizeFn()
             }})
         )
     }
 
     /**
      * 撥放線獎數字 (不跑分)
-     * @param {number} value 
+     * @param {Container} parent 父節點
+     * @param {number} value 要顯示的分數
      */
-    public static playLineNumber(value: number){
+    public static playLineNumber(parent: Container, value: number){
         const font: BitmapText = this.numArr[eLineNumber.lineWin]
-        ;(<Point>font.anchor).set(.5)
-        ReelController.ReelContainer.addChild(font)
+        parent.addChild(font)
         font.text = MathTool.convertNumDisplay(value)
+        LineManager.LineNumResizeFn()
     }
 
     /** 清除線獎數字 */
@@ -61,14 +66,14 @@ export default class LineNumberManager{
     //#region 線獎倍數數字 multiply
     /**
      * 播放倍率數字
-     * 會自動把線獎分數會左靠
-     * @param {number} value 
+     * 會計算分數的長度，所以要先顯示正確的線獎數字
+     * @param {Container} parent 父節點
+     * @param {number} value 要顯示的倍數
      */
-    public static playLineWinMultNumber(value: number){
-        (<Point>this.numArr[eLineNumber.lineWin].anchor).set(1, .5)
+    public static playLineWinMultNumber(parent: Container, value: number){
         const font: BitmapText = this.numArr[eLineNumber.multiply]
-        ;(<Point>font.anchor).set(-.2, .5)
-        ReelController.ReelContainer.addChild(font)
+        font.x = this.numArr[eLineNumber.lineWin].width
+        parent.addChild(font)
         font.text = 'X' + value
     }
 

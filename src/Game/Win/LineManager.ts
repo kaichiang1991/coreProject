@@ -1,4 +1,4 @@
-import { Point } from "pixi.js-legacy";
+import { Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import { editConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
@@ -12,7 +12,6 @@ const {Container, Sprite} = PixiAsset
 export class LineManager{
 
     private static winlineArr: Array<ISSlotWinLineInfo>
-    private static showMultiple: boolean                // 這次贏分是否要顯示倍數
     private static multiply: number
 
     private static eachLineTimeline: GSAPTimeline
@@ -23,15 +22,28 @@ export class LineManager{
     private static lineConfig: ILineConfig
 
     private static lineContainer: Container
+    private static lineNumberContainer: Container
+    private static lineNumberContainerResizeFn: Function
+    public static get LineNumResizeFn(): Function { return this.lineNumberContainerResizeFn}
 
     public static init(){
         this.lineConfig = editConfig.line
 
         // 初始化放line的容器
         this.lineContainer = ReelController.ReelContainer.addChild(new Container('line container', eReelContainerLayer.line))
-
+    
         const yArr: Array<number> = yOffsetArr[mapRowIndex(0)]
         this.lineContainer.position.set(xOffsetArr[~~(reelCount / 2)], yArr[~~(yArr.length / 2)])
+        // 初始化放 line 得分的容器
+        this.lineNumberContainer = ReelController.ReelContainer.addChild(new Container('line num container', eReelContainerLayer.lineNumber))
+        this.lineNumberContainer.position.copyFrom(this.lineContainer.position)
+
+        let scale: number
+        this.lineNumberContainerResizeFn = ()=>{
+            scale = window.reelContSize.width / (this.lineNumberContainer.width / this.lineNumberContainer.scale.x)
+            this.lineNumberContainer.scale.set(scale > 1? 1: scale)                                 // 如果超過滾輪框大小，則縮小
+            this.lineNumberContainer.x = this.lineContainer.x - this.lineNumberContainer.width / 2  // 裡面的數字置左，所以計算扣到半寬
+        }
     }
 
     /**
@@ -41,24 +53,16 @@ export class LineManager{
      */
     public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiply?: number){      
         this.winlineArr = winlineArr.slice()
-
-        this.showMultiple = multiply != undefined     // 決定要不要顯示倍數
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
-            LineNumberManager.playLineNumberAnim(win),       // 線獎跑分
+            LineNumberManager.playLineNumberAnim(this.lineNumberContainer, win, multiply),       // 線獎跑分
         )        
         
         await Promise.all(allPromise)
-
-        // 倍率的演出
-        if(this.showMultiple){
-            this.multiply = multiply
-            LineNumberManager.playLineWinMultNumber(this.multiply)
-        }
 
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
@@ -69,8 +73,8 @@ export class LineManager{
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
-            Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
-            LineNumberManager.playLineNumberAnim(totalWin),                // 線獎跑分
+            Sleep(this.lineConfig.leastAllLineDuration),                     // 最少演出時間
+            LineNumberManager.playLineNumberAnim(this.lineNumberContainer, totalWin),                // 線獎跑分
         )        
         
         await Promise.all(allPromise)
@@ -110,8 +114,7 @@ export class LineManager{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
                 this.playLine(LineNo)                                                           // 播放線獎
-                LineNumberManager.playLineNumber(Win)                                           // 播放分數
-                // this.showMultiple && LineNumberManager.playLineWinMultNumber(this.multiply)     // 播放線獎倍率
+                LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
                 index = ++index % this.winlineArr.length
             })
@@ -154,12 +157,12 @@ export class LineManager{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
                 if(LineNo == 0){
-                    LineNumberManager.playLineNumber(FGWin)
+                    LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)
                 }else{
                     this.playLine(LineNo)                                                           // 播放線獎
-                    LineNumberManager.playLineNumber(Win)                                           // 播放分數
+                    LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                 }
-                WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
+                WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))           // 播放動畫
                 index = ++index % this.winlineArr.length
             })
             .add(()=> {}, `+=${eachLineLight}`)

@@ -8,6 +8,18 @@ window.reelType = eReelType._3x5_single
 window.reelType = eReelType._3x5_reel
 window.reelType = eReelType._3x3_reel
 
+switch(window.reelType){
+    case eReelType._3x5_reel:
+        window.reelContSize = {width: 860, height: 480}
+    break
+    case eReelType._3x5_reel:
+        window.reelContSize = {width: 860, height: 480}
+    break
+    case eReelType._3x3_reel:
+        window.reelContSize = {width: 700, height: 510}
+    break
+}
+
 import {eSymbolName} from "./src/Game/Reel/SymbolDef"
 import { eFGNumber } from "./src/Game/Number/FreeGameNumberManager"
 import { eLineNumber } from "./src/Game/Number/LineNumberManager"
@@ -199,7 +211,7 @@ switch(window.reelType){
         window.blackGraphic = [-235, 0, 700, 510]
 
         window.LineNumberDef = {
-            [eLineNumber.lineWin]: {pos: new PIXI.Point(120, 230)},
+            [eLineNumber.lineWin]: {pos: new PIXI.Point(0, 0), anchor: new PIXI.Point(0, .5)},
             // [eLineNumber.multiply]: {pos: new PIXI.Point()}
         }
 
