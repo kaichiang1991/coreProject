@@ -1,6 +1,6 @@
 import { Graphics, Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
-import { editConfig } from "@root/src";
+import { editConfig, gameConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
 import {minus, plus} from 'number-precision'
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
@@ -12,7 +12,7 @@ const {Container, Sprite} = PixiAsset
 export class LineManager{
 
     private static winlineArr: Array<ISSlotWinLineInfo>
-    private static multiply: number
+    private static multiple: number
 
     private static eachLineTimeline: GSAPTimeline
     private static stopEachLineFn: Function
@@ -49,20 +49,23 @@ export class LineManager{
     /**
      * 播放全線得獎動畫
      * @param {Array<ISSlotWinLineInfo} winlineArr 贏分線陣列
-     * @param {number} [multiply=]  倍率 (沒有則會是 undefined)
+     * @param {number} [multiple=]  倍率 (沒有則會是 undefined)
      */
-    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiply?: number){      
+    public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiple?: number){      
         this.winlineArr = winlineArr.slice()
         
+        this.multiple = multiple
+
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
-            LineNumberManager.playLineNumberAnim(this.lineNumberContainer, win, multiply),       // 線獎跑分
+            LineNumberManager.playLineNumberAnim(this.lineNumberContainer, win, this.multiple),       // 線獎跑分
         )        
         
         await Promise.all(allPromise)
+        await Sleep(.5)
 
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
@@ -112,10 +115,11 @@ export class LineManager{
             this.eachLineTimeline = gsap.timeline().repeat(-1)
             .call(()=>{
                 this.clearLineEvent()
-                const {LineNo, Win, WinPosition} = this.winlineArr[index]
+                const {LineNo, Win, WinPosition, WayCount} = this.winlineArr[index]
                 this.playLine(LineNo)                                                           // 播放線獎
                 LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
+                SlotUIManager.activeWinInfo(true, gameConfig.LineGame? LineNo: WayCount, Win * (this.multiple || 1))
                 index = ++index % this.winlineArr.length
             })
             .add(()=> {}, `+=${eachLineLight}`)
@@ -158,9 +162,11 @@ export class LineManager{
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
                 if(LineNo == 0){
                     LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)
+                    SlotUIManager.activeWinInfo(false)
                 }else{
                     this.playLine(LineNo)                                                           // 播放線獎
                     LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
+                    SlotUIManager.activeWinInfo(true, LineNo, Win)
                 }
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))           // 播放動畫
                 index = ++index % this.winlineArr.length

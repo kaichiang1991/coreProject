@@ -211,7 +211,7 @@ switch(window.reelType){
         window.blackGraphic = [-235, 0, 700, 510]
 
         window.LineNumberDef = {
-            [eLineNumber.lineWin]: {pos: new PIXI.Point(0, 0), anchor: new PIXI.Point(0, .5)},
+            [eLineNumber.lineWin]: {pos: new PIXI.Point(0, -35), anchor: new PIXI.Point(0, .5)},
             // [eLineNumber.multiply]: {pos: new PIXI.Point()}
         }
 

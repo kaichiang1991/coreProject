@@ -45,12 +45,19 @@ gsap.ticker.fps(fps)
 gsap.ticker.add(()=> App.ticker.update())
 
 // 版號
-const versionText: Text = new Text(`v${version}`, new TextStyle({
+const versionText: Text = stage.addChild(new Text(`v${version}`, new TextStyle({
     fontSize: 18,
-}))
+    fontWeight: 'bold',
+    stroke: 'black',
+    strokeThickness: 1,
+    fill: 'white'
+})))
 versionText.zIndex = eAppLayer.version
-versionText.anchor.set(-.2, -.1)
-stage.addChild(versionText)
+versionText.anchor.set(1.2, -.1)
+EventHandler.on(eEventName.orientationChange, ()=> {
+    const {portrait, size: {width, height}} = config
+    versionText.position.x = portrait? width: height
+})
 
 // 註冊視窗事件
 window.addEventListener('blur', ()=>{})

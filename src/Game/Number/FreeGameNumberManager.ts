@@ -161,7 +161,7 @@ export default class FreeGameNumberManager{
 
         const timeline: GSAPTimeline = gsap.timeline()
         .from(font, {ease: Back.easeOut.config(2), duration: .5, pixi: {scale: 0}})
-        .to(font, {delay: .2, duration: .8, y: '-=50', alpha: 0})
+        .to(font, {delay: .5, duration: .8, y: '-=50', alpha: 0})
 
         await waitTweenComplete(timeline)
         this.clearPlusTimes()

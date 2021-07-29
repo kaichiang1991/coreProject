@@ -35,6 +35,7 @@ declare class SlotUIManager {
     private static autoInfinity;
     private static spinRoundTimes;
     static get IsAuto(): boolean;
+    private static winInfo;
     /**初始化 */
     static init(): Promise<void>;
     /**重置設定 */
@@ -48,10 +49,17 @@ declare class SlotUIManager {
      */
     static activeMenuBtn(flag: boolean): void;
     /**
-     * 開關旋轉次數
+     * 開關自動模式
      * @param flag 開關狀態
      */
-    static activeSpinRound(flag: boolean): void;
+    static activeAuto(flag: boolean): void;
+    /**
+     * 開關贏分資訊
+     * @param flag 開關狀態
+     * @param value 第幾線/乘積
+     * @param win 贏分
+     */
+    static activeWinInfo(flag: boolean, value?: number, win?: number): void;
     /**
      * 重置旋轉次數
      * @param index 自動旋轉次數陣列索引

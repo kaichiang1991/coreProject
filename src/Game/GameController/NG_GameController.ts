@@ -63,7 +63,7 @@ class GameStart extends GameState{
     
         // 檢查餘額
         if(!this.checkCreditEnough()){
-            SlotUIManager.activeSpinRound(false)            // 關 auto
+            SlotUIManager.activeAuto(false)            // 關 auto
             SystemErrorManager.showPrompOut(LocalizationManager.gameText('InsufficientBalanceTitle'))
             this.context.changeState(eNG_GameState.start)
             return

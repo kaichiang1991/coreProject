@@ -266,7 +266,10 @@ export default class Reel{
 
     /** 停止期待框效果 */
     public stopReelExpect(){
-        this.reelExpect?.destroy()
+        if(this.reelExpect){
+            this.reelExpect.destroy()
+            this.reelExpect = null
+        }
     }
     //#endregion
 
