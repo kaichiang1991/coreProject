@@ -232,9 +232,7 @@ class FreeGame extends GameScene{
 
         // 底板
         this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
-        this.remainTimesBottom.zIndex = eReelContainerLayer.featureRemainBottom
         this.multipleTimesBottom = new Sprite('Feature_TopPlate.png')
-        this.multipleTimesBottom.zIndex = eReelContainerLayer.featureOddsBottom
         // 底板文字
         this.remainTimesText = this.remainTimesBottom.addChild(new Sprite('Feature_RemainWord.png'))
         this.remainTimesText.position.set(30, 15)
@@ -258,7 +256,9 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.position.set(0, 895)
                 
                 this.remainTimesBottom.position.set(-95, -145)
+                this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom1
                 this.multipleTimesBottom.position.set(-95, -80)
+                this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom2
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
 
@@ -268,7 +268,9 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.position.set(0, 600)
 
                 this.remainTimesBottom.position.set(-305, -80)
+                this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom2
                 this.multipleTimesBottom.position.set(115, -80)
+                this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom1
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }

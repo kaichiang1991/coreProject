@@ -34,8 +34,10 @@ enum eReelContainerLayer{
     reelFrame,
     reelExpect,
     logo,
-    featureOddsBottom,
-    featureRemainBottom,     // 因為加場次數字在剩餘場次的底板上，所以剩餘次數底板要在上面
+
+    // FreeGame 場次/倍數底板
+    featureBottom1,
+    featureBottom2,
 
     endSpinAnim,
     winAnimation,
