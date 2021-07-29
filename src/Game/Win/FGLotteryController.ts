@@ -63,13 +63,11 @@ class LotteryAnim extends GameState{
         const {Multiplier} = GameSlotData.FGSpinData.SpinInfo
         BetModel.getInstance().addWin(win)
         await LineManager.playAllLineWin(winlineInfos, Multiplier)
-        await GameSpineManager.playFG_OddsWin()
         // await LineManager.playEachLine()            
         this.change()
     }
 
     change(){
-        GameSpineManager.playNextFG_Odds()
         LineManager.StopEachLineFn = null       // 清除逐縣fn，確保下次stopEachLineFn 時，不會呼叫錯
         this.context.changeState(eFG_LotteryState.end)
     }

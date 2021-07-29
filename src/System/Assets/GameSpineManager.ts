@@ -272,27 +272,22 @@ export default class GameSpineManager{
         this.FG_Odds.setEmptyAnimations()
         this.FG_Odds.parent?.removeChild(this.FG_Odds)
     }
-    
-    /**
-     * 播放目前倍數的得獎動畫
-     * @returns {Promise<void>} 得獎動畫演完的Promise
-     */
-    public static playFG_OddsWin(){
-        const track = this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Win`)
-        this.FG_Odds.addAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)
-        return waitTrackComplete(track)
-    }
 
     /**
      * 播放下一個 FG 的倍數
      * 會自動判斷是不是到最後的倍數
      */
-    public static playNextFG_Odds(){
-        this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Disable`)       // 取消focus目前的倍數
-        if(++this.currentIndex >= this.ODDS_ARR.length)
-            this.currentIndex = this.ODDS_ARR.length - 1
+    public static async playNextFG_Odds(){
+        if(this.currentIndex == this.ODDS_ARR.length - 1)
+            return
 
-        this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)  // focus 下一個倍數
+        this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Disable`)       // 取消focus目前的倍數
+        this.currentIndex++
+
+        const track = this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Win`)           // 強調下一個倍數的動畫
+        this.FG_Odds.addAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)  // focue 在下一個倍數的 loop
+
+        await waitTrackComplete(track)
     }
     //#endregion FG_Odds
 }

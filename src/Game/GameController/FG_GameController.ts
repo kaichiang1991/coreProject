@@ -133,7 +133,12 @@ class GameInit extends GameState{
 
 class GameStart extends GameState{
 
-    enter(){
+    async enter(){
+        // 增加 FG 倍數
+        if(GameSlotData.FGSpinData?.SpinInfo.WinType & eWinType.normal){        // 上一局有得分
+            await GameSpineManager.playNextFG_Odds()      
+        }
+
         this.change() 
     }
 
@@ -151,14 +156,8 @@ class StartSpin extends GameState{
 
         const allSpin: Promise<void> = ReelController.startSpin()
 
-        // 接受server 資料 
-        if(!window.useServerData){
-            await Sleep(1)
-            window.idx = ++window.idx % window.FGSpinDataArr.length
-            GameSlotData.FGSpinData = window.FGSpinDataArr[window.idx]
-        }else{
-            GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
-        }
+        // 接收server 資料 
+        GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
 
         const {ScreenOutput, ScreenOrg, SymbolResult} = GameSlotData.FGSpinData.SpinInfo
         ReelController.setResult(ScreenOrg)
