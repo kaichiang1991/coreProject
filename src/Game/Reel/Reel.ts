@@ -344,13 +344,14 @@ export default class Reel{
             return
         }
 
-        const flatArrStr: string = JSON.stringify([...this.reelDatas, ...this.reelDatas]).slice(1, -1)       // 避免結果落在尾巴
-        const resultStr: string = JSON.stringify(result).slice(1, -1)
+        const flatArrStr: string = JSON.stringify([...this.reelDatas, ...this.reelDatas]).slice(1, -1).concat(',')       // 避免結果落在尾巴
+        const resultStr: string = ',' + JSON.stringify(result).slice(1, -1) + ','                                        // 前後加 , 避免遇到數字前後相等的情況  e.g.  21,21,2 == 21,21,21  /  1,21,21 == 21,21,21
         const index: number = flatArrStr.indexOf(resultStr)
         if(index < 0){
             Debug.error(this.reelIndex, 'getCorrectDateIndex', '不在滾輪表內')
             return
         }
+
         this.dataIndex = flatArrStr.slice(0, index - 1).split(',').length + result.length + spinConfig.extraSymbolCount
     }
     //#endregion

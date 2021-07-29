@@ -98,13 +98,7 @@ class StartSpin extends GameState{
         const allSpin: Promise<void> = ReelController.startSpin()
 
         // 接受server 資料 
-        if(!window.useServerData){
-            await Sleep(1)
-            window.idx = ++window.idx % window.NGSpinDataArr.length
-            GameSlotData.NGSpinData = window.NGSpinDataArr[window.idx]
-        }else{
-            GameSlotData.NGSpinData = await GameDataRequest.NGSpin(BetModel.getInstance().Bet)
-        }
+        GameSlotData.NGSpinData = await GameDataRequest.NGSpin(BetModel.getInstance().Bet)
 
         const {RoundCode, SpinInfo} = GameSlotData.NGSpinData
         // 更新 細單單號
