@@ -372,7 +372,7 @@ export class SymbolController{
         })
 
         await Promise.all(allPromise)
-        stickArr.map(stick => stick.setLayer())
+        stickArr.map(stick => stick.playWDLoop().setLayer())
     }
     //#endregion Stick
 }

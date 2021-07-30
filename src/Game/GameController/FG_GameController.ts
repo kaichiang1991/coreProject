@@ -195,6 +195,7 @@ class EndSpin extends GameState{
                 FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
             ])
             FreeGameNumberManager.adjustRemainTimes(true, plus)
+            await Sleep(.5)
         }
         isWin && await FGLotteryController.init()
         this.change()

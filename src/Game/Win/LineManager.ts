@@ -103,7 +103,10 @@ export class LineManager{
      */
     public static async playEachLine(){
         this.stopEachLineFn = null
+        const {LineGame} = gameConfig
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
+            const {Win, LineNo, WayCount} = this.winlineArr[0]
+            SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
             return
         }
 
@@ -119,7 +122,7 @@ export class LineManager{
                 this.playLine(LineNo)                                                           // 播放線獎
                 LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
-                SlotUIManager.activeWinInfo(true, gameConfig.LineGame? LineNo: WayCount, Win * (this.multiple || 1))
+                SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win * (this.multiple || 1))
                 index = ++index % this.winlineArr.length
             })
             .add(()=> {}, `+=${eachLineLight}`)
@@ -144,7 +147,11 @@ export class LineManager{
      */
      public static async playFG_EachLine(){
         this.stopEachLineFn = null
+        const {LineGame} = gameConfig
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
+            // FG 回來的逐線若只有單線，就是FG那條 (沒有贏分資訊)
+            // const {Win, LineNo, WayCount} = this.winlineArr[0]
+            // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
             return
         }
 
@@ -166,7 +173,7 @@ export class LineManager{
                 }else{
                     this.playLine(LineNo)                                                           // 播放線獎
                     LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
-                    SlotUIManager.activeWinInfo(true, LineNo, Win)
+                    SlotUIManager.activeWinInfo(true, LineNo, Win)                                  // 播放贏分資訊
                 }
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))           // 播放動畫
                 index = ++index % this.winlineArr.length

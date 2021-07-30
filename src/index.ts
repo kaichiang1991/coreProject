@@ -46,7 +46,7 @@ gsap.ticker.add(()=> App.ticker.update())
 
 // 版號
 const versionText: Text = stage.addChild(new Text(`v${version}`, new TextStyle({
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     stroke: 'black',
     strokeThickness: 1,
@@ -72,8 +72,8 @@ const gameEntry: Function = async ()=>{
 
     Entry.init(App, config)
     AppDebug.init()
-    ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
-    // ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
+    // ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
+    ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()

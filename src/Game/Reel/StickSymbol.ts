@@ -73,7 +73,6 @@ export default class StickSymbol extends Symbol{
         this.id = id
         this.symbolId = eSymbolName.WD
         const track = this.WD_Spine.setAnimation('WD_In')
-        this.WD_Spine.addAnimation('WD_Loop', true)
 
         const [reelIndex, symbolIndex] = StickSymbol.parseID(this.id)
         this.position.set(xOffsetArr[mapColumnIndex(reelIndex)], yOffsetArr[mapRowIndex(reelIndex)][symbolIndex+1])
@@ -83,6 +82,14 @@ export default class StickSymbol extends Symbol{
         return [this, waitTrackComplete(track)]
     }
 
+    /**
+     * 播放 stick WD loop
+     * @returns {StickSymbol}
+     */
+    public playWDLoop(): StickSymbol{
+        this.WD_Spine.addAnimation('WD_Loop', true)
+        return this
+    }
 
     /**
      * 播放得獎動畫
