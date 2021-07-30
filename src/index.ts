@@ -72,8 +72,8 @@ const gameEntry: Function = async ()=>{
 
     Entry.init(App, config)
     AppDebug.init()
-    // ParameterParse.init('wss://gsvr1.msgaming.one')     // 先連demo站的
-    ParameterParse.init('ws://192.168.1.116:12201')     // 先連本地的
+    // 在沒有外部帶入的情況下，預設 prod 連 DEV 環境，develop 連 local 環境
+    ParameterParse.init(process.env.NODE_ENV == 'production'? 'wss://gsvr1.msgaming.one': 'ws://192.168.1.116:12201')
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()
@@ -102,7 +102,6 @@ const gameEntry: Function = async ()=>{
     const {href} = url.parse(document.URL)
     const dispatchObj: Object = {gameCode: 'BN' + gameConfig.GameID, gameLanguage: LocalizationManager.getLanguage()}
     EventHandler.on(eEventName.openGameInfo, ()=>{
-        console.log(url.resolve(href, `../GameCommon/GameInfo/${dispatchObj['gameCode']}.html`))
         EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, url: url.resolve(href, `../GameCommon/GameInfo/${dispatchObj['gameCode']}.html`)})
     })
     EventHandler.on(eEventName.openHistory, ()=>{
