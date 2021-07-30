@@ -1,3 +1,4 @@
+import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager"
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
 import { Point } from "pixi.js-legacy"
 import { LineManager } from "../Win/LineManager"
@@ -33,6 +34,7 @@ export default class LineNumberManager{
         const font: BitmapText = this.numArr[eLineNumber.lineWin]
         parent.addChild(font)
 
+        const [audio] = GameAudioManager.playAudioEffect(eAudioName.lineWinScroll, true)
         const duration: number = 1 // 跑分時間
         const config: {value: number} = {value: 0}
         await waitTweenComplete(
@@ -42,6 +44,7 @@ export default class LineNumberManager{
                 LineManager.LineNumResizeFn()
             }})
         )
+        GameAudioManager.stopAudioEffect(audio)
     }
 
     /**

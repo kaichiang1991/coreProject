@@ -1,10 +1,12 @@
 import Symbol from "./Symbol"
-import { eSymbolConfig, eSymbolState, mapRowIndex, reelSymbolCount, yOffsetArr } from "./SymbolDef"
+import { eSymbolConfig, eSymbolName, eSymbolState, mapRowIndex, reelSymbolCount, yOffsetArr } from "./SymbolDef"
 import ReelController, { eReelGameType, spinConfig } from "./ReelController"
 import {fps} from '@root/config'
 import GameSlotData from "../GameSlotData"
 import strip from '@root/strip.json?edit'
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
+import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager"
+import { IMediaInstance } from "@pixi/sound"
 
 export enum eListeningState{
     none,       // 沒有聽牌
@@ -54,6 +56,7 @@ export default class Reel{
     private listeningSpeed: number          // 聽牌時速度
     private listeningTween: gsap.core.Tween // 設定聽牌速度的 tween
     private reelExpect: Spine               // 聽牌特效
+    private reelExpectAudio: IMediaInstance // 聽牌特效音效
 
     // 結果
     private resultArr: Array<number>    // 結果陣列
@@ -195,6 +198,7 @@ export default class Reel{
         .call(()=>{
             // 到底部
             this.stopReelExpect()
+            this.playEndSpinAudio()
         })
         .to(this.symbolArr, {duration: spinConfig.bounceBackDuration, y: `-=${upDistance}`})        // 上移
 
@@ -250,6 +254,21 @@ export default class Reel{
         this.toStop = true
     }
 
+    /** 播放落定音效 */
+    public playEndSpinAudio(){
+        const audioName: eAudioName = ReelController.FG_AudioArr[this.reelIndex]? eAudioName.FG_EndSpin: eAudioName.spinStop
+        GameAudioManager.playAudioEffect(audioName)
+    }
+
+    /**
+     * 滾輪結果是否有包含指定符號
+     * @param {eSymbolName} symbol 符號ID
+     * @returns {boolean}
+     */
+    private hasSymbol(symbol: eSymbolName): boolean{
+        return this.resultArr.includes(symbol)
+    }
+    
     //#region 聽牌
     /** 設定聽牌 */
     public setListening(state: eListeningState){
@@ -267,6 +286,7 @@ export default class Reel{
     /** 播放期待框效果 */
     public playReelExpect(){
         this.reelExpect = GameSpineManager.playReelExpect(ReelController.ReelContainer, this.reelIndex)
+        ;[this.reelExpectAudio] = GameAudioManager.playAudioEffect(eAudioName.reelExpect, true)
     }
 
     /** 停止期待框效果 */
@@ -274,6 +294,9 @@ export default class Reel{
         if(this.reelExpect){
             this.reelExpect.destroy()
             this.reelExpect = null
+        }
+        if(this.reelExpectAudio){
+            this.reelExpectAudio = GameAudioManager.stopAudioEffect(this.reelExpectAudio)
         }
     }
     //#endregion

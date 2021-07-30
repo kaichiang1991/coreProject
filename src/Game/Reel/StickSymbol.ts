@@ -1,3 +1,4 @@
+import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager";
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
 import ReelController from "./ReelController";
@@ -69,6 +70,8 @@ export default class StickSymbol extends Symbol{
         this.reset()
 
         await Sleep(delay)
+
+        GameAudioManager.playAudioEffect(eAudioName.FG_StickAppear)
         this.zIndex = eReelContainerLayer.winAnimation      // 為了演出在 upperStick 上面
         this.id = id
         this.symbolId = eSymbolName.WD

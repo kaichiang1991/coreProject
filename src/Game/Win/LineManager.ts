@@ -4,7 +4,9 @@ import { editConfig, gameConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
 import {minus, plus} from 'number-precision'
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
-import { mapRowIndex, reelCount, xOffsetArr, yOffsetArr } from "../Reel/SymbolDef";
+import { eSymbolName, mapRowIndex, reelCount, xOffsetArr, yOffsetArr } from "../Reel/SymbolDef";
+import { IMediaInstance } from "@pixi/sound";
+import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager";
 
 const {Container, Sprite} = PixiAsset
 
@@ -14,6 +16,7 @@ export class LineManager{
     private static winlineArr: Array<ISSlotWinLineInfo>
     private static multiple: number
 
+    private static eachLineAudio: IMediaInstance
     private static eachLineTimeline: GSAPTimeline
     private static stopEachLineFn: Function
     // 若有演逐線則停止逐線 timeline，否則就單純清除線
@@ -58,6 +61,8 @@ export class LineManager{
 
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
+
+        const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
@@ -67,13 +72,21 @@ export class LineManager{
         await Promise.all(allPromise)
         await Sleep(.5)
 
+        GameAudioManager.stopAudioEffect(allLineAudio)
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
 
+    /**
+     * 播放 FG 回來後的全線
+     * @param {Array<ISSlotWinLineInfo>} winlineArr NG盤面的線
+     * @param {number} totalWin 總分
+     */
     public static async playFG_AllLineWin(winlineArr: Array<ISSlotWinLineInfo>, totalWin: number){
         this.winlineArr = winlineArr.slice()
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
+
+        const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),                     // 最少演出時間
@@ -81,6 +94,7 @@ export class LineManager{
         )        
         
         await Promise.all(allPromise)
+        GameAudioManager.stopAudioEffect(allLineAudio)
     }
     
     /**
@@ -107,6 +121,7 @@ export class LineManager{
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
             const {Win, LineNo, WayCount} = this.winlineArr[0]
             SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
+            this.playEachLineAudio(this.winlineArr[0])
             return
         }
 
@@ -119,6 +134,7 @@ export class LineManager{
             .call(()=>{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition, WayCount} = this.winlineArr[index]
+                this.playEachLineAudio(this.winlineArr[index])                                  // 播放音效
                 this.playLine(LineNo)                                                           // 播放線獎
                 LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                 WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 播放動畫
@@ -145,13 +161,14 @@ export class LineManager{
      * 播放FG回來後逐線動畫
      * @returns 單線的話直接回傳 / 多線的話 timeline 開始跑了之後回傳
      */
-     public static async playFG_EachLine(){
+    public static async playFG_EachLine(){
         this.stopEachLineFn = null
         const {LineGame} = gameConfig
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
             // FG 回來的逐線若只有單線，就是FG那條 (沒有贏分資訊)
             // const {Win, LineNo, WayCount} = this.winlineArr[0]
             // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
+            this.playEachLineAudio(this.winlineArr[0])
             return
         }
 
@@ -171,6 +188,7 @@ export class LineManager{
                     LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)
                     SlotUIManager.activeWinInfo(false)
                 }else{
+                    this.playEachLineAudio(this.winlineArr[index])                                  // 播放音效
                     this.playLine(LineNo)                                                           // 播放線獎
                     LineNumberManager.playLineNumber(this.lineNumberContainer, Win)                 // 播放分數
                     SlotUIManager.activeWinInfo(true, LineNo, Win)                                  // 播放贏分資訊
@@ -193,9 +211,27 @@ export class LineManager{
         })
     }
 
+    private static playEachLineAudio(winline: ISSlotWinLineInfo){
+        // 先判斷連線中有沒有WD
+        let audioName: eAudioName
+        const {WinPosition, SymbolID} = winline
+        if(WinPosition.find(pos => SymbolController.getSymbol(pos[0], pos[1]).SymbolID == eSymbolName.WD)){
+            console.log('連線中有WD')
+            audioName = eAudioName.eachLine_WD
+        }else if(SymbolID == eSymbolName.H1){
+            audioName = eAudioName.eachLine_H1
+        }else if(SymbolID == eSymbolName.H2){
+            audioName = eAudioName.eachLine_H2
+        }else{
+            audioName = eAudioName.eachLine_N
+        }
+        [this.eachLineAudio] = GameAudioManager.playAudioEffect(audioName)
+    }
+
     /** 清除所有得獎動畫 */
     private static clearLineEvent(){
         this.lineContainer.children.slice().map(child => child.destroy())
+        this.eachLineAudio = GameAudioManager.stopAudioEffect(this.eachLineAudio)       // 清除音效
         SymbolController.clearAllWinAnimation()         // 清除動畫
         LineNumberManager.clearLineNumber()             // 清除分數
         LineNumberManager.clearLineWinMultNumber()      // 清除分數倍率

@@ -1,4 +1,5 @@
 import { App, eGameEventName } from "@root/src"
+import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
@@ -40,6 +41,7 @@ export default class NG_GameController{
 
 class GameInit extends GameState{
     enter(){
+        GameAudioManager.playAudioMusic(eAudioName.NG_BGM)
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
         ReelController.reset(eReelGameType.normalGame)          // 初始化滾輪
         this.change()
@@ -177,10 +179,13 @@ class EndSpin extends GameState{
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
+        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))        // 播放 symbol 得獎
         .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
 
         await Promise.all(allPromise)
+
+        GameAudioManager.stopAudioEffect(audio)
         SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
     }

@@ -289,6 +289,11 @@ declare namespace PixiAsset {
          */
         static muteAll(flag: boolean): void;
         /**
+         * 調整整體音量
+         * @param {number} value 音量大小 0-1
+         */
+        static volumeAll(value: number): void;
+        /**
          * 根據名稱暫停所有音效
          * @param {string} name
          */

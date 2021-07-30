@@ -41,6 +41,10 @@ export default class ReelController{
 
     private static resizeFn: IEventCallback
 
+    // 聽牌
+    private static FG_audioArr: Array<boolean>
+    public static get FG_AudioArr(): Array<boolean> {return this.FG_audioArr.slice()}
+
     /** 初始化滾輪控制 */
     public static async init(){
         spinConfig = editConfig.spin        // 讀取滾輪參數的 json 檔
@@ -255,7 +259,11 @@ export default class ReelController{
      * @param {ISSlotSpinInfo} spinInfo 盤面資訊
      */
     public static checkFGListening(spinInfo: ISSlotSpinInfo){
-        const count: number = spinInfo.ScreenOrg.slice(0, 2).filter(arr => arr.find(symbol => symbol == eSymbolName.FG)).length
+        const {ScreenOrg} = spinInfo, symbol: eSymbolName = eSymbolName.FG
+        // 紀錄該局FG落定音效的陣列
+        this.FG_audioArr = ScreenOrg.map((_, index) =>  ScreenOrg.slice(0, index + 1).reduce((pre, curr) => pre && curr.includes(symbol), true))
+        
+        const count = ScreenOrg.slice(0, 2).filter(arr => arr.find(_symbol => _symbol == symbol)).length
         if(count < 2)
             return
 

@@ -1,5 +1,6 @@
 import config from '@root/config'
 import { App, editConfig, eGameEventName } from "@root/src"
+import GameAudioManager, { eAudioName } from '@root/src/System/Assets/GameAudioManager'
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import { eAppLayer } from "@root/src/System/LayerDef"
@@ -65,6 +66,7 @@ class GameInit extends GameState{
         const transitionCont: Container = this.black.addChild(new Container('transition container'))
         
         // 轉場提示動畫
+        const [transitionAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_Transition)
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
 
         // 展開文字
@@ -107,10 +109,14 @@ class GameInit extends GameState{
             waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
             GameSpineManager.playTransitionOut()
         ])     
+
+        GameAudioManager.stopAudioEffect(transitionAudio)
         this.change()
     }
 
     async change(){
+        GameAudioManager.playAudioMusic(eAudioName.FG_BGM)
+
         FreeGameNumberManager.clearTitleTimes()         // 清除TotalWin 數字
         GameSpineManager.clearTransition()              // 清除轉場
         this.black.destroy()                            // 收拾容器
@@ -198,6 +204,7 @@ class EndSpin extends GameState{
         // 演加場次
         const plus: number = FGRemainTimes - FreeGameNumberManager.RemainTimes
         if(plus > 0){               // 用場次判斷，避免有中FG，卻擋掉場次上限的問題
+            GameAudioManager.playAudioEffect(eAudioName.FG_PlusTimes)
             await Promise.all([
                 this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0]),
                 FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
@@ -260,6 +267,7 @@ class GameEnd extends GameState{
         const transitionCont: Container = this.black.addChild(new Container('transition container'))
 
         // 轉場提示動畫
+        const [transitionAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_TotalWin)
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
 
         // 展開文字
@@ -290,15 +298,17 @@ class GameEnd extends GameState{
             waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
             GameSpineManager.playTransitionOut()
         ])
+        GameAudioManager.stopAudioEffect(transitionAudio)
         //#endregion 轉場
 
         this.change()
     }
 
     change(){
-        FreeGameNumberManager.clearTotalWin()        // 清除TotalWin 數字
-        GameSpineManager.clearTransition()           // 清除轉場
-        this.black.destroy()                         // 收拾容器
+        GameAudioManager.playAudioMusic(eAudioName.NG_BGM)      // 播回 NG 音樂
+        FreeGameNumberManager.clearTotalWin()                   // 清除TotalWin 數字
+        GameSpineManager.clearTransition()                      // 清除轉場
+        this.black.destroy()                                    // 收拾容器
         EventHandler.off(eEventName.orientationChange, this.resizeFn)
 
         // 清除場次
