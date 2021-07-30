@@ -70,7 +70,7 @@ export default class GameAssetManager{
         BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame, Line)
 
         MathTool.init(BetModel)
-        await BigWinManager.init(App, config, [20, 50, 100, 200])   // ToDo 之後可能從 server 拿間隔
+        await BigWinManager.init(App, config, [20, 50, 100, 200], {level: eBigWinType.hugeWin, function: ()=> AutoSpinListUIManager.WinSwitch && SlotUIManager.activeAuto(false)})   // ToDo 之後可能從 server 拿間隔
 
         await ReelController.init()
         await StickSymbolController.init()
@@ -79,7 +79,6 @@ export default class GameAssetManager{
         await LineNumberManager.init()
         await FreeGameNumberManager.init()
 
-        // GameSpineManager.initLine()
         GameSpineManager.initScene()
         GameSpineManager.initCharacter()
     }

@@ -1,10 +1,16 @@
 /// <reference types="pixi-particles/ambient" />
+/** BigWin 的類型 */
 declare enum eBigWinType {
     none = 0,
     bigWin = 1,
     megaWin = 2,
     hugeWin = 3,
     superWin = 4
+}
+/** 觸發停止的物件 */
+interface IStopTrigger {
+    level: eBigWinType;
+    function: Function;
 }
 declare class BigWinManager {
     private static setting;
@@ -18,13 +24,14 @@ declare class BigWinManager {
     private static parent;
     private static bigWinCont;
     private static resizeFn;
+    private static stopTrigger;
     /**
      * 初始化 BigWinManager
      * @param {PIXI.Application} App
      * @param {IConfig} config 遊戲設定檔
      * @param {Array<number>} interval BigWin的區間 (length = 4)
      */
-    static init(App: PIXI.Application, config: IConfig, interval: Array<number>): Promise<void>;
+    static init(App: PIXI.Application, config: IConfig, interval: Array<number>, trigger: IStopTrigger): Promise<void>;
     /**
      * 播放 BigWin 演出
      * @param {PIXI.Container} parent 父節點

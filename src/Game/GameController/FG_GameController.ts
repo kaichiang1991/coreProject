@@ -1,5 +1,5 @@
 import config from '@root/config'
-import { App, eGameEventName } from "@root/src"
+import { App, editConfig, eGameEventName } from "@root/src"
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import { eAppLayer } from "@root/src/System/LayerDef"
@@ -92,14 +92,22 @@ class GameInit extends GameState{
         await waitTweenComplete(gsap.from(titleCont, {duration: .3, alpha: 0}))
         //#endregion 轉場
 
-        // ToDo 到時候看 auto 設定?
-        this.black.once('pointerdown', async ()=>{
-            await Promise.all([
-                waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
-                GameSpineManager.playTransitionOut()
-            ])            
-            this.change()
-        })
+        // Auto 選單內有設定遇到 FG 則停止Auto
+        if(SlotUIManager.IsAuto && AutoSpinListUIManager.FreeGameSwitch)
+            SlotUIManager.activeAuto(false)
+        
+        await Promise.race([
+            // Auto 時，自動進入
+            SlotUIManager.IsAuto? Sleep(editConfig.game.FG_TitleAutoDelay): new Promise<void>(()=>{}),
+            // 點擊畫面進入
+            new Promise<void>(res =>this.black.on('pointerdown', res))
+        ])
+        this.black.removeAllListeners()
+        await Promise.all([
+            waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
+            GameSpineManager.playTransitionOut()
+        ])     
+        this.change()
     }
 
     async change(){

@@ -41,6 +41,7 @@ interface IConfig{
 interface IEditConfig{
     line: ILineConfig
     spin: ISpinConfig
+    game: IEditGameConfig
 }
 
 /** 轉輪的參數 */
@@ -61,6 +62,11 @@ interface ISpinConfig{
 interface ILineConfig{
     leastAllLineDuration: number    // 全縣演出最短時間
     eachLineLight: number           // 逐縣時每條線亮的時間
+}
+
+/** 遊戲內的參數 */
+interface IEditGameConfig{
+    FG_TitleAutoDelay: number       // auto 時，自動進FG的等待時間
 }
 
 /** 個別遊戲設定的參數 */

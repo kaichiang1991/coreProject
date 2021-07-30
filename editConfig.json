@@ -14,5 +14,8 @@
     "line": {
         "leastAllLineDuration": 1,
         "eachLineLight": 0.8
+    },
+    "game": {
+        "FG_TitleAutoDelay": 10
     }
 }
