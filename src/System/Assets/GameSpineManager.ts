@@ -1,9 +1,9 @@
 import lazyLoad from "@root/src/Tool/lazyLoad"
 import config from '@root/config'
-import { App } from "@root/src"
 import { Container, Point } from "pixi.js-legacy"
 import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "../LayerDef"
 import { mapRowIndex, reelContPivot, xOffsetArr, yOffsetArr } from "@root/src/Game/Reel/SymbolDef"
+import GameAudioManager, { eAudioName } from "./GameAudioManager"
 
 const {Spine} = PixiAsset
 
@@ -284,6 +284,7 @@ export default class GameSpineManager{
         this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Disable`)       // 取消focus目前的倍數
         this.currentIndex++
 
+        GameAudioManager.playAudioEffect(eAudioName.FG_OddsEffect)
         const track = this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Win`)           // 強調下一個倍數的動畫
         this.FG_Odds.addAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)  // focue 在下一個倍數的 loop
 

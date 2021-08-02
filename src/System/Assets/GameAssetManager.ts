@@ -70,7 +70,15 @@ export default class GameAssetManager{
         BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame, Line)
 
         MathTool.init(BetModel)
-        await BigWinManager.init(App, config, [20, 50, 100, 200], {level: eBigWinType.hugeWin, function: ()=> AutoSpinListUIManager.WinSwitch && SlotUIManager.activeAuto(false)})   // ToDo 之後可能從 server 拿間隔
+        await BigWinManager.init(App, config, [20, 50, 100, 200], 
+            {level: eBigWinType.hugeWin, function: ()=> AutoSpinListUIManager.WinSwitch && SlotUIManager.activeAuto(false)},
+            {
+                pauseMusic: GameAudioManager.pauseCurrentMusic.bind(GameAudioManager), 
+                resumeMusic: GameAudioManager.resumeCurrentMusic.bind(GameAudioManager),
+                playAudio: GameAudioManager.playAudioEffect.bind(GameAudioManager), 
+                stopAudio: GameAudioManager.stopAudioEffect.bind(GameAudioManager)
+            }
+        )   // ToDo 之後可能從 server 拿間隔
 
         await ReelController.init()
         await StickSymbolController.init()

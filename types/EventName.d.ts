@@ -1,5 +1,7 @@
 declare enum eEventName {
     orientationChange = "orientationChange",
+    setMusicVolume = "setMusicVolume",
+    setEffectVolume = "setEffectVolume",
     startSpin = "startSpin",
     stopSpin = "stopSpin",
     betModelChange = "betModelChange",

@@ -3,32 +3,35 @@ import lazyLoad from "@root/src/Tool/lazyLoad"
 
 export enum eAudioName{
     // 音樂
-    NG_BGM = 'MBN82001_ng_bgm',
-    FG_BGM = 'MBN82002_fg_bgm',
+    NG_BGM = 'MBN82001_Ng_Bgm',
+    FG_BGM = 'MBN82002_Fg_Bgm',
 
     // ----------- 音效 ----------
     // 滾輪
-    spinStop = 'SBN82003_spin_stop',
-    reelExpect = 'SBN82004_reel_expecting',
+    spinStop = 'SBN82003_Spin_Stop',
+    reelExpect = 'SBN82004_Reel_Expecting',
     
     // 符號
-    FG_EndSpin = 'SBN82005_fg_effect',          // FG 符號連線落定
-    FG_SymbolWin = 'SBN82006_fg_win',           // FG 符號連線
+    FG_EndSpin = 'SBN82005_Fg_Effect',          // FG 符號連線落定
+    FG_SymbolWin = 'SBN82006_Fg_Win',           // FG 符號連線
 
     // FreeGame
-    FG_Transition = 'SBN82007_fg_announce',     // FG 轉場宣告
-    FG_StickAppear = 'SBN82016_fg_wild_appear', // FG stick WD 跳出音效
-    FG_PlusTimes = 'SBN82008_fg_add_round',     // FG 加場次
-    FG_TotalWin = 'SBN82009_fg_result',         // FG 總分
+    FG_Transition = 'SBN82007_Fg_Announce',     // FG 轉場宣告
+    FG_StickAppear = 'SBN82016_Fg_Wild_Appear', // FG stick WD 跳出音效
+    FG_OddsEffect = 'SBN82017_FG_Tran_Pay',     // FG 倍數增加
+    FG_PlusTimes = 'SBN82008_Fg_Add_Round',     // FG 加場次
+    FG_TotalWin = 'SBN82009_Fg_Result',         // FG 總分
 
     // 跑線
-    AllLine = 'SBN82013_win_frame',             // 全線展演
-    eachLine_WD = 'SBN82010_wild_win',          // 逐線 WD
-    eachLine_H1 = 'SBN82011_h1_win',            // 逐線 WD
-    eachLine_H2 = 'SBN82012_h2_win',            // 逐線 WD
-    eachLine_N = 'SBN82014_win_score',          // 逐線 WD
-    lineWinScroll = 'SBN82015_count_score',     // 滾分
+    AllLine = 'SBN82013_Win_Frame',             // 全線展演
+    eachLine_WD = 'SBN82010_Wild_Win',          // 逐線 WD
+    eachLine_H1 = 'SBN82011_H1_Win',            // 逐線 H1
+    eachLine_H2 = 'SBN82012_H2_Win',            // 逐線 H2
+    eachLine_N = 'SBN82014_Win_Score',          // 逐線 H3, H4, N1 ~ N6
+    lineWinScroll = 'SBN82015_Count_Score',     // 滾分
 }
+
+const musicList: Array<eAudioName> = [eAudioName.NG_BGM, eAudioName.FG_BGM]
 
 const {PixiSound} = PixiAsset
 export default class GameAudioManager{
@@ -44,11 +47,24 @@ export default class GameAudioManager{
         const [...sources] = await lazyLoad(Object.values(this.audioList))        
         Object.keys(this.audioList).map((key, index) => this.audioList[key] = sources[index])
         await PixiSound.init(this.audioList)
+
+        this.onRegisterEvent()
+    }
+
+    private static onRegisterEvent(){
+        EventHandler.on(eEventName.setMusicVolume, ctx =>{
+            this.setAudioMusicVolume(ctx.volume)
+        })
+
+        EventHandler.on(eEventName.setEffectVolume, ctx =>{
+            this.setAudioEffectVolume(ctx.volume)
+        })
     }
 
     //#region 遊戲音樂 music
     private static currentMusic: IMediaInstance
     private static currentMusicName: string
+    private static audioMusicVolume: number = 1
     /**
      * 播放背景音樂 (只支援同時播放一個背景音樂)
      * 若不同於現在的背景音樂，則停掉目前的，直接播放
@@ -65,7 +81,7 @@ export default class GameAudioManager{
                 Debug.warn('playAudioMusic', 'loop 但是有complete事件', name)
             }
 
-            const option: PlayOptions = {loop, complete: ()=> {
+            const option: PlayOptions = {loop, volume: this.audioMusicVolume, complete: ()=> {
                 complete && complete()
                 res()
             }}
@@ -95,9 +111,27 @@ export default class GameAudioManager{
         PixiSound.resumeByInstance(this.currentMusic)
     }
 
+    /** 停止播放目前背景音樂，並記錄成null */
+    public static stopCurrentMusic(){
+        this.currentMusic = PixiSound.stopByInstance(this.currentMusic)
+    }
+
+    /**
+     * 設定背景音樂音量
+     * @param {number} value 音量 0 - 1
+     */
+    private static setAudioMusicVolume(value: number){
+        if(SettingUIManager.IsMusicOn){
+            this.audioMusicVolume = value
+        }else{
+            this.audioMusicVolume = 0
+        }
+        PixiSound.setVolumeByInstance(this.currentMusic, this.audioMusicVolume)
+    }
     //#endregion 遊戲音樂 music
 
     //#region 遊戲音效 effect
+    private static audioEffectVolume: number = 1
     /**
      * 播放遊戲音校
      * @param {string} name 音效名稱
@@ -109,7 +143,7 @@ export default class GameAudioManager{
         let option: PlayOptions
         const audioDone: Promise<void> = new Promise<void>(res => {                
             option = {
-                loop, complete: ()=>{
+                loop, volume: this.audioEffectVolume, complete: ()=>{
                     complete && complete()
                     res()
                 }
@@ -146,6 +180,21 @@ export default class GameAudioManager{
      */
     public static stopAudioEffect(audio: IMediaInstance){
         return PixiSound.stopByInstance(audio)
+    }
+
+    /**
+     * 設定遊戲音效音量
+     * @param {number} value 音量 0 - 1
+     */
+    private static setAudioEffectVolume(value: number){
+        if(SettingUIManager.IsMusicOn){
+            this.audioEffectVolume = value
+        }else{
+            this.audioEffectVolume = 0
+        }
+
+        // 因為setVolume只會找到第一個同名的音效，所以同時有兩個以上的音效會有一個不會設定到音量 (看之後要不要修)
+        Object.values(eAudioName).map(name => !musicList.includes(name) && PixiSound.setVolumeByName(name, this.audioEffectVolume))
     }
     //#endregion 遊戲音效 effect
 }

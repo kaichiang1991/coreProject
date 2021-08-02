@@ -1,5 +1,5 @@
 import config from '@root/config'
-import { App, editConfig, eGameEventName } from "@root/src"
+import { App, editConfig, eGameEventName, isWindowBlur } from "@root/src"
 import GameAudioManager, { eAudioName } from '@root/src/System/Assets/GameAudioManager'
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
@@ -66,7 +66,15 @@ class GameInit extends GameState{
         const transitionCont: Container = this.black.addChild(new Container('transition container'))
         
         // 轉場提示動畫
-        const [transitionAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_Transition)
+        const setVolumeFn: Function = (flag: boolean) =>{       // 設定音量
+            if(isWindowBlur)    return
+            EventHandler.dispatch(eEventName.setMusicVolume, {volume: flag? .4: 1})
+        }
+
+        setVolumeFn(true)
+        const [transitionAudio, audioDone] = GameAudioManager.playAudioEffect(eAudioName.FG_Transition)
+        audioDone.then(setVolumeFn.bind(this, false))       // 視窗宣告音效播完後，回復原本音樂音量
+
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
 
         // 展開文字
@@ -267,6 +275,7 @@ class GameEnd extends GameState{
         const transitionCont: Container = this.black.addChild(new Container('transition container'))
 
         // 轉場提示動畫
+        GameAudioManager.stopCurrentMusic()
         const [transitionAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_TotalWin)
         const inAnimDone: Promise<void> = GameSpineManager.playTransitionIn(transitionCont)
 

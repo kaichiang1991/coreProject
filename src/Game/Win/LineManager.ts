@@ -216,7 +216,6 @@ export class LineManager{
         let audioName: eAudioName
         const {WinPosition, SymbolID} = winline
         if(WinPosition.find(pos => SymbolController.getSymbol(pos[0], pos[1]).SymbolID == eSymbolName.WD)){
-            console.log('連線中有WD')
             audioName = eAudioName.eachLine_WD
         }else if(SymbolID == eSymbolName.H1){
             audioName = eAudioName.eachLine_H1
@@ -225,7 +224,8 @@ export class LineManager{
         }else{
             audioName = eAudioName.eachLine_N
         }
-        [this.eachLineAudio] = GameAudioManager.playAudioEffect(audioName)
+        // 逐線音效改為loop 讓音效長度配合逐線的時機
+        [this.eachLineAudio] = GameAudioManager.playAudioEffect(audioName, true)
     }
 
     /** 清除所有得獎動畫 */

@@ -12,6 +12,20 @@ interface IStopTrigger {
     level: eBigWinType;
     function: Function;
 }
+interface IExternalFunction {
+    pauseMusic: {
+        (): void;
+    };
+    resumeMusic: {
+        (): void;
+    };
+    playAudio: {
+        (name: string, loop?: boolean, complete?: Function): [IMediaInstance, Promise<void>];
+    };
+    stopAudio: {
+        (audio: IMediaInstance): void;
+    };
+}
 declare class BigWinManager {
     private static setting;
     private static config;
@@ -25,13 +39,15 @@ declare class BigWinManager {
     private static bigWinCont;
     private static resizeFn;
     private static stopTrigger;
+    private static audioFunction;
+    private static backgroundAudio;
     /**
      * 初始化 BigWinManager
      * @param {PIXI.Application} App
      * @param {IConfig} config 遊戲設定檔
      * @param {Array<number>} interval BigWin的區間 (length = 4)
      */
-    static init(App: PIXI.Application, config: IConfig, interval: Array<number>, trigger: IStopTrigger): Promise<void>;
+    static init(App: PIXI.Application, config: IConfig, interval: Array<number>, trigger: IStopTrigger, functions: IExternalFunction): Promise<void>;
     /**
      * 播放 BigWin 演出
      * @param {PIXI.Container} parent 父節點

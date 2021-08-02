@@ -1,6 +1,8 @@
 var eEventName;
 (function (eEventName) {
     eEventName["orientationChange"] = "orientationChange";
+    eEventName["setMusicVolume"] = "setMusicVolume";
+    eEventName["setEffectVolume"] = "setEffectVolume";
     eEventName["startSpin"] = "startSpin";
     eEventName["stopSpin"] = "stopSpin";
     eEventName["betModelChange"] = "betModelChange";
