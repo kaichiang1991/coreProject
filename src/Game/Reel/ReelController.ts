@@ -65,7 +65,7 @@ export default class ReelController{
                 return
             
             this.toStopNow = true
-            
+
             this.stopOrder.map(order => this.reelArr[order]).map(reel =>{
                 reel.ForceStop = true
                 reel.stopSpin()

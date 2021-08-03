@@ -70,8 +70,8 @@ export default class GameAssetManager{
         // 初始化 BetModel
         const {SlotInitData: {MoneyFractionMultiple, Denom, BetUnit, BetMultiples, Line}, JoinGameData: {Balance}} = GameSlotData
         BetModel.init(BetUnit, BetMultiples, Balance, MoneyFractionMultiple, Denom, gameConfig.LineGame, Line)
-
         MathTool.init(BetModel)
+
         await BigWinManager.init(App, config, [20, 50, 100, 200], 
             {level: eBigWinType.hugeWin, function: ()=> AutoSpinListUIManager.WinSwitch && SlotUIManager.activeAuto(false)},
             {

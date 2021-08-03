@@ -61,6 +61,8 @@ class GameStart extends GameState{
     }
 
     async change(){
+        GameAudioManager.playAudioEffect(eAudioName.spinButton)     // 播放點擊音效
+
         // 檢查餘額
         if(!this.checkCreditEnough()){
             SlotUIManager.activeAuto(false)            // 關 auto
@@ -109,10 +111,11 @@ class StartSpin extends GameState{
         ReelController.setResult(ScreenOrg)     // 設定結果，要看數學資料格式
 
         EventHandler.dispatch(eEventName.receiveServerData)
-        this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
-        if(SlotUIManager.IsAutoSpeed){
-            this.stopEvent()
-        }
+        this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> {     // 收到點擊後的行為，增加播音效的動作
+            GameAudioManager.playAudioEffect(eAudioName.spinButton)
+            ReelController.StopNowEvent()
+        })
+        if(SlotUIManager.IsAutoSpeed)   ReelController.StopNowEvent()       // autoFlash狀態，就沒有音效
 
         ReelController.checkFGListening(SpinInfo)                      // 檢查並設定聽牌
         // ReelController.setListening(/** 聽牌軸陣列 */)              // 設定一般聽牌
