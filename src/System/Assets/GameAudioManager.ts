@@ -1,6 +1,7 @@
-import { CompleteCallback, IMediaInstance, PlayOptions, sound } from "@pixi/sound"
+import { IMediaInstance, PlayOptions } from "@pixi/sound"
 import lazyLoad from "@root/src/Tool/lazyLoad"
 
+// 遊戲內音效
 export enum eAudioName{
     // 音樂
     NG_BGM = 'MBN82001_Ng_Bgm',
@@ -9,7 +10,6 @@ export enum eAudioName{
     // ----------- 音效 ----------
     // UI
     spinButton = 'SBN82002_Spin_Button',        // spin 按鈕音效
-    button = 'SBN82001_Button',                 // 其他按鍵音效
 
     // 滾輪
     spinStop = 'SBN82003_Spin_Stop',
@@ -35,6 +35,11 @@ export enum eAudioName{
     lineWinScroll = 'SBN82015_Count_Score',     // 滾分
 }
 
+// UI用音效
+enum eUIAudioName{
+    button = 'SBN82001_Button',                 // 其他按鍵音效
+}
+
 const musicList: Array<eAudioName> = [eAudioName.NG_BGM, eAudioName.FG_BGM]
 
 const {PixiSound} = PixiAsset
@@ -44,12 +49,14 @@ export default class GameAudioManager{
 
     public static async init(){
         Object.values(eAudioName).map(name => this.audioList[name] = 'audio/' + name)
+        Object.keys(eUIAudioName).map(key => this.audioList[key] = 'audio/' + eUIAudioName[key])        // UI 使用的音效
         for (const key in this.audioList) {     // 加上副檔名
             !/\.(mp3)$/.test(this.audioList[key]) && (this.audioList[key] += '.mp3')
         }
 
         const [...sources] = await lazyLoad(Object.values(this.audioList))        
         Object.keys(this.audioList).map((key, index) => this.audioList[key] = sources[index])
+        
         await PixiSound.init(this.audioList)
 
         this.onRegisterEvent()
@@ -78,7 +85,7 @@ export default class GameAudioManager{
      * @param {Function} [complete=] 播完的事件
      * @returns {Promise<void>} 播放完畢後回傳
      */
-    public static playAudioMusic(name: eAudioName, loop: boolean = true, complete?: Function): Promise<void>{
+    public static playAudioMusic(name: string, loop: boolean = true, complete?: Function): Promise<void>{
         return new Promise<void>(res =>{
 
             if(!loop && complete){

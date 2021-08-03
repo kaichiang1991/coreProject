@@ -169,7 +169,7 @@ export class LineManager{
             // FG 回來的逐線若只有單線，就是FG那條 (沒有贏分資訊)
             // const {Win, LineNo, WayCount} = this.winlineArr[0]
             // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
-            this.playEachLineAudio(this.winlineArr[0])
+            this.playFG_EachLine()          // 如果是單線，一定是FG
             return
         }
 
@@ -186,6 +186,7 @@ export class LineManager{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
                 if(LineNo == 0){
+                    this.playFGLineAudio()
                     LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)
                     SlotUIManager.activeWinInfo(false)
                 }else{
@@ -231,6 +232,11 @@ export class LineManager{
         }
         // 逐線音效改為loop 讓音效長度配合逐線的時機
         [this.eachLineAudio] = GameAudioManager.playAudioEffect(audioName, true)
+    }
+
+    /** 播放 FG 連線音效 */
+    private static playFGLineAudio(){
+        [this.eachLineAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
     }
 
     /** 清除所有得獎動畫 */
