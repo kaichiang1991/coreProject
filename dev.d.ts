@@ -60,8 +60,9 @@ interface ISpinConfig{
 
 /** 線獎的參數 */
 interface ILineConfig{
-    leastAllLineDuration: number    // 全縣演出最短時間
-    eachLineLight: number           // 逐縣時每條線亮的時間
+    leastAllLineDuration: number    // 全線獎演出最短時間       (s)
+    afterAllLineDelay: number       // 全線獎分數跑完後停留的時間 (s)
+    eachLineLight: number           // 逐縣時每條線亮的時間     (s)
 }
 
 /** 遊戲內的參數 */

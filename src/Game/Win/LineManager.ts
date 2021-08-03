@@ -1,4 +1,4 @@
-import { Graphics, Point } from "pixi.js-legacy";
+import { Point } from "pixi.js-legacy";
 import LineNumberManager from "../Number/LineNumberManager";
 import { editConfig, gameConfig } from "@root/src";
 import ReelController, { SymbolController } from "../Reel/ReelController";
@@ -19,14 +19,13 @@ export class LineManager{
     private static eachLineAudio: IMediaInstance
     private static eachLineTimeline: GSAPTimeline
     private static stopEachLineFn: Function
-    // 若有演逐線則停止逐線 timeline，否則就單純清除線
-    public static get StopEachLineFn(): Function { return this.stopEachLineFn || this.clearLineEvent }
-    public static set StopEachLineFn(value: Function)   {this.stopEachLineFn = value}
+    public static get StopEachLineFn(): Function { return this.stopEachLineFn || this.clearLineEvent }    // 若有演逐線則停止逐線 timeline，否則就單純清除線
+    public static set StopEachLineFn(value: Function)   {this.stopEachLineFn = value}                     // 設定 function 為 null
     private static lineConfig: ILineConfig
 
-    private static lineContainer: Container
-    private static lineNumberContainer: Container
-    private static lineNumberContainerResizeFn: Function
+    private static lineContainer: Container                     // 放線圖的容器
+    private static lineNumberContainer: Container               // 放線獎數字、倍數的容器
+    private static lineNumberContainerResizeFn: Function        // 線獎數字的自適應
     public static get LineNumResizeFn(): Function { return this.lineNumberContainerResizeFn}
 
     public static init(){
@@ -34,9 +33,9 @@ export class LineManager{
 
         // 初始化放line的容器
         this.lineContainer = ReelController.ReelContainer.addChild(new Container('line container', eReelContainerLayer.line))
-    
         const yArr: Array<number> = yOffsetArr[mapRowIndex(0)]
         this.lineContainer.position.set(xOffsetArr[~~(reelCount / 2)], yArr[~~(yArr.length / 2)])
+
         // 初始化放 line 得分的容器
         this.lineNumberContainer = ReelController.ReelContainer.addChild(new Container('line num container', eReelContainerLayer.lineNumber))
         this.lineNumberContainer.position.copyFrom(this.lineContainer.position)
@@ -60,17 +59,17 @@ export class LineManager{
         this.multiple = multiple
 
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
-        const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)
+        const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)       // 計算總得分
 
         const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
-            Sleep(this.lineConfig.leastAllLineDuration),                   // 最少演出時間
+            Sleep(this.lineConfig.leastAllLineDuration),                                              // 最少演出時間
             LineNumberManager.playLineNumberAnim(this.lineNumberContainer, win, this.multiple),       // 線獎跑分
         )        
         
         await Promise.all(allPromise)
-        await Sleep(.5)
+        await Sleep(this.lineConfig.afterAllLineDelay)
 
         GameAudioManager.stopAudioEffect(allLineAudio)
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
@@ -89,11 +88,13 @@ export class LineManager{
         const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
-            Sleep(this.lineConfig.leastAllLineDuration),                     // 最少演出時間
+            Sleep(this.lineConfig.leastAllLineDuration),                                             // 最少演出時間
             LineNumberManager.playLineNumberAnim(this.lineNumberContainer, totalWin),                // 線獎跑分
         )        
         
         await Promise.all(allPromise)
+        await Sleep(this.lineConfig.afterAllLineDelay)
+
         GameAudioManager.stopAudioEffect(allLineAudio)
     }
     
@@ -211,6 +212,10 @@ export class LineManager{
         })
     }
 
+    /**
+     * 播放逐線的音效
+     * @param {ISSlotWinLineInfo} winline 線獎資訊
+     */
     private static playEachLineAudio(winline: ISSlotWinLineInfo){
         // 先判斷連線中有沒有WD
         let audioName: eAudioName

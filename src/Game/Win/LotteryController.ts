@@ -12,7 +12,6 @@ const {GameStateContext, createState, GameState} = StateModule
 
 export default class LotteryController{
 
-    public static isBackFromFG: boolean
     public static win: number
     public static winlineInfos: Array<ISSlotWinLineInfo>
 
@@ -21,12 +20,10 @@ export default class LotteryController{
      * @param {boolean} backFromFG 是否從FG回來
      * @returns 演完回傳
      */
-    public static async init(backFromFG: boolean){
+    public static async init(){
         return new Promise<void>(res =>{
 
             EventHandler.once(eGameEventName.NG_lotteryEnd, ()=> res())
-
-            this.isBackFromFG = backFromFG      // 設定是否從 FG 回來
 
             // 註冊狀態機
             const context: GameStateContext = new GameStateContext()
@@ -45,8 +42,8 @@ class LotteryInit extends GameState{
     enter(){
         // 整理數據
         const {WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
-        LotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)
-        LotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)       // ToDo 過濾沒得分的 FG，帶確認格式
+        LotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)               // 不計算FG連線贏分，並乘上整盤的倍數 (進Lottery就先濾掉FG了)
+        LotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)        // 濾掉 FG 的線
         this.change()
     }
 
@@ -58,9 +55,8 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
-        const {isBackFromFG, win, winlineInfos} = LotteryController
-        if(!isBackFromFG)                                                                         // 判斷從FG回來的那局，就算分數到了也不演 BigWin
-            await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)       // 演出 bigWin
+        const {win, winlineInfos} = LotteryController
+        await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)       // 演出 bigWin
         
         // 壓暗
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})

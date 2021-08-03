@@ -158,7 +158,7 @@ class GameStart extends GameState{
     async enter(){
         // 增加 FG 倍數
         if(GameSlotData.FGSpinData?.SpinInfo.WinType & eWinType.normal){        // 上一局有得分
-            await GameSpineManager.playNextFG_Odds()      
+            await GameSpineManager.playNextFG_Odds()                            // 播放 FG 增加倍率的動畫
         }
 
         this.change() 
@@ -183,7 +183,7 @@ class StartSpin extends GameState{
 
         const {SpinInfo} = GameSlotData.FGSpinData
         const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
-        ReelController.setResult(ScreenOrg)
+        ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
 
         if(SlotUIManager.IsAutoSpeed){
             ReelController.StopNowEvent()
@@ -206,7 +206,7 @@ class EndSpin extends GameState{
     async enter(){
 
         const {WinLineInfos, WinType, FGRemainTimes} = GameSlotData.FGSpinData.SpinInfo
-        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
+        // const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
         // 演加場次
@@ -250,7 +250,6 @@ class EndSpin extends GameState{
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 1, true))        // 播放 symbol 得獎
-        .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
 
         await Promise.all(allPromise)
         SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎

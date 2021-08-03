@@ -34,7 +34,7 @@ export default class Symbol extends Container{
         // this.text = this.addChild(new Text('1', style))
         // this.text.anchor.set(.5)
 
-        this.animSpine = Spine.playSpine(eSpineName.symbol)[0]
+        this.animSpine = Spine.playSpine(eSpineName.Symbol)[0]
     }
 
     /**

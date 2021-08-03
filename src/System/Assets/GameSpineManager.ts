@@ -8,7 +8,7 @@ import GameAudioManager, { eAudioName } from "./GameAudioManager"
 const {Spine} = PixiAsset
 
 export enum eSpineName{
-    symbol = 'Symbol',
+    Symbol = 'Symbol',
     Stick = 'Stick',
     ReelExpect = 'ReelExpect',
     Scene = 'Scene',
@@ -20,7 +20,7 @@ export enum eSpineName{
 export default class GameSpineManager{
 
     private static spineList: ISpineList = {
-        [eSpineName.symbol]: 'img/SymbolAnim',
+        [eSpineName.Symbol]: 'img/SymbolAnim',
         [eSpineName.Stick]: 'img/Stick',
         [eSpineName.ReelExpect]: 'img/ReelExpect',
         [eSpineName.Scene]: 'img/Scene',
@@ -29,10 +29,11 @@ export default class GameSpineManager{
         [eSpineName.FG_Odds]: 'img/FG_Odds'
     }
 
+    /** 設定多語系 */
     public static setLanguage(){
-        this.spineList = {...this.spineList,
-            // [eSpineName.symbol]: 'img/' + LocalizationManager.getFolder() + '/Symbol'
-        }
+        // this.spineList = {...this.spineList,
+        //     // [eSpineName.symbol]: 'img/' + LocalizationManager.getFolder() + '/Symbol'
+        // }
     }
 
     public static async init(){
@@ -47,8 +48,13 @@ export default class GameSpineManager{
     }
 
     //#region Symbol
+    /**
+     * 播放 symbol spine
+     * @param {Container} parent 父節點
+     * @returns {[Spine, TrackEntry]} [spine節點, 動畫track]
+     */
     public static playSymbol(parent: Container): [Spine, TrackEntry]{
-        const [spine, track] = Spine.playSpine(eSpineName.symbol, 'Symbol_O1_03', true)
+        const [spine, track] = Spine.playSpine(eSpineName.Symbol, 'Symbol_O1_03', true)
         spine.name = 'symbol'
         parent.addChild(spine)
         return [spine, track]
@@ -56,6 +62,10 @@ export default class GameSpineManager{
     //#endregion
 
     //#region Stick
+    /**
+     * 播放 stick 動畫
+     * @returns {Spine}
+     */
     public static playStick(): Spine{
         const [spine] = Spine.playSpine(eSpineName.Stick)
         return spine
@@ -63,7 +73,13 @@ export default class GameSpineManager{
     //#endregion Stick
 
     //#region 期待框
-    public static playReelExpect(parent: Container, reelIndex: number){
+    /**
+     * 播放期待框動畫
+     * @param {Container} parent 父節點
+     * @param {number} reelIndex 第幾輪
+     * @returns {Spine}
+     */
+    public static playReelExpect(parent: Container, reelIndex: number): Spine{
         const [spine] = Spine.playSpine(eSpineName.ReelExpect, 'ReelExpect', true)
         parent.addChild(spine)
         spine.position.set(xOffsetArr[reelIndex], yOffsetArr[mapRowIndex(reelIndex)][2])
@@ -71,47 +87,6 @@ export default class GameSpineManager{
         return spine
     }
     //#endregion 期待框
-
-    // //#region Line
-    // private static line: Spine
-
-    // public static initLine(){
-    //     this.line = Spine.playSpine(eSpineName.line)[0]
-    //     this.line.zIndex = eReelContainerLayer.line
-    //     this.line.pivot.set(640, 360)
-    //     reelContPivot.copyTo(this.line.position)
-    // }
-
-    // private static getLineAnim(lineNo: number): string{
-    //     return 'Line_0' + lineNo
-    // }
-
-    // public static playLine(parent: Container, lineNo: number){
-    //     if(!this.line){
-    //         Debug.error('playLine no line')
-    //         return
-    //     }
-
-    //     this.line.setParent(parent)
-    //     this.line.setAnimationWithLatestIndex(this.getLineAnim(lineNo))
-    // }
-
-    // public static playSingleLine(parent: Container, lineNo: number){
-    //     this.clearLine()
-
-    //     parent.addChild(this.line)
-    //     this.line?.setAnimation('Line_0' + lineNo)
-    // }
-
-    // public static clearLine(){
-    //     if(!this.line){
-    //         Debug.warn('clearLine no line.')
-    //         return
-    //     }
-    //     this.line.setEmptyAnimations()
-    //     this.line.parent?.removeChild(this.line)
-    // }
-    // //#endregion Line
 
     //#region Scene
     private static scene: Spine

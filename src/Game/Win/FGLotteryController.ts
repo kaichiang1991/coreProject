@@ -1,6 +1,4 @@
 import { App, eGameEventName } from "@root/src"
-import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
-import GameSceneManager from "@root/src/System/GameSceneController"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -40,7 +38,7 @@ class LotteryInit extends GameState{
         // 整理數據
         const {WinLineInfos, Multiplier} = GameSlotData.FGSpinData.SpinInfo
         FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + (curr.LineNo == 0? 0: curr.Win * Multiplier), 0)     // 不計算FG連線贏分，並乘上整盤的倍數
-        FGLotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)
+        FGLotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)                                  // 濾掉 FG 的線
         this.change()
     }
 

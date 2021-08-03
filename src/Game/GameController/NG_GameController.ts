@@ -152,7 +152,7 @@ class EndSpin extends GameState{
             await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
         }else{            
-            isWin && await LotteryController.init(isFreeGame)
+            isWin && await LotteryController.init()
         }
         
         this.change()

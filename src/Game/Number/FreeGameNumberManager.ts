@@ -31,7 +31,6 @@ export default class FreeGameNumberManager{
         this.numArr[eFGNumber.currentTimes] = GameFontManager.drawFreeGameRoundNumber('currentTimes', current.pos)         // 現在場次
         this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos, null, 16)  // 剩餘場次
         this.numArr[eFGNumber.totalWin] = GameFontManager.drawFreeGameTotalWinNumber('totalWin', totalWin.pos)             // 總贏分
-
         this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos, null, 16)              // 加場次
     }
 
@@ -55,12 +54,18 @@ export default class FreeGameNumberManager{
     //#endregion 獲得總場次
 
     //#region 總贏分
+    /**
+     * 播放 FG 總贏分
+     * @param {number} value 值
+     * @param {Container} [parent=] 父節點
+     */
     public static playTotalWin(value: number, parent?: Container){
         const font: BitmapText = this.numArr[eFGNumber.totalWin]
         parent?.addChild(font)
         font.text = MathTool.convertNumDisplay(value)
     }
 
+    /** 清除總贏分 */
     public static clearTotalWin(){
         this.playTotalWin(0)
         this.numArr[eFGNumber.totalWin].parent?.removeChild(this.numArr[eFGNumber.totalWin])
@@ -100,7 +105,7 @@ export default class FreeGameNumberManager{
     /**
      * 播放剩餘次數
      * @param {number} value 值 
-     * @param {Container} [parent] 父節點
+     * @param {Container} [parent=] 父節點
      */
     public static playRemainTimes(value: number, parent?: Container){
         this.remainTimes = value
@@ -130,7 +135,7 @@ export default class FreeGameNumberManager{
     /**
      * 播放總共場次
      * @param {number} value 值 
-     * @param {Container} [parent] 父節點
+     * @param {Container} [parent=] 父節點
      */
     public static playTotalTimes(value: number, parent?: Container){
         this.totalTimes = value

@@ -27,10 +27,11 @@ export default class GameAssetManager{
         'line': 'img/Line.json'
     }
 
+    /** 設定多語系 */
     public static setLanguage(){
-        this.pngList = {...this.pngList, 
-            // 'UITxt': 'img/' + LocalizationManager.getFolder() + '/UITxt.png', 
-        }
+        // this.pngList = {...this.pngList, 
+        //     // 'UITxt': 'img/' + LocalizationManager.getFolder() + '/UITxt.png', 
+        // }
         this.spriteSheetList = {...this.spriteSheetList, 
             'word': 'img/' + LocalizationManager.getFolder() + '/Word.json'
         }        
@@ -57,13 +58,14 @@ export default class GameAssetManager{
             name, type: eAssetType.spriteSheet, source: spriteSheetSources[index]
         })))
 
-        await GameSpineManager.init()               // spine 的引入
-        await GameFontManager.init()                // font 的引入
-        await GameAudioManager.init()               // audio 的引入
-        await GameParticleManager.init()            // particles 的引入
+        await GameSpineManager.init()               // spine 的初始化
+        await GameFontManager.init()                // font  的初始化
+        await GameAudioManager.init()               // audio 的初始化
+        await GameParticleManager.init()            // particles 的初始化
         await this.loadDone()
     }
 
+    /** 讀取完畢後 */
     private static async loadDone(){
         // 初始化 BetModel
         const {SlotInitData: {MoneyFractionMultiple, Denom, BetUnit, BetMultiples, Line}, JoinGameData: {Balance}} = GameSlotData

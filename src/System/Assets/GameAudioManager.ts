@@ -7,6 +7,10 @@ export enum eAudioName{
     FG_BGM = 'MBN82002_Fg_Bgm',
 
     // ----------- 音效 ----------
+    // UI
+    spinButton = 'SBN82002_Spin_Button',        // spin 按鈕音效
+    button = 'SBN82001_Button',                 // 其他按鍵音效
+
     // 滾輪
     spinStop = 'SBN82003_Spin_Stop',
     reelExpect = 'SBN82004_Reel_Expecting',

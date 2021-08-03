@@ -4,8 +4,8 @@ import { Point } from "pixi.js-legacy"
 import { LineManager } from "../Win/LineManager"
 
 export enum eLineNumber{
-    lineWin,
-    multiply,
+    lineWin,        // 線獎數字
+    multiply,       // 線獎倍率
 }
 
 export default class LineNumberManager{
