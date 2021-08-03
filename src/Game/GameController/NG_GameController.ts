@@ -117,8 +117,8 @@ class StartSpin extends GameState{
         }
 
         ReelController.checkFGListening(SpinInfo)
-        window['arr'] && ReelController.setListening(...window['arr'])              // 設定一般聽牌
-        window['sarr'] && ReelController.setSpecialListening(...window['sarr'])     // 設定特殊聽牌
+        // ReelController.setListening(/** 聽牌軸陣列 */)              // 設定一般聽牌
+        // ReelController.setSpecialListening(/** 聽牌軸陣列 */)      // 設定特殊聽牌
         ReelController.stopSpin()
 
         await allSpin

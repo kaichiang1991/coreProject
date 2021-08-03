@@ -13,7 +13,7 @@
     },
     "line": {
         "leastAllLineDuration": 1,
-        "eachLineLight": 0.8
+        "eachLineLight": 2
     },
     "game": {
         "FG_TitleAutoDelay": 10

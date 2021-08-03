@@ -82,7 +82,7 @@ var mapColumnIndex: {(reelIndex: number): number}
 
 const {width, height} = window.reelContSize
 
-switch(window['reelType']){
+switch(window.reelType){
     case eReelType._3x5_reel:
         reelCount = 5
         reelSymbolCount = Array(reelCount).fill(3)     // [3, 3, 3, 3, 3]

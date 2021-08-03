@@ -85,16 +85,9 @@ interface IDefConfig{
 // windows 結構
 interface Window{
     // 測試用
-    reelType: number
-    idx: number
-    NGReelData: Array<Array<number>>
-    FGReelData: Array<Array<number>>
-    useServerData: boolean
-    NGSpinDataArr: Array<IGtoCNGPlay>
-    FGSpinDataArr: Array<IGtoCFGPlay>
-    blackGraphic: Array<number>
-
+    
     // 正式用
+    reelType: number
     App: PIXI.Application
     AppDebug: any
     FG_NumberDef: {[key: string]: {
