@@ -54,15 +54,13 @@ class GameInit extends GameState{
 
 class GameStart extends GameState{
 
-    async enter(){
+    enter(){
         EventHandler.once(eEventName.startSpin, this.change.bind(this))
         // Auto  
         if(SlotUIManager.IsAuto)    EventHandler.dispatch(eEventName.startSpin)
     }
 
     async change(){
-        // 檢查狀態
-    
         // 檢查餘額
         if(!this.checkCreditEnough()){
             SlotUIManager.activeAuto(false)            // 關 auto
@@ -79,8 +77,8 @@ class GameStart extends GameState{
     }
 
     exit(){
-        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
-        LineManager.StopEachLineFn()
+        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})       // 關閉贏分時的黑底
+        LineManager.StopEachLineFn()                                                // 關閉逐線的演出
     }
 
     /**
@@ -108,7 +106,7 @@ class StartSpin extends GameState{
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
         const {ScreenOrg, ScreenOutput, SymbolResult} = SpinInfo
-        ReelController.setResult(ScreenOrg)
+        ReelController.setResult(ScreenOrg)     // 設定結果，要看數學資料格式
 
         EventHandler.dispatch(eEventName.receiveServerData)
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> ReelController.StopNowEvent())
@@ -116,9 +114,9 @@ class StartSpin extends GameState{
             this.stopEvent()
         }
 
-        ReelController.checkFGListening(SpinInfo)
+        ReelController.checkFGListening(SpinInfo)                      // 檢查並設定聽牌
         // ReelController.setListening(/** 聽牌軸陣列 */)              // 設定一般聽牌
-        // ReelController.setSpecialListening(/** 聽牌軸陣列 */)      // 設定特殊聽牌
+        // ReelController.setSpecialListening(/** 聽牌軸陣列 */)       // 設定特殊聽牌
         ReelController.stopSpin()
 
         await allSpin
@@ -139,8 +137,8 @@ class EndSpin extends GameState{
     async enter(){
 
         const {WinType, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
-        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
-        const isWin: boolean = (WinType & eWinType.normal) != 0
+        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0          // 判斷有沒有 FG
+        const isWin: boolean = (WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
 
         if(isFreeGame){
             await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
@@ -181,7 +179,6 @@ class EndSpin extends GameState{
 
         const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))        // 播放 symbol 得獎
-        .concat()       // 如果 WD 有連線得分，這裡要再加上跑分的 promise
 
         await Promise.all(allPromise)
 

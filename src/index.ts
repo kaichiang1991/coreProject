@@ -99,8 +99,7 @@ const gameEntry: Function = async ()=>{
     // 取得設定檔的設定
     const {DemoOn, GameID} = gameConfig
     GameSlotData.JoinGameData = await GameDataRequest.joinGame(ParameterParse.UrlParser.token, GameID, DemoOn)
-    const {CurrencyID, GameName} = GameSlotData.JoinGameData
-    document.title = GameName           // 設定 html title
+    document.title = GameSlotData.JoinGameData.GameName           // 設定 html title
     await GameAssetManager.loadAsset()
     // 通知 loading 結束
     Loading.finishLoading()
@@ -123,7 +122,7 @@ const gameEntry: Function = async ()=>{
     await UIManager.init(App.stage, config)
     GameSceneManager.switchGameScene(eGameScene.normalGame)
     NG_GameController.getInstance().init()
-    AppDebug.initDivPanel()
+    AppDebug.initDivPanel()                     // 最後在初始化 debug panel，避免Loading時fps過低
 }
 gameEntry()
 
