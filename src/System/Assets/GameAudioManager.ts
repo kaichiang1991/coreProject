@@ -41,7 +41,6 @@ enum eUIAudioName{
 }
 
 const musicList: Array<eAudioName> = [eAudioName.NG_BGM, eAudioName.FG_BGM]
-
 const {PixiSound} = PixiAsset
 export default class GameAudioManager{
 
@@ -59,6 +58,8 @@ export default class GameAudioManager{
         
         await PixiSound.init(this.audioList)
 
+        this.audioMusicVolume = SettingUIManager.IsMusicOn? 1: 0
+        this.audioEffectVolume = SettingUIManager.IsMusicOn? 1: 0
         this.onRegisterEvent()
     }
 
@@ -75,7 +76,7 @@ export default class GameAudioManager{
     //#region 遊戲音樂 music
     private static currentMusic: IMediaInstance
     private static currentMusicName: string
-    private static audioMusicVolume: number = 1
+    private static audioMusicVolume: number
     /**
      * 播放背景音樂 (只支援同時播放一個背景音樂)
      * 若不同於現在的背景音樂，則停掉目前的，直接播放
@@ -101,12 +102,10 @@ export default class GameAudioManager{
                 this.currentMusic = PixiSound.play(name, option)
                 this.currentMusicName = name
             }else if(this.currentMusicName != name){        // 播放的音樂跟目前的不一樣
-                Debug.warn('播放不同的音樂', name, '，之前的音樂', this.currentMusicName)
                 PixiSound.stopByInstance(this.currentMusic)
                 this.currentMusic = PixiSound.play(name, option)
                 this.currentMusicName = name
             }else{
-                Debug.warn('播放相同的音樂', name, this.currentMusic, this.currentMusicName)
                 PixiSound.resumeByInstance(this.currentMusic)
             }
         })
@@ -142,7 +141,7 @@ export default class GameAudioManager{
     //#endregion 遊戲音樂 music
 
     //#region 遊戲音效 effect
-    private static audioEffectVolume: number = 1
+    private static audioEffectVolume: number
     /**
      * 播放遊戲音校
      * @param {string} name 音效名稱

@@ -124,7 +124,9 @@ export default class Reel{
             new Promise<void>(res =>{
                 this.resetSpin()
                 // 上拉
-                gsap.to(this.symbolArr, {y: `-=${spinConfig.upDistance}`, duration: spinConfig.upDuration})
+                const {IsAutoSpeed} = SlotUIManager, {upDistance, upDuration, turboUpDistance, turboUpDuration} = spinConfig
+                const y: string = `-=${IsAutoSpeed? turboUpDistance : upDistance}`, duration: number = IsAutoSpeed? turboUpDuration: upDuration
+                gsap.to(this.symbolArr, {y, duration})
                 .eventCallback('onComplete', ()=> res())
             }), 
             new Promise<void>(res =>{

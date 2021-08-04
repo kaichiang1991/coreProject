@@ -1,14 +1,20 @@
 /// <reference types="pixi-particles/ambient" />
+interface IExternalAudioFunction {
+    playAudio?: {
+        (name: string, loop?: boolean, complete?: Function): [IMediaInstance, Promise<void>];
+    };
+}
 /**UI總管理 */
 declare class UIManager {
     static stage: PIXI.Container;
     private static blackMask;
     static externalConfig: IConfig;
+    static externalAudioFunction: IExternalAudioFunction;
     /**
      * 初始化
      * @param stage 場景
      */
-    static init(stage: PIXI.Container, externalConfig: IConfig): Promise<void>;
+    static init(stage: PIXI.Container, externalConfig: IConfig, externalAudioFunction: IExternalAudioFunction): Promise<void>;
     /**
      * 開關黑色遮罩
      * @param flag 開關狀態

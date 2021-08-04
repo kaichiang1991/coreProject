@@ -15,6 +15,7 @@ import NG_GameController from './Game/GameController/NG_GameController'
 import GameDataRequest from './System/Network/GameDataRequest'
 import { NetworkManager } from './System/Network/NetworkManager'
 import GameSlotData from './Game/GameSlotData'
+import GameAudioManager from './System/Assets/GameAudioManager'
 
 export enum eGameEventName{
     activeBlackCover = 'activeBlackCover',      // 啟動贏分的黑色遮罩
@@ -62,7 +63,6 @@ EventHandler.on(eEventName.orientationChange, ()=> {
 // 註冊視窗事件
 export let isWindowBlur: boolean                    // 紀錄目前是否不是在focus狀態
 const focusEvent: Function = (flag: boolean) =>{
-    console.log('focus event', flag, ' system error', SystemErrorManager.IsError, ' music on', SettingUIManager.IsMusicOn)
     isWindowBlur = !flag
     if(SystemErrorManager.IsError)
         return
@@ -120,7 +120,7 @@ const gameEntry: Function = async ()=>{
     //#endregion 註冊遊戲內事件
 
     // 遊戲場景轉換
-    await UIManager.init(App.stage, config)
+    await UIManager.init(App.stage, config, {playAudio: GameAudioManager.playAudioEffect.bind(GameAudioManager)})
     GameSceneManager.switchGameScene(eGameScene.normalGame)
     NG_GameController.getInstance().init()
     AppDebug.initDivPanel()                     // 最後在初始化 debug panel，避免Loading時fps過低

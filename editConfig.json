@@ -1,20 +1,21 @@
 {
     "spin": {
-        "upDistance": 50,
-        "upDuration": 0.5,
-        "spinSpeed": 20,
+        "upDistance": 28,
+        "upDuration": 0.4,
+        "turboUpDistance": 30,
+        "turboUpDuration": 0.1,
+        "spinSpeed": 27,
         "forceStopSpeed": 50,
-        "listeningSpeed": 7,
-        "listeningDelay": 1,
-        "bounceDistance": 20,
-        "bounceBackDuration": 0.5,
-        "eachReelStop": 0.5,
-        "extraSymbolCount": 2
+        "listeningSpeed": 12,
+        "listeningDelay": 1.8,
+        "bounceDistance": 36,
+        "bounceBackDuration": 0.4,
+        "eachReelStop": 0.45,
+        "extraSymbolCount": 3
     },
     "line": {
-        "leastAllLineDuration": 1,
-        "afterAllLineDelay": 0.5,
-        "eachLineLight": 2
+        "leastAllLineDuration": 0.8,
+        "eachLineLight": 1.4
     },
     "game": {
         "FG_TitleAutoDelay": 10

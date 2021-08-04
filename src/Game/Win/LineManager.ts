@@ -120,8 +120,9 @@ export class LineManager{
         this.stopEachLineFn = null
         const {LineGame} = gameConfig
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
-            const {Win, LineNo, WayCount} = this.winlineArr[0]
-            SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
+            const {WinPosition, Win, LineNo, WayCount} = this.winlineArr[0]
+            WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
+            SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)              // 顯示單線贏分資訊
             this.playEachLineAudio(this.winlineArr[0])
             return
         }
@@ -167,8 +168,9 @@ export class LineManager{
         const {LineGame} = gameConfig
         if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
             // FG 回來的逐線若只有單線，就是FG那條 (沒有贏分資訊)
-            // const {Win, LineNo, WayCount} = this.winlineArr[0]
+            const {WinPosition, Win, LineNo, WayCount} = this.winlineArr[0]
             // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
+            WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
             this.playFG_EachLine()          // 如果是單線，一定是FG
             return
         }

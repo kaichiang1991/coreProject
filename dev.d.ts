@@ -47,7 +47,9 @@ interface IEditConfig{
 /** 轉輪的參數 */
 interface ISpinConfig{
     upDistance: number          // 上移的距離
-    upDuration: number          // 上移的時間
+    upDuration: number          // 上移的時間                (不可以填0)
+    turboUpDistance: number     // 快速模式下，上移的距離
+    turboUpDuration: number     // 快速模式下，上移的時間    (不可以填0)  
     spinSpeed: number           // 一般的滾動速度
     forceStopSpeed: number      // 急停的滾動速度
     listeningSpeed: number      // 聽牌的滾動速度  (最終的速度，漸慢)
