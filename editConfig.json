@@ -11,11 +11,12 @@
         "bounceDistance": 36,
         "bounceBackDuration": 0.4,
         "eachReelStop": 0.45,
-        "extraSymbolCount": 3
+        "extraSymbolCount": 2
     },
     "line": {
         "leastAllLineDuration": 0.8,
-        "eachLineLight": 1.4
+        "eachLineLight": 1.4,
+        "afterAllLineDelay": 1
     },
     "game": {
         "FG_TitleAutoDelay": 10

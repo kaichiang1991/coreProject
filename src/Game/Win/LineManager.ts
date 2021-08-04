@@ -61,6 +61,8 @@ export class LineManager{
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
         const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)       // 計算總得分
 
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // UI 直接顯示目前總分
+
         const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
@@ -72,7 +74,6 @@ export class LineManager{
         await Sleep(this.lineConfig.afterAllLineDelay)
 
         GameAudioManager.stopAudioEffect(allLineAudio)
-        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // 跑完分後，顯示目前總分
     }
 
     /**
@@ -172,6 +173,7 @@ export class LineManager{
             // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
             WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
             this.playFG_EachLine()          // 如果是單線，一定是FG
+            this.playFGLineAudio()          // 播放 FG 連線音效
             return
         }
 
