@@ -172,8 +172,7 @@ export class LineManager{
             const {WinPosition, Win, LineNo, WayCount} = this.winlineArr[0]
             // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
             WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
-            this.playFG_EachLine()          // 如果是單線，一定是FG
-            this.playFGLineAudio()          // 播放 FG 連線音效
+            this.playFGLineAudio()          // 如果是單線，一定是FG (播放 FG 連線音效)
             return
         }
 
@@ -240,7 +239,7 @@ export class LineManager{
 
     /** 播放 FG 連線音效 */
     private static playFGLineAudio(){
-        [this.eachLineAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
+        [this.eachLineAudio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin, true)
     }
 
     /** 清除所有得獎動畫 */
