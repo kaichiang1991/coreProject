@@ -1,4 +1,4 @@
-import { App, eGameEventName } from "@root/src"
+import { App, editConfig, eGameEventName } from "@root/src"
 import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
@@ -154,8 +154,10 @@ class EndSpin extends GameState{
             EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
             await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
-        }else{            
-            isWin && await LotteryController.init()
+        }else if(isWin){            
+            await LotteryController.init()
+        }else{                  // 完全沒得分
+            await Sleep(editConfig.game.noWinEachDelay)
         }
         
         this.change()
@@ -181,7 +183,7 @@ class EndSpin extends GameState{
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
         const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
-        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))        // 播放 symbol 得獎
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
 
         await Promise.all(allPromise)
 

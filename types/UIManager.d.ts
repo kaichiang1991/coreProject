@@ -39,7 +39,8 @@ declare class SlotUIManager {
     /**目前急停的設定 */
     static get IsAutoSpeed(): boolean;
     private static autoInfinity;
-    private static spinRoundTimes;
+    private static spinRoundCounts;
+    private static spinRoundTotalCounts;
     static get IsAuto(): boolean;
     private static winInfo;
     /**初始化 */
@@ -73,9 +74,8 @@ declare class SlotUIManager {
     static resetSpinRoundTime(index: number): void;
     /**
      * 更新旋轉次數
-     * @param flag 更新次數正負狀態，true: 1(遞增)；false: -1(遞減)
      */
-    static updateSpinRound(flag: boolean): void;
+    static updateSpinRound(): void;
     private static showSpinRound;
     /**更新押注 */
     static updateBet(): void;

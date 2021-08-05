@@ -70,6 +70,7 @@ interface ILineConfig{
 /** 遊戲內的參數 */
 interface IEditGameConfig{
     FG_TitleAutoDelay: number       // auto 時，自動進FG的等待時間
+    noWinEachDelay: number          // 沒有得獎時，每一局之間的延遲
 }
 
 /** 個別遊戲設定的參數 */

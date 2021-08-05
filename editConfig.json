@@ -2,8 +2,8 @@
     "spin": {
         "upDistance": 28,
         "upDuration": 0.4,
-        "turboUpDistance": 30,
-        "turboUpDuration": 0.1,
+        "turboUpDistance": 15,
+        "turboUpDuration": 0.3,
         "spinSpeed": 27,
         "forceStopSpeed": 50,
         "listeningSpeed": 12,
@@ -16,9 +16,10 @@
     "line": {
         "leastAllLineDuration": 0.8,
         "eachLineLight": 1.4,
-        "afterAllLineDelay": 1
+        "afterAllLineDelay": 0.5
     },
     "game": {
-        "FG_TitleAutoDelay": 10
+        "FG_TitleAutoDelay": 10,
+        "noWinEachDelay": 0.3
     }
 }
