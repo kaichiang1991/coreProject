@@ -1,3 +1,4 @@
+/// <reference types="pixi-particles/ambient" />
 declare module ParameterParse {
     function init(ws?: string): void;
     /** 解析 url */

@@ -1,4 +1,5 @@
 /// <reference types="pixi-particles/ambient" />
+
 declare class SystemErrorManager {
     static stage: PIXI.Container;
     /**是否已顯示錯誤畫面 */

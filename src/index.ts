@@ -83,8 +83,8 @@ const gameEntry: Function = async ()=>{
     Entry.init(App, config)
     AppDebug.init()
     // 在沒有外部帶入的情況下，預設 prod 連 DEV 環境，develop 連 local 環境
-    // ParameterParse.init(process.env.NODE_ENV == 'production'? 'wss://gsvr1.msgaming.one': 'ws://192.168.1.116:12201')
-    ParameterParse.init('wss://gsvr1.msgaming.one')
+    ParameterParse.init(process.env.NODE_ENV == 'production'? 'wss://gsvr1.msgaming.one': 'ws://192.168.1.116:12201')
+    // ParameterParse.init('wss://gsvr1.msgaming.one')
     GSAPManager.init()
     LocalizationManager.init()
     GameAssetManager.init()

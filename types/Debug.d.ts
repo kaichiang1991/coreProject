@@ -1,4 +1,5 @@
 /// <reference types="pixi-particles/ambient" />
+
 declare enum eDebugLevel {
     Log = 1,
     Warn = 2,

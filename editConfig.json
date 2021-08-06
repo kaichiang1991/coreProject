@@ -2,8 +2,8 @@
     "spin": {
         "upDistance": 28,
         "upDuration": 0.4,
-        "turboUpDistance": 15,
-        "turboUpDuration": 0.3,
+        "turboUpDistance": 0,
+        "turboUpDuration": 0.1,
         "spinSpeed": 27,
         "forceStopSpeed": 50,
         "listeningSpeed": 12,

@@ -1,4 +1,5 @@
 /// <reference types="pixi-particles/ambient" />
+
 declare class Loading {
     private static finishEvent;
     private static parentContainer;
@@ -11,7 +12,8 @@ declare class Loading {
     private static resizeFn;
     /**
      * 初始化 Loading
-     * @param stage
+     * @param {PIXI.Container} container 父節點
+     * @param {IConfig} config 遊戲的設定檔
      * @returns loading 圖載完
      */
     static init(container: PIXI.Container, config: IConfig): Promise<void>;

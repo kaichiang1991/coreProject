@@ -1,3 +1,4 @@
+/// <reference types="pixi-particles/ambient" />
 declare enum eLanguage {
     CHS = "zh-cn",
     ENG = "en",

@@ -1,3 +1,4 @@
+/// <reference types="pixi-particles/ambient" />
 declare module StateModule {
     function init(): void;
     /** State 介面 */

@@ -1,4 +1,5 @@
 /// <reference types="pixi-particles/ambient" />
+
 interface IExternalAudioFunction {
     playAudio?: {
         (name: string, loop?: boolean, complete?: Function): [IMediaInstance, Promise<void>];

@@ -1,5 +1,6 @@
 /// <reference types="pixi-spine" />
 /// <reference types="pixi-particles/ambient" />
+
 declare enum eAssetType {
     img = 0,
     spriteSheet = 1,
