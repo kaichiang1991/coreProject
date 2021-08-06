@@ -44,6 +44,7 @@ declare class SlotUIManager {
     private static spinRoundTotalCounts;
     static get IsAuto(): boolean;
     private static winInfo;
+    private static currentGameState;
     /**初始化 */
     static init(): Promise<void>;
     /**重置設定 */
