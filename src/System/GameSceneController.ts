@@ -295,6 +295,7 @@ class FreeGame extends GameScene{
 class SystemError extends GameScene{
 
     enter(context: any){
+        EventHandler.dispatch(eEventName.closeWindow)       // 避免清除事件，在錯誤訊息之前就先關掉 iframe (細單/說明頁)
         SystemErrorManager.closeAll()
         App.stage.removeChildren()
         SystemErrorManager.showError(context)
