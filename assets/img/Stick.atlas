@@ -1,0 +1,326 @@
+
+Stick.png
+size: 1024,960
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Stick/Stick_Frame_glow
+  rotate: false
+  xy: 468, 515
+  size: 251, 201
+  orig: 251, 201
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0001
+  rotate: true
+  xy: 779, 244
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0003
+  rotate: false
+  xy: 2, 53
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0005
+  rotate: false
+  xy: 271, 44
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0007
+  rotate: false
+  xy: 540, 2
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Hit_FxBG1_Glow
+  rotate: false
+  xy: 232, 295
+  size: 268, 218
+  orig: 268, 218
+  offset: 0, 0
+  index: -1
+Stick/Stick_Hit_FxBG2_Glow
+  rotate: false
+  xy: 502, 286
+  size: 275, 225
+  orig: 275, 225
+  offset: 0, 0
+  index: -1
+Stick/Stick_Words_glow
+  rotate: false
+  xy: 2, 932
+  size: 47, 25
+  orig: 47, 25
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Line_FX
+  rotate: false
+  xy: 2, 339
+  size: 228, 228
+  orig: 228, 228
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Black
+  rotate: false
+  xy: 2, 772
+  size: 133, 130
+  orig: 133, 130
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Line_FX
+  rotate: false
+  xy: 280, 742
+  size: 152, 148
+  orig: 152, 148
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0001
+  rotate: false
+  xy: 235, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0002
+  rotate: false
+  xy: 303, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0003
+  rotate: false
+  xy: 371, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0004
+  rotate: false
+  xy: 439, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0005
+  rotate: false
+  xy: 507, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0006
+  rotate: false
+  xy: 575, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0007
+  rotate: false
+  xy: 643, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0008
+  rotate: false
+  xy: 711, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0009
+  rotate: false
+  xy: 779, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Shinee/Sym_Words_Shinee_0010
+  rotate: false
+  xy: 847, 892
+  size: 66, 65
+  orig: 66, 65
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Star
+  rotate: false
+  xy: 51, 913
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+WD_CenterFrame
+  rotate: false
+  xy: 721, 513
+  size: 203, 203
+  orig: 203, 203
+  offset: 0, 0
+  index: -1
+WD_Frame
+  rotate: false
+  xy: 2, 569
+  size: 231, 181
+  orig: 231, 181
+  offset: 0, 0
+  index: -1
+WD_Frame_BG
+  rotate: false
+  xy: 434, 721
+  size: 225, 169
+  orig: 225, 169
+  offset: 0, 0
+  index: -1
+WD_Frame_Shader
+  rotate: false
+  xy: 661, 718
+  size: 222, 172
+  orig: 222, 172
+  offset: 0, 0
+  index: -1
+WD_Light
+  rotate: false
+  xy: 235, 538
+  size: 231, 181
+  orig: 231, 181
+  offset: 0, 0
+  index: -1
+WD_Wild
+  rotate: false
+  xy: 104, 904
+  size: 129, 53
+  orig: 129, 53
+  offset: 0, 0
+  index: -1
+WD_Words
+  rotate: true
+  xy: 137, 752
+  size: 138, 141
+  orig: 138, 141
+  offset: 0, 0
+  index: -1
+
+Stick2.png
+size: 812,972
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Stick/Stick_Ftg/Stick_ftg_0009
+  rotate: false
+  xy: 2, 728
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0011
+  rotate: false
+  xy: 271, 728
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0013
+  rotate: false
+  xy: 540, 728
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0015
+  rotate: false
+  xy: 2, 486
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0017
+  rotate: false
+  xy: 271, 486
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0019
+  rotate: false
+  xy: 540, 486
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0021
+  rotate: false
+  xy: 2, 244
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0023
+  rotate: false
+  xy: 271, 244
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0025
+  rotate: false
+  xy: 540, 244
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0027
+  rotate: false
+  xy: 2, 2
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+Stick/Stick_Ftg/Stick_ftg_0029
+  rotate: false
+  xy: 271, 2
+  size: 267, 240
+  orig: 267, 240
+  offset: 0, 0
+  index: -1
+
+Stick3.png
+size: 672,608
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Stick/Stick_Loop_FxBGD_Glow
+  rotate: false
+  xy: 2, 304
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Stick/Stick_Loop_FxBGU_Glow
+  rotate: false
+  xy: 337, 304
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Stick/Stick_Loop_Particle
+  rotate: false
+  xy: 2, 2
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Center
+  rotate: false
+  xy: 337, 2
+  size: 333, 300
+  orig: 333, 300
+  offset: 0, 0
+  index: -1

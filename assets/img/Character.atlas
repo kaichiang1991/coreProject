@@ -1,0 +1,332 @@
+
+Character.png
+size: 1024,900
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bowl_Glow
+  rotate: false
+  xy: 212, 205
+  size: 392, 156
+  orig: 392, 156
+  offset: 0, 0
+  index: -1
+Bowl_In
+  rotate: false
+  xy: 2, 775
+  size: 299, 72
+  orig: 299, 72
+  offset: 0, 0
+  index: -1
+Bowl_Ring_L
+  rotate: true
+  xy: 2, 873
+  size: 24, 58
+  orig: 24, 58
+  offset: 0, 0
+  index: -1
+Bowl_Ring_R
+  rotate: true
+  xy: 62, 873
+  size: 24, 58
+  orig: 24, 58
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0005
+  rotate: true
+  xy: 818, 643
+  size: 137, 180
+  orig: 137, 180
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0015
+  rotate: true
+  xy: 291, 601
+  size: 159, 196
+  orig: 159, 196
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0025
+  rotate: true
+  xy: 693, 457
+  size: 184, 203
+  orig: 184, 203
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0035
+  rotate: true
+  xy: 2, 62
+  size: 199, 207
+  orig: 199, 207
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0055
+  rotate: false
+  xy: 816, 66
+  size: 204, 201
+  orig: 204, 201
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0065
+  rotate: false
+  xy: 211, 2
+  size: 201, 201
+  orig: 201, 201
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0075
+  rotate: true
+  xy: 2, 263
+  size: 189, 208
+  orig: 189, 208
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0085
+  rotate: true
+  xy: 606, 70
+  size: 197, 208
+  orig: 197, 208
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0095
+  rotate: true
+  xy: 680, 269
+  size: 186, 206
+  orig: 186, 206
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0105
+  rotate: true
+  xy: 489, 518
+  size: 179, 202
+  orig: 179, 202
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0115
+  rotate: true
+  xy: 620, 699
+  size: 132, 196
+  orig: 132, 196
+  offset: 0, 0
+  index: -1
+Character/Character_Bowl/Character_Bowl_0118
+  rotate: true
+  xy: 859, 782
+  size: 115, 161
+  orig: 115, 161
+  offset: 0, 0
+  index: -1
+FG_Diamond_01
+  rotate: false
+  xy: 770, 833
+  size: 87, 64
+  orig: 87, 64
+  offset: 0, 0
+  index: -1
+FG_Diamond_02
+  rotate: false
+  xy: 639, 846
+  size: 64, 51
+  orig: 64, 51
+  offset: 0, 0
+  index: -1
+FG_Diamond_03
+  rotate: false
+  xy: 705, 835
+  size: 63, 62
+  orig: 63, 62
+  offset: 0, 0
+  index: -1
+FG_Diamond_04
+  rotate: true
+  xy: 122, 859
+  size: 38, 48
+  orig: 38, 48
+  offset: 0, 0
+  index: -1
+FG_Money_Down
+  rotate: false
+  xy: 348, 363
+  size: 330, 153
+  orig: 330, 153
+  offset: 0, 0
+  index: -1
+FG_Money_Shadow
+  rotate: false
+  xy: 303, 762
+  size: 315, 85
+  orig: 315, 85
+  offset: 0, 0
+  index: -1
+FG_Money_Up
+  rotate: false
+  xy: 225, 849
+  size: 412, 48
+  orig: 412, 48
+  offset: 0, 0
+  index: -1
+NG_Glow
+  rotate: false
+  xy: 2, 631
+  size: 287, 142
+  orig: 287, 142
+  offset: 0, 0
+  index: -1
+NG_Money
+  rotate: false
+  xy: 2, 454
+  size: 344, 145
+  orig: 344, 145
+  offset: 0, 0
+  index: -1
+Sym_WD/Sym_Words_Star
+  rotate: false
+  xy: 172, 853
+  size: 51, 44
+  orig: 51, 44
+  offset: 0, 0
+  index: -1
+
+Character2.png
+size: 868,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Character/Character_Bowl/Character_Bowl_0045
+  rotate: false
+  xy: 272, 272
+  size: 206, 208
+  orig: 206, 208
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0001
+  rotate: false
+  xy: 428, 752
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0003
+  rotate: false
+  xy: 428, 482
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0005
+  rotate: true
+  xy: 2, 272
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0007
+  rotate: false
+  xy: 2, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0009
+  rotate: false
+  xy: 434, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+FG_Glow
+  rotate: false
+  xy: 2, 704
+  size: 424, 316
+  orig: 424, 316
+  offset: 0, 0
+  index: -1
+
+Character3.png
+size: 868,812
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bowl_Outer
+  rotate: false
+  xy: 2, 600
+  size: 357, 210
+  orig: 357, 210
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0011
+  rotate: false
+  xy: 361, 542
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0013
+  rotate: false
+  xy: 2, 272
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0015
+  rotate: false
+  xy: 434, 272
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0017
+  rotate: false
+  xy: 2, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0019
+  rotate: false
+  xy: 434, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+
+Character4.png
+size: 868,704
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Character/WIN_Coin/WIN_Coin_0021
+  rotate: false
+  xy: 2, 434
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0023
+  rotate: true
+  xy: 2, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0025
+  rotate: true
+  xy: 272, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0027
+  rotate: false
+  xy: 434, 434
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
+Character/WIN_Coin/WIN_Coin_0029
+  rotate: true
+  xy: 542, 2
+  size: 430, 268
+  orig: 430, 268
+  offset: 0, 0
+  index: -1
