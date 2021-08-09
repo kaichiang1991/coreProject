@@ -149,6 +149,7 @@ class GameInit extends GameState{
         await SymbolController.playFGStick()        // 播放 FG Stick
 
         // await Sleep(1)
+        GameSlotData.FGSpinData = null              // 清空上一局盤面，避免 GameStart 判斷到上一次 FG 結果
         this.context.changeState(eFG_GameState.start)
     }
 }
@@ -206,12 +207,12 @@ class EndSpin extends GameState{
     async enter(){
 
         const {WinLineInfos, WinType, FGRemainTimes} = GameSlotData.FGSpinData.SpinInfo
-        // const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
+        const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0
         const isWin: boolean = (WinType & eWinType.normal) != 0
 
         // 演加場次
         const plus: number = FGRemainTimes - FreeGameNumberManager.RemainTimes
-        if(plus > 0){               // 用場次判斷，避免有中FG，卻擋掉場次上限的問題
+        if(isFreeGame){               // 用 WinType 判斷，超出上限就演 +0
             GameAudioManager.playAudioEffect(eAudioName.FG_PlusTimes)
             await Promise.all([
                 this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0]),
