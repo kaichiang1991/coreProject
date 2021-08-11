@@ -1,4 +1,4 @@
-const {languageDef} = require('./language')
+const {languageDef} = require('../language')
 
 var imagemin, copyfiles, replaceInFile
 const origin = 'assets/img/', _destination = 'assets/img_webp/' 
