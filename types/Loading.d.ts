@@ -1,5 +1,4 @@
 /// <reference types="pixi-particles/ambient" />
-
 declare class Loading {
     private static finishEvent;
     private static parentContainer;

@@ -67,4 +67,5 @@ declare module StateModule {
     class GameStateContext extends StateContext {
         changeState(type: string): GameStateContext;
     }
+    
 }

@@ -57,3 +57,4 @@ declare class EventHandler {
      */
     static getListeners(name: string): Array<Function>;
 }
+

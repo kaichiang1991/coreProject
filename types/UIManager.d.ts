@@ -1,5 +1,4 @@
 /// <reference types="pixi-particles/ambient" />
-
 interface IExternalAudioFunction {
     playAudio?: {
         (name: string, loop?: boolean, complete?: Function): [IMediaInstance, Promise<void>];
@@ -206,3 +205,4 @@ declare class JackpotUIManager {
     /**清除所有物件 */
     static clearAll(): void;
 }
+
