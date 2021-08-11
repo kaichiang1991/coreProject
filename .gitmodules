@@ -1,0 +1,6 @@
+[submodule "types"]
+	path = types
+	url = git@gitlab.msslot.bet:libdevelopment/build/types.git
+[submodule "Lib"]
+	path = Lib
+	url = git@gitlab.msslot.bet:libdevelopment/build/lib.git
