@@ -153,9 +153,9 @@ class EndSpin extends GameState{
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
 
             EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
-            console.log('win', BetModel.getInstance().Win,  ' credit', BetModel.getInstance().credit)
+
+            // 跑全線時顯示加過的credit
             BetModel.getInstance().addCredit(BetModel.getInstance().Win)
-            console.log('add credit', BetModel.getInstance().credit)
             await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
         }else if(isWin){            

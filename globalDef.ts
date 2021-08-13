@@ -109,7 +109,8 @@ switch(window.reelType){
 
         window.logoPos = new PIXI.Point(125, -35)
         window.reelContScale = 1
-        window.reelBgPos = new PIXI.Point(-335, -70)
+        window.reelBgPos = new PIXI.Point(-237, 0)
+        window.reelFramePos = new PIXI.Point(-335, -70)
         window.reelMaskPos = window.reelBgPos
 
     break

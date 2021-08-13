@@ -2,7 +2,7 @@
 
 "Feature_TopPlate.png":
 {
-	"frame": {"x":705,"y":797,"w":420,"h":80},
+	"frame": {"x":703,"y":795,"w":420,"h":80},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":420,"h":80},
@@ -10,11 +10,11 @@
 },
 "Reel_Back.png":
 {
-	"frame": {"x":723,"y":93,"w":702,"h":515},
+	"frame": {"x":723,"y":93,"w":700,"h":514},
 	"rotated": true,
-	"trimmed": true,
-	"spriteSourceSize": {"x":99,"y":66,"w":702,"h":515},
-	"sourceSize": {"w":900,"h":650}
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":514},
+	"sourceSize": {"w":700,"h":514}
 },
 "Reel_Frame.png":
 {
@@ -26,11 +26,11 @@
 },
 "Reel_Mask.png":
 {
-	"frame": {"x":1,"y":450,"w":702,"h":505},
+	"frame": {"x":1,"y":450,"w":700,"h":504},
 	"rotated": false,
-	"trimmed": true,
-	"spriteSourceSize": {"x":99,"y":70,"w":702,"h":505},
-	"sourceSize": {"w":900,"h":650}
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":700,"h":504},
+	"sourceSize": {"w":700,"h":504}
 },
 "UI_Bottom_M.png":
 {
@@ -53,8 +53,8 @@
 	"version": "1.0",
 	"image": "Game.png",
 	"format": "RGBA8888",
-	"size": {"w":1872,"h":956},
+	"size": {"w":1872,"h":955},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3b70a38ea4661c6989b55bdfd6392ba8:e14fa580ae309b48f01069c4c433d072:dcdce059afe456f9b7882094ec76be97$"
+	"smartupdate": "$TexturePacker:SmartUpdate:98dc59052eb37c2421c366cfec8b32dd:8eab1ecbfe48e84d33b02cc72820373e:dcdce059afe456f9b7882094ec76be97$"
 }
 }

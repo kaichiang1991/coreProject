@@ -95,8 +95,6 @@ export default class ReelController{
         this.reelContainer = new Container('reel container')
         this.reelContainer.sortableChildren = true
         this.reelContainer.pivot.copyFrom(reelContPivot)
-        this.reelContainer.interactive = this.reelContainer.buttonMode = true
-        this.reelContainer.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
     }
 
     /** 初始化滾輪底板 */
@@ -104,13 +102,16 @@ export default class ReelController{
         this.reelBackground = this.reelContainer.addChild(new Sprite('Reel_Back.png'))
         this.reelBackground.zIndex = eReelContainerLayer.reelBg
         this.reelBackground.position.copyFrom(window.reelBgPos)
+        // 點擊事件寫在底板上
+        this.reelBackground.buttonMode = this.reelBackground.interactive = true
+        this.reelBackground.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
     }
 
     /** 初始化滾輪框 */
     private static initReelFrame(){
         this.reelFrame = this.reelContainer.addChild(new Sprite('Reel_Frame.png'))
         this.reelFrame.zIndex = eReelContainerLayer.reelFrame
-        this.reelFrame.position.copyFrom(window.reelBgPos)
+        this.reelFrame.position.copyFrom(window.reelFramePos)
     }
 
     /** 初始化滾輪的遮罩 */
@@ -133,7 +134,7 @@ export default class ReelController{
 
             case eReelType._3x3_reel:
                 this.mask = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
-                this.mask.position.copyFrom(window.reelBgPos)
+                this.mask.position.copyFrom(window.reelMaskPos)
             break
         } 
     }

@@ -100,6 +100,7 @@ interface Window{
     LineNumberDef: {[key: number]: IDefConfig}
     logoPos: PIXI.Point
     reelContScale: number
+    reelFramePos: PIXI.Point
     reelBgPos: PIXI.Point
     reelMaskPos: PIXI.Point
 
