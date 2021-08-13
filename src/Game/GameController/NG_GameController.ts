@@ -58,6 +58,8 @@ class GameStart extends GameState{
         EventHandler.once(eEventName.startSpin, this.change.bind(this))
         // Auto  
         if(SlotUIManager.IsAuto)    EventHandler.dispatch(eEventName.startSpin)
+        // 按空白鍵
+        CustomInteractionManager.on(eCustomType.keyboard, eEventName.startSpin, ()=> EventHandler.dispatch(eEventName.startSpin))
     }
 
     async change(){
@@ -80,6 +82,7 @@ class GameStart extends GameState{
     }
 
     exit(){
+        CustomInteractionManager.off(eEventName.startSpin)
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})       // 關閉贏分時的黑底
         LineManager.StopEachLineFn()                                                // 關閉逐線的演出
     }
@@ -115,7 +118,10 @@ class StartSpin extends GameState{
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> {     // 收到點擊後的行為，增加播音效的動作
             GameAudioManager.playAudioEffect(eAudioName.spinButton)
             ReelController.StopNowEvent()
+            this.unregisterEvent()
         })
+        CustomInteractionManager.once(eCustomType.keyboard, eEventName.startSpin, this.stopEvent)
+        
         if(SlotUIManager.IsAutoSpeed)   ReelController.StopNowEvent()       // autoFlash狀態，就沒有音效
 
         ReelController.checkFGListening(SpinInfo)                      // 檢查並設定聽牌
@@ -132,7 +138,13 @@ class StartSpin extends GameState{
     }
 
     exit(){
+        this.unregisterEvent()
+    }
+
+    /** 移除事件 */
+    private unregisterEvent(){
         EventHandler.off(eEventName.startSpin, this.stopEvent)
+        CustomInteractionManager.off(eEventName.startSpin)
     }
 }
 

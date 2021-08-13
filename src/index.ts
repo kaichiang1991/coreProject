@@ -80,6 +80,7 @@ const gameEntry: Function = async ()=>{
     editConfig = await PixiAsset.JSON.getJson(editJson.toString())
     gameConfig = await PixiAsset.JSON.getJson(gameConfigUrl.toString())
 
+    CustomInteractionManager.init(App)
     Entry.init(App, config)
     AppDebug.init()
     // 在沒有外部帶入的情況下，預設 prod 連 DEV 環境，develop 連 local 環境
