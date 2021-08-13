@@ -61,6 +61,7 @@ class LotteryAnim extends GameState{
         // 壓暗
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
         BetModel.getInstance().addWin(win)
+        BetModel.getInstance().addCredit(win)
 
         await LineManager.playAllLineWin(winlineInfos)
         await LineManager.playEachLine()

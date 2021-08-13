@@ -73,6 +73,7 @@ class GameStart extends GameState{
 
         // 更新餘額
         BetModel.getInstance().startSpin()
+        BetModel.getInstance().Win = 0
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
         this.context.changeState(eNG_GameState.spin)
@@ -88,7 +89,7 @@ class GameStart extends GameState{
      * @returns true 餘額足夠 / false 餘額不足
      */
     private checkCreditEnough(): boolean{
-        return BetModel.getInstance().credit >= BetModel.getInstance().TotalBet
+        return BetModel.getInstance().credit >= BetModel.getInstance().TotalBet     // ToDo
     }
 }
 
@@ -152,6 +153,9 @@ class EndSpin extends GameState{
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
 
             EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
+            console.log('win', BetModel.getInstance().Win,  ' credit', BetModel.getInstance().credit)
+            BetModel.getInstance().addCredit(BetModel.getInstance().Win)
+            console.log('add credit', BetModel.getInstance().credit)
             await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
         }else if(isWin){            
@@ -199,11 +203,10 @@ class RoundEnd extends GameState{
         // 跟 server 要資料
         const roundEnd: IGtoCRoundEnd = await GameDataRequest.roundEnd()
         // ToDo  測試分數有沒有一致
-        if(BetModel.getInstance().credit + BetModel.getInstance().Win != roundEnd.Balance){
+        if(BetModel.getInstance().credit != roundEnd.Balance){
             Debug.log('round end 分數不同', 
             `Balance: ${roundEnd.Balance}, 目前餘額: ${BetModel.getInstance().credit}, 目前贏分: ${BetModel.getInstance().Win}`)
         }
-        BetModel.getInstance().Win = 0
         BetModel.getInstance().credit = roundEnd.Balance
 
         this.change() 

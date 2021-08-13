@@ -86,6 +86,8 @@ export class LineManager{
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
 
+        EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // UI 直接顯示目前總分
+
         const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
         const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
         allPromise.push(
