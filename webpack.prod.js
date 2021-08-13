@@ -4,6 +4,7 @@ const {merge} = require("webpack-merge");
 const common = require("./webpack.common");
 const ImageMinimizerPlugin  = require('image-minimizer-webpack-plugin')
 const md5 = require('md5-dir');
+const libPaths = require('./buildTool/libMap')
 
 module.exports = merge(common, {
     mode: 'production',
@@ -50,10 +51,7 @@ module.exports = merge(common, {
                 ].map(name => '../GameCommon/js/' + name + '.min.js')  
 
                 // 共用 Lib
-                .concat([
-                    '/Entry', '/SystemErrorManager', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', '/BetModel', '/MathTool', '/UIManager', '/EventHandler', '/BigWinManager'
-                ].map(dir => '../GameCommon/Lib' + dir + '.' + md5.sync('./Lib' + dir) + '/index.min.js'))      // 解析 md5 後的路徑，確保和使用的版本相同
-
+                .concat(libPaths.map(dir => '../GameCommon/Lib' + dir + '.' + md5.sync('./Lib' + dir) + '/index.min.js'))   // 解析 md5 後的路徑，確保和使用的版本相同
                 // 單獨的js
                 .concat('../GameCommon/Lib/EventName.js')
             },

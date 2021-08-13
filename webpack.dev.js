@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const {merge} = require('webpack-merge')
 const common = require('./webpack.common')
+const libPaths = require('./buildTool/libMap')
 
 module.exports = merge(common, {
     mode: 'development',
@@ -51,9 +52,10 @@ module.exports = merge(common, {
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/PixiPlugin.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/MotionPathPlugin.min.js',
                     'https://cdn.jsdelivr.net/npm/number-precision@1.5.0/build/index.umd.js'
-                ].concat([
-                    '/Entry', '/SystemErrorManager', '/AssetManager', '/Debug', '/Loading', '/Tool', '/LocalizationManager', '/ParameterParse', '/State', , '/BetModel', '/MathTool', '/UIManager', '/EventHandler', '/BigWinManager'
-                ].map(dir => 'Lib' + dir + '/index.min.js'))
+                ]
+                // 共用 Lib
+                .concat(libPaths.map(dir => 'Lib' + dir + '/index.min.js'))
+                // 單獨的js
                 .concat('Lib/EventName.js'),
             },
             style: {
