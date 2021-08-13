@@ -120,19 +120,9 @@ export class LineManager{
      * @returns 單線的話直接回傳 / 多線的話 timeline 開始跑了之後回傳
      */
     public static async playEachLine(){
-        this.stopEachLineFn = null
-        const {LineGame} = gameConfig
-        if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
-            const {WinPosition, Win, LineNo, WayCount} = this.winlineArr[0]
-            WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
-            SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)              // 顯示單線贏分資訊
-            this.playEachLineAudio(this.winlineArr[0])
-            return
-        }
-
         return new Promise<void>(res =>{
-
-            const {eachLineLight} = this.lineConfig
+            this.stopEachLineFn = null
+            const {LineGame} = gameConfig, {eachLineLight} = this.lineConfig
             
             let index: number = 0
             this.eachLineTimeline = gsap.timeline().repeat(-1)
@@ -167,33 +157,25 @@ export class LineManager{
      * @returns 單線的話直接回傳 / 多線的話 timeline 開始跑了之後回傳
      */
     public static async playFG_EachLine(){
-        this.stopEachLineFn = null
-        const {LineGame} = gameConfig
-        if(this.winlineArr.length == 1){        // 單線的話就不跑逐線
-            // FG 回來的逐線若只有單線，就是FG那條 (沒有贏分資訊)
-            const {WinPosition, Win, LineNo, WayCount} = this.winlineArr[0]
-            // SlotUIManager.activeWinInfo(true, LineGame? LineNo: WayCount, Win)      // 顯示單線贏分資訊
-            WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))       // 撥放全部得獎動畫
-            this.playFGLineAudio()          // 如果是單線，一定是FG (播放 FG 連線音效)
-            return
-        }
-
         return new Promise<void>(res =>{
-
+            this.stopEachLineFn = null
             // 計算 FG 扣除 NG 贏分的總分
             const FGWin: number = minus(BetModel.getInstance().Win, this.winlineArr.filter(winline => winline.LineNo != 0)
             .reduce((pre, curr) => plus(pre, curr.Win), 0))
-            const {eachLineLight} = this.lineConfig
+
+            const {LineGame} = gameConfig, {eachLineLight} = this.lineConfig
 
             let index: number = 0
             this.eachLineTimeline = gsap.timeline().repeat(-1)
             .call(()=>{
                 this.clearLineEvent()
                 const {LineNo, Win, WinPosition} = this.winlineArr[index]
-                if(LineNo == 0){
+                if(LineNo == 0){            // FG
+                    WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1]))
                     this.playFGLineAudio()
-                    LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)
-                    SlotUIManager.activeWinInfo(false)
+                    // this.playLine(LineNo)                // FG 沒有線
+                    LineNumberManager.playLineNumber(this.lineNumberContainer, FGWin)   
+                    SlotUIManager.activeWinInfo(false)      // FG 沒有 winInfo
                 }else{
                     this.playEachLineAudio(this.winlineArr[index])                                  // 播放音效
                     this.playLine(LineNo)                                                           // 播放線獎

@@ -186,7 +186,7 @@ class EndSpin extends GameState{
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
-        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
+        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin, true)
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
 
         await Promise.all(allPromise)
