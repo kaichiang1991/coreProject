@@ -15,18 +15,9 @@ cache:
     - Lib
     - types
 
-# 開始前
-# before_script:
-#     # 把相對路徑的 submodule 拉下來
-#     - git submodule init
-#     - git submodule update --recursive --remote
-#     - npm install
-
 stages:
   - .pre
   - build
-  - after-build
-  - .post
 
 # build 之前，檔案的解析
 # 轉換 webp 格式
@@ -45,15 +36,12 @@ pre_parse:
 build:
   stage: build
   only:
-      - tags
-      - test
-      - web
+      - tags    # 有tag的時候
+      - web     # 在 gitlab 網頁  CI/CD -> Run Pipeline 可以手動觸發
   script:
-    - ls
     - ./node_modules/.bin/webpack --config webpack.prod.js
     - node buildTool/buildFileParse.js
-    - ls
-    - mv dist/Release "$CI_PROJECT_TITLE"
+    - mv dist/Release "$CI_PROJECT_TITLE"       # 移動到根目錄下，方便artifacts下載的時候路徑簡單
 
   artifacts:
     name: "$CI_PROJECT_TITLE"
