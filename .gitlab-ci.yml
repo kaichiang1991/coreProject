@@ -38,6 +38,7 @@ build:
   only:
       - tags
       - test
+      - web
   script:
     - ./node_modules/.bin/webpack --config webpack.prod.js
     - node buildTool/buildFileParse.js
