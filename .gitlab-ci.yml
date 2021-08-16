@@ -9,13 +9,6 @@ cache:
   paths:
     - node_modules/
 
-# 開始前
-before_script:
-    # 把相對路徑的 submodule 拉下來
-    - git submodule init
-    - git submodule update --recursive --remote
-    - npm install
-
 stages:
   - .pre
   - build
@@ -27,6 +20,7 @@ stages:
 pre_parse:
   stage: .pre
   script:
+    - npm install
     - npm run prepareFile
   artifacts:
     paths:
@@ -40,6 +34,9 @@ build:
       - test
       - web
   script:
+    # 把相對路徑的 submodule 拉下來
+    - git submodule init
+    - git submodule update --recursive --remote
     - ./node_modules/.bin/webpack --config webpack.prod.js
     - node buildTool/buildFileParse.js
     - ls
