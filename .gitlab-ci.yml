@@ -1,0 +1,46 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:14
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ee/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - .pre
+  - build
+  - after-build
+  - .post
+
+# build 之前，檔案的解析
+# 轉換 webp 格式
+pre_parse:
+  stage: .pre
+  script:
+    - npm install
+    - npm run prepareFile
+  artifacts:
+    paths:
+      - assets/
+
+# build 階段，打包程式
+build:
+  stage: build
+  only:
+      - tags
+      - test
+  script:
+    - ./node_modules/.bin/webpack --config webpack.prod.js
+    - node buildTool/buildFileParse.js
+    - ls
+  artifacts:
+    paths:
+      - dist
+      - "$CI_PROJECT_TITLE"
+
+  dependencies:
+    - pre_parse
+
