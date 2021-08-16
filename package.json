@@ -6,11 +6,9 @@
     "crlfConvert": "node buildTool/crlfConvert.js",
     "fileParse": "node buildTool/fileParse.js",
     "prepareFile": "npm run crlfConvert && npm run fileParse",
-    
     "build:dev": "npm run prepareFile && webpack --config webpack.dev.js",
     "serve": "live-server ./dist/Debug",
     "start": "concurrently 'npm:build:dev' 'npm:serve'",
-    
     "build": "npm run prepareFile && webpack --config webpack.prod.js --progress",
     "postbuild": "node buildTool/buildFileParse.js"
   },
