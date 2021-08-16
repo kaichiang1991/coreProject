@@ -36,6 +36,7 @@ pre_parse:
 build:
   stage: build
   only:
+    refs:
       - tags    # 有tag的時候
       - web     # 在 gitlab 網頁  CI/CD -> Run Pipeline 可以手動觸發
   script:
