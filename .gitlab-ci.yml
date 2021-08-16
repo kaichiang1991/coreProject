@@ -3,6 +3,9 @@
 # https://hub.docker.com/r/library/node/tags/
 image: node:14
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
 cache:
