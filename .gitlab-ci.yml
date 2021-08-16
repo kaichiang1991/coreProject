@@ -3,18 +3,24 @@
 # https://hub.docker.com/r/library/node/tags/
 image: node:14
 
+# 設定 submodule 策略
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
 cache:
   paths:
     - node_modules/
+    - Lib
+    - types
 
 # 開始前
-before_script:
-    # 把相對路徑的 submodule 拉下來
-    - git submodule init
-    - git submodule update --recursive --remote
-    - npm install
+# before_script:
+#     # 把相對路徑的 submodule 拉下來
+#     - git submodule init
+#     - git submodule update --recursive --remote
+#     - npm install
 
 stages:
   - .pre
@@ -27,6 +33,9 @@ stages:
 pre_parse:
   stage: .pre
   script:
+    - git submodule init
+    - git submodule update --recursive --remote
+    - npm install
     - npm run prepareFile
   artifacts:
     paths:
@@ -40,6 +49,7 @@ build:
       - test
       - web
   script:
+    - ls
     - ./node_modules/.bin/webpack --config webpack.prod.js
     - node buildTool/buildFileParse.js
     - ls
