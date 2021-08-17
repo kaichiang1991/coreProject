@@ -61,17 +61,13 @@ EventHandler.on(eEventName.orientationChange, ()=> {
 })
 
 // 註冊視窗事件
-export let isWindowBlur: boolean                    // 紀錄目前是否不是在focus狀態
-const focusEvent: Function = (flag: boolean) =>{
-    isWindowBlur = !flag
+window.addEventListener('visibilitychange', ()=>{
     if(SystemErrorManager.IsError)
         return
-    const context: {volume: number} = {volume: flag? 1: 0}
+    const context: {volume: number} = {volume: document.visibilityState == 'visible'? 1: 0}
     EventHandler.dispatch(eEventName.setMusicVolume, context)
     EventHandler.dispatch(eEventName.setEffectVolume, context)
-}
-window.addEventListener('focus', focusEvent.bind(this, true))
-window.addEventListener('blur', focusEvent.bind(this, false))
+})
 
 export let editConfig: IEditConfig, gameConfig: IGameConfig
 // 遊戲入口

@@ -1,5 +1,5 @@
 import config from '@root/config'
-import { App, editConfig, eGameEventName, isWindowBlur } from "@root/src"
+import { App, editConfig, eGameEventName } from "@root/src"
 import GameAudioManager, { eAudioName } from '@root/src/System/Assets/GameAudioManager'
 import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
@@ -67,7 +67,7 @@ class GameInit extends GameState{
         
         // 轉場提示動畫
         const setVolumeFn: Function = (flag: boolean) =>{       // 設定音量
-            if(isWindowBlur)    return
+            if(document.visibilityState != 'visible')   return  // 其實也不用，沒有在 visibility 時，gsap 也不會更新
             EventHandler.dispatch(eEventName.setMusicVolume, {volume: flag? .4: 1})
         }
 
@@ -235,7 +235,7 @@ class EndSpin extends GameState{
     exit(){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
-        // GameSpineManager.endFGCharacterWin()
+        GameSpineManager.endFGCharacterWin()
     }
 
     /**

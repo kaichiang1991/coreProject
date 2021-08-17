@@ -167,7 +167,6 @@ export default class GameSpineManager{
 
     //#region Character
     private static character: Spine
-    private static characterTrack: TrackEntry
     
     /** 初始化主視覺角色 */
     public static initCharacter(){
@@ -189,7 +188,6 @@ export default class GameSpineManager{
 
     /** 清除角色 */
     public static clearCharacter(){
-        this.characterTrack = null
         this.character.setEmptyAnimations()
         this.character.parent?.removeChild(this.character)
     }
@@ -200,7 +198,7 @@ export default class GameSpineManager{
      */
     public static playNGCharacter(parent: Container){
         parent.addChild(this.character)
-        this.characterTrack = this.character.setAnimation('NG_Loop', true)
+        this.character.setAnimation('NG_Loop', true)
     }
 
     /**
@@ -209,19 +207,18 @@ export default class GameSpineManager{
      */
     public static playFGCharacter(parent: Container){
         parent.addChild(this.character)
-        this.characterTrack = this.character.setAnimation('FG_Loop', true)
+        this.character.setAnimation('FG_Loop', true)
     }
 
-    // /** 播放 FG 主視覺角色得獎演出 */
-    // public static playFGCharacterWin(){
-    //     this.characterTrack = this.character.setAnimation('FG_Win', true)
-    // }
+    /** 播放 FG 主視覺角色得獎演出 */
+    public static playFGCharacterWin(){
+        this.character.setAnimation('FG_Win', true)
+    }
 
-    // /** 結束播放 FG 主視覺角色得獎演出，並回覆loop狀態 */
-    // public static endFGCharacterWin(){
-    //     this.characterTrack.loop = false
-    //     this.character.addAnimation('FG_Loop', true)
-    // }
+    /** 結束播放 FG 主視覺角色得獎演出，並回覆loop狀態 */
+    public static endFGCharacterWin(){
+        this.character.addAnimation('FG_Loop', true)
+    }
     //#endregion Character
 
     //#region FG_Odds

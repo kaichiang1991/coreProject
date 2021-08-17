@@ -1,4 +1,5 @@
 import { App, eGameEventName } from "@root/src"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -50,7 +51,7 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
-        // GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
+        GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
 
         const {win, winlineInfos} = FGLotteryController
         await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)     // 先演大獎
