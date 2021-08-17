@@ -39,7 +39,7 @@ build:
       - web     # 在 gitlab 網頁  CI/CD -> Run Pipeline 可以手動觸發
   script:
     - ./node_modules/.bin/webpack --config webpack.prod.js
-    - node buildTool/buildFileParse.js
+    - node buildTool/buildFileParse.js "$LOG"
     - mv dist/Release "$CI_PROJECT_TITLE"       # 移動到根目錄下，方便artifacts下載的時候路徑簡單
 
   artifacts:
