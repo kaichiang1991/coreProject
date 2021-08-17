@@ -12,8 +12,6 @@ variables:
 cache:
   paths:
     - node_modules/
-    - Lib
-    - types
 
 stages:
   - .pre
