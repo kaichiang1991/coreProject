@@ -110,9 +110,15 @@ class GameInit extends GameState{
             // Auto 時，自動進入
             SlotUIManager.IsAuto? Sleep(editConfig.game.FG_TitleAutoDelay): new Promise<void>(()=>{}),
             // 點擊畫面進入
-            new Promise<void>(res =>this.black.on('pointerdown', res))
+            new Promise<void>(res => this.black.on('pointerdown', res)),
+            // 按空白鍵進入
+            new Promise<void>(res => CustomInteractionManager.on(eCustomType.keyboard, eGameEventName.startFG, res))
         ])
+
+        // 取消事件
         this.black.removeAllListeners()
+        CustomInteractionManager.off(eGameEventName.startFG)
+
         await Promise.all([
             waitTweenComplete(gsap.to(titleCont, {duration: .3, alpha: 0})),
             GameSpineManager.playTransitionOut()
@@ -123,6 +129,7 @@ class GameInit extends GameState{
     }
 
     async change(){
+        SlotUIManager.activeAutoSpeed(false)            // 關閉 turbo 模式
         GameAudioManager.playAudioMusic(eAudioName.FG_BGM)
 
         FreeGameNumberManager.clearTitleTimes()         // 清除TotalWin 數字
@@ -235,7 +242,6 @@ class EndSpin extends GameState{
     exit(){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
-        GameSpineManager.endFGCharacterWin()
     }
 
     /**

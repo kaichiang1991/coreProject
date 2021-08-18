@@ -51,14 +51,14 @@ class LotteryInit extends GameState{
 class LotteryAnim extends GameState{
 
     async enter(){
-        GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
-
+        
         const {win, winlineInfos} = FGLotteryController
         await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, win)     // 先演大獎
         
         // 壓暗
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
-
+        
+        GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
         const {Multiplier} = GameSlotData.FGSpinData.SpinInfo
         BetModel.getInstance().addWin(win)
         await LineManager.playAllLineWin(winlineInfos, Multiplier)

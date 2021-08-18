@@ -212,11 +212,7 @@ export default class GameSpineManager{
 
     /** 播放 FG 主視覺角色得獎演出 */
     public static playFGCharacterWin(){
-        this.character.setAnimation('FG_Win', true)
-    }
-
-    /** 結束播放 FG 主視覺角色得獎演出，並回覆loop狀態 */
-    public static endFGCharacterWin(){
+        this.character.setAnimation('FG_Win')               // 只播一次
         this.character.addAnimation('FG_Loop', true)
     }
     //#endregion Character

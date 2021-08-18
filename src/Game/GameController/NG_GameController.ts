@@ -160,6 +160,7 @@ class EndSpin extends GameState{
             await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
             GameSceneManager.switchGameScene(eGameScene.freeGame)
             await FG_GameController.getInstance().init()
+            SlotUIManager.activeAutoSpeed(true)            // 恢復 turbo 模式
             GameSceneManager.switchGameScene(eGameScene.normalGame)
             ReelController.reset(eReelGameType.normalGame)
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
@@ -198,7 +199,7 @@ class EndSpin extends GameState{
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
-        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin, true)
+        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
 
         await Promise.all(allPromise)

@@ -20,6 +20,7 @@ import GameAudioManager from './System/Assets/GameAudioManager'
 export enum eGameEventName{
     activeBlackCover = 'activeBlackCover',      // 啟動贏分的黑色遮罩
     transitionDone = 'transitionDone',
+    startFG = 'startFG',
     FG_Win = 'FG_Win',
     FG_End = 'FG_End',
     NG_lotteryEnd = 'NG_lotteryEnd',
