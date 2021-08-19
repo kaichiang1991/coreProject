@@ -193,9 +193,9 @@ class StartSpin extends GameState{
         const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
 
-        if(SlotUIManager.IsAutoSpeed){
-            ReelController.StopNowEvent()
-        }
+        // if(SlotUIManager.IsAutoSpeed){
+        //     ReelController.StopNowEvent()
+        // }
         
         ReelController.checkFGListening(SpinInfo)
         ReelController.stopSpin()
