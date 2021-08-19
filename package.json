@@ -1,6 +1,6 @@
 {
   "name": "coreProject",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "scripts": {
     "crlfConvert": "node buildTool/crlfConvert.js",
