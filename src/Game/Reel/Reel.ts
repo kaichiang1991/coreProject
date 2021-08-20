@@ -344,14 +344,14 @@ export default class Reel{
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.ScreenOrg[this.reelIndex])
                     this.nextDataIndex()
                 }else{
-                    this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
+                    this.dataIndex = 1 + reelSymbolCount[this.reelIndex]      // 最下面會預留一顆，所以初始的 滾輪表index為1 + 該輪的個數  (要使用最前面幾顆)
                 }
 
             break
 
             case eReelGameType.freeGame:
                 this.ReelDatas = strip[type][this.reelIndex]
-                this.dataIndex = 1      // 最下面會預留一顆，所以初始的 滾輪表index為1
+                this.dataIndex = 1 + reelSymbolCount[this.reelIndex]           // 最下面會預留一顆，所以初始的 滾輪表index為1 + 該輪的個數  (要使用最前面幾顆)
             break
         }
 
