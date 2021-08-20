@@ -15,7 +15,7 @@
     },
     "line": {
         "leastAllLineDuration": 0.8,
-        "eachLineLight": 1.4,
+        "eachLineLight": 2,
         "afterAllLineDelay": 0.43
     },
     "game": {
