@@ -37,6 +37,7 @@ export default class ReelController{
     // 急停
     private static toStopNow: boolean
     private static stopNowEvent: Function
+    /** 要在設定完 listening 後才能呼叫 */
     public static get StopNowEvent(): Function {return this.stopNowEvent}       // 急停事件
 
     private static resizeFn: IEventCallback
@@ -67,14 +68,9 @@ export default class ReelController{
             this.toStopNow = true
 
             this.stopOrder.map(order => this.reelArr[order]).map(reel =>{
-                reel.ForceStop = true
+                !reel.Listening && (reel.toForceStop = true)        // 聽牌的輪不要設定強制停止
                 reel.stopSpin()
             })
-            // this.stopOrder.map(index => this.reelArr[index]).map(reel =>{
-            //     if(reel.SpinDone)   return                  // 預防前面停輪後，觸發急停會造成模糊
-            //     reel.speedUp(eReelConfig.speedUpScale)
-            //     reel.stopSpin()
-            // })
         }
 
         // 初始化旋轉 resize 事件
@@ -180,18 +176,19 @@ export default class ReelController{
     //#region 控制滾輪
     /**
      * 開始滾動
+     * @param {boolean} isSpeed 是否快速滾動模式
      * @param {Array<number>} stopOrder 指定的停輪順序，預設用 symbolDef 裡面，若要單輪可以直接指定
      * @returns 全部停輪後會回傳
      * @example
      *  ReelController.startSpin()          // 使用預設停輪順序
      *  ReelController.startSpin([0, 1])    // 只滾 0, 1 軸
      */
-    public static async startSpin(stopOrder: Array<number> = defaultStopOrder){
+    public static async startSpin(isSpeed: boolean, stopOrder: Array<number> = defaultStopOrder){
         this.toStopNow = false                  // 初始化急停參數
         this.stopOrder = stopOrder.slice()      // 停輪順序
 
         const spinReelArr: Array<Reel> = this.stopOrder.map(order => this.reelArr[order])       // 要轉動的輪
-        const [...setStartArr] = spinReelArr.map(reel => reel.setStartSpin())
+        const [...setStartArr] = spinReelArr.map(reel => reel.setStartSpin(isSpeed))
         await Promise.all(setStartArr.map(arr => arr[0]))       // 等待都往上拉之後
         this.reelArr.map(reel => reel.setAllBlur())
         
@@ -223,17 +220,27 @@ export default class ReelController{
 
     /**
      * 判斷上一輪是否已經開始停輪
-     * @param index 要檢查的輪數
-     * @returns 
+     * @param {number} index 要檢查的輪數
+     * @returns {boolean}
      */
     public static isLastReelCanStop(index: number): boolean{  
         index = this.stopOrder.indexOf(index)       // 計算在停輪順序裡面的第幾個
-        return index == 0? true: this.reelArr[this.stopOrder[index - 1]].NextReelCanStop
+        
+        if(index == 0)
+            return true
+
+        // 判斷前幾輪是否都是急停
+        // 聽牌結束後也會強制設為急停
+        const allPreviousForce: boolean = this.stopOrder.slice(0, index).map(reelIndex => this.reelArr[reelIndex])
+        .reduce((pre, curr) => pre && curr.toForceStop, true)
+        
+        const lastReel: Reel = this.reelArr[this.stopOrder[index- 1]]
+        return allPreviousForce || lastReel.NextReelCanStop
     }
 
     /**
      * 判斷上一輪聽牌停止的狀態
-     * @param index 要檢查的輪數
+     * @param {number} index 要檢查的輪數
      * @returns 上一輪是否聽牌效果停止
      */
     public static isLastReelListeningDone(index: number): boolean{

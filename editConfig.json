@@ -5,13 +5,13 @@
         "turboUpDistance": 0,
         "turboUpDuration": 0.1,
         "spinSpeed": 27,
-        "forceStopSpeed": 50,
+        "fastSpinSpeed": 50,
         "listeningSpeed": 12,
         "listeningDelay": 1.8,
         "bounceDistance": 36,
         "bounceBackDuration": 0.4,
         "eachReelStop": 0.45,
-        "extraSymbolCount": 2
+        "extraSymbolCount": 4
     },
     "line": {
         "leastAllLineDuration": 0.8,
