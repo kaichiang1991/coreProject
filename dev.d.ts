@@ -46,6 +46,8 @@ interface IEditConfig{
 
 /** 轉輪的參數 */
 interface ISpinConfig{
+    leastSpinDuration: number   // 一般模式下，最少的滾動時間 (s)
+    turboLeastDuration: number  // 快速模式下，最少的滾動時間 (s) (可填0)
     upDistance: number          // 一般滾動時，上移的距離
     upDuration: number          // 一般滾動時，上移的時間        (不可以填0)
     turboUpDistance: number     // 快速模式下，上移的距離

@@ -3,7 +3,7 @@ import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioM
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
-import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
+import ReelController, { eReelGameType, spinConfig, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
 import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
@@ -104,6 +104,9 @@ class StartSpin extends GameState{
         const {IsAutoSpeed} = SlotUIManager
         const allSpin: Promise<void> = ReelController.startSpin(IsAutoSpeed)
 
+        // 最少的滾動時間
+        const leastSpinDelay: Promise<void> = Sleep(IsAutoSpeed? spinConfig.turboLeastDuration: spinConfig.leastSpinDuration)
+
         // 接受server 資料 
         GameSlotData.NGSpinData = await GameDataRequest.NGSpin(BetModel.getInstance().Bet)
 
@@ -115,7 +118,8 @@ class StartSpin extends GameState{
         const {ScreenOrg, ScreenOutput, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)     // 設定結果，要看數學資料格式
 
-        EventHandler.dispatch(eEventName.receiveServerData)
+        await leastSpinDelay                    // 等待最少滾動時間
+
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> {     // 收到點擊後的行為，增加播音效的動作
             GameAudioManager.playAudioEffect(eAudioName.spinButton)
             ReelController.StopNowEvent()
@@ -126,7 +130,7 @@ class StartSpin extends GameState{
         ReelController.checkFGListening(SpinInfo)                      // 檢查並設定聽牌
         // ReelController.setListening(/** 聽牌軸陣列 */)              // 設定一般聽牌
         // ReelController.setSpecialListening(/** 聽牌軸陣列 */)       // 設定特殊聽牌
-        if(IsAutoSpeed){
+        if(IsAutoSpeed || SlotUIManager.IsStopNow){
             ReelController.StopNowEvent()                              // 急停
         }
 

@@ -1,5 +1,7 @@
 {
     "spin": {
+        "leastSpinDuration": 1,
+        "turboLeastDuration": 0,
         "upDistance": 28,
         "upDuration": 0.4,
         "turboUpDistance": 0,

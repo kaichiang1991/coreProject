@@ -8,7 +8,7 @@ import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import {Point} from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
-import ReelController, { eReelGameType, SymbolController } from "../Reel/ReelController"
+import ReelController, { eReelGameType, spinConfig, SymbolController } from "../Reel/ReelController"
 import StickSymbolController from '../Reel/StickSymbolController'
 import { eSymbolName } from '../Reel/SymbolDef'
 import FGLotteryController from "../Win/FGLotteryController"
@@ -184,7 +184,11 @@ class StartSpin extends GameState{
         // FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
         FreeGameNumberManager.adjustRemainTimes(false)              // 減少剩餘場次
 
-        const allSpin: Promise<void> = ReelController.startSpin(SlotUIManager.IsAutoSpeed)
+        const {IsAutoSpeed} = SlotUIManager
+        const allSpin: Promise<void> = ReelController.startSpin(IsAutoSpeed)
+
+        // 最少的滾動時間
+        const leastSpinDelay: Promise<void> = Sleep(IsAutoSpeed? spinConfig.turboLeastDuration: spinConfig.leastSpinDuration)
 
         // 接收server 資料 
         GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
@@ -192,6 +196,8 @@ class StartSpin extends GameState{
         const {SpinInfo} = GameSlotData.FGSpinData
         const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
+
+        await leastSpinDelay                    // 等待最少滾動時間
 
         ReelController.checkFGListening(SpinInfo)
         ReelController.stopSpin()
