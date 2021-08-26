@@ -101,7 +101,8 @@ class StartSpin extends GameState{
     private stopEvent: IEventCallback
 
     async enter(){
-        const allSpin: Promise<void> = ReelController.startSpin()
+        const {IsAutoSpeed} = SlotUIManager
+        const allSpin: Promise<void> = ReelController.startSpin(IsAutoSpeed)
 
         // 接受server 資料 
         GameSlotData.NGSpinData = await GameDataRequest.NGSpin(BetModel.getInstance().Bet)
@@ -122,13 +123,14 @@ class StartSpin extends GameState{
         })
         CustomInteractionManager.once(eCustomType.keyboard, eEventName.startSpin, this.stopEvent)
         
-        if(SlotUIManager.IsAutoSpeed)   ReelController.StopNowEvent()       // autoFlash狀態，就沒有音效
-
         ReelController.checkFGListening(SpinInfo)                      // 檢查並設定聽牌
         // ReelController.setListening(/** 聽牌軸陣列 */)              // 設定一般聽牌
         // ReelController.setSpecialListening(/** 聽牌軸陣列 */)       // 設定特殊聽牌
-        ReelController.stopSpin()
+        if(IsAutoSpeed){
+            ReelController.StopNowEvent()                              // 急停
+        }
 
+        ReelController.stopSpin()
         await allSpin
         this.change()
     }
@@ -154,7 +156,7 @@ class EndSpin extends GameState{
 
         const {WinType, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0          // 判斷有沒有 FG
-        const isWin: boolean = (WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
+        const isWin: boolean = false //(WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
 
         if(isFreeGame){
             await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])

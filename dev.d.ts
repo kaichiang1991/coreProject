@@ -46,16 +46,16 @@ interface IEditConfig{
 
 /** 轉輪的參數 */
 interface ISpinConfig{
-    upDistance: number          // 上移的距離
-    upDuration: number          // 上移的時間                (不可以填0)
+    upDistance: number          // 一般滾動時，上移的距離
+    upDuration: number          // 一般滾動時，上移的時間        (不可以填0)
     turboUpDistance: number     // 快速模式下，上移的距離
-    turboUpDuration: number     // 快速模式下，上移的時間    (不可以填0)  
-    spinSpeed: number           // 一般的滾動速度
-    forceStopSpeed: number      // 急停的滾動速度
+    turboUpDuration: number     // 快速模式下，上移的時間        (不可以填0)  
+    spinSpeed: number           // 一般的滾動速度   (每幀位移的距離 px)
+    fastSpinSpeed: number       // 快速模式 or 急停的滾輪速度
     listeningSpeed: number      // 聽牌的滾動速度  (最終的速度，漸慢)
     listeningDelay: number      // 聽牌的延遲時間  (s)
-    bounceDistance: number      // 回彈的距離
-    bounceBackDuration: number  // 回拉的時間
+    bounceDistance: number      // 到底後回彈的距離 (px)
+    bounceBackDuration: number  // 一般滾動時，上拉的時間 (s)  (急停會自動根據速度比例去計算)
     eachReelStop: number        // 每輪的間隔
     extraSymbolCount: number    // 結尾要接回去的滾輪表個數
 }
@@ -89,7 +89,7 @@ interface IDefConfig{
 // windows 結構
 interface Window{
     // 測試用
-    
+    showReel: number
     // 正式用
     reelType: number
     App: PIXI.Application

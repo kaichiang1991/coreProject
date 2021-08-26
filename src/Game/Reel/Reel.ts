@@ -32,14 +32,16 @@ export default class Reel{
     private lastBottomSymbolId: number      // 上一次底部的 symbol id
 
     // 滾動
+    private isFastRolling: boolean      // 是否快速滾動
+    public set FastRolling(flag: boolean){this.isFastRolling = flag}
+
     private dy: number                  // 每一幀更新的向下位移
     private checkIndex: number          // 要檢查是否到底的 symbol 索引 (會預留一顆)
     private checkPointY: number         // 檢查到底的值
     private toStop: boolean             // 是否通知要開始停輪
     private toBounce: boolean           // 開始 bounce
 
-    private toForceStop: boolean        // 是否急停
-    public set ForceStop(flag: boolean){ this.toForceStop = flag}
+    public toForceStop: boolean        // 是否急停
 
     private setNextReelCanStopTween: gsap.core.Tween    // 設定下一輪可否停輪的tween
     private nextReelCanStop: boolean    // 下一輪是否可以開始停輪
@@ -98,11 +100,13 @@ export default class Reel{
     }
 
     /** 重設滾動參數 */
-    private resetSpin(){
+    private resetSpin(isFast: boolean){
+        this.isFastRolling = isFast      // 設定該次滾動是否為快速滾動
+
         this.nextReelCanStop = this.toSetStop = false
         this.setNextReelCanStopTween?.kill()
 
-        this.toSetStop = this.toForceStop = this.toBounce = this.toStop = false
+        this.toForceStop = this.toBounce = this.toStop = false
         this.correctIndex = 0
 
         // 聽牌重設
@@ -117,15 +121,16 @@ export default class Reel{
 
     /**
      * 設定滾輪開始滾動
+     * @param {boolean} fast 是否快速模式
      * @returns {[Promise<void>, Promise<void>]} Tuple陣列，[0] 回傳是否已上滑，[1] 回傳是否已停輪
      */
-    public setStartSpin(): [Promise<void>, Promise<void>]{
+    public setStartSpin(fast: boolean): [Promise<void>, Promise<void>]{
         return [
             new Promise<void>(res =>{
-                this.resetSpin()
+                this.resetSpin(fast)
                 // 上拉
-                const {IsAutoSpeed} = SlotUIManager, {upDistance, upDuration, turboUpDistance, turboUpDuration} = spinConfig
-                const y: string = `-=${IsAutoSpeed? turboUpDistance : upDistance}`, duration: number = IsAutoSpeed? turboUpDuration: upDuration
+                const {upDistance, upDuration, turboUpDistance, turboUpDuration} = spinConfig
+                const y: string = `-=${this.isFastRolling? turboUpDistance: upDistance}`, duration: number = this.isFastRolling? turboUpDuration: upDuration
                 gsap.to(this.symbolArr, {y, duration})
                 .eventCallback('onComplete', ()=> res())
             }), 
@@ -146,27 +151,36 @@ export default class Reel{
      */
     public spinEvent(deltaRatio: number){
         
-        if(this.toBounce)   return      // 已經進到bounce就先不執行
+        if(this.toBounce)       // 已經進到bounce就先不執行
+           return      
 
-        this.dy = deltaRatio * (this.toForceStop? spinConfig.forceStopSpeed: this.isListening? this.listeningSpeed: spinConfig.spinSpeed)        // 計算每幀位移量
+        this.dy = deltaRatio * (                                                    // 計算每幀位移量
+            this.isFastRolling || this.toForceStop? spinConfig.fastSpinSpeed:       // 快速模式下 or 急停時
+            this.isListening? this.listeningSpeed:                                  // 聽牌模式下
+            spinConfig.spinSpeed                                                    // 一般滾動模式下
+        )        
 
         if(this.updateSymbolPos()){
             this.swapSymbol()                       // 交換 symbol 位置
             this.setNextSymbol()                    // 設定掉下來的下顆符號
 
-            if(!this.toStop)        // 還沒有要停止
+            if(!this.toStop)                                        // 還沒有收到停止指令
                 return
                 
-            if(!this.toForceStop && this.isListening && !this.listeningSpeedUpDone){    // 聽牌時先跳過停止階段
+            if(this.isListening && !this.listeningSpeedUpDone)      // 聽牌時先跳過停止階段
                 return
-            }
-
-            if(this.toForceStop || (ReelController.isLastReelCanStop(this.reelIndex) && ReelController.isLastReelListeningDone(this.reelIndex))){     // 判斷停輪條件
+            
+            if(ReelController.isLastReelCanStop(this.reelIndex) && ReelController.isLastReelListeningDone(this.reelIndex)){     // 判斷停輪條件
 
                 if(this.correctIndex == this.resultArr.length + spinConfig.extraSymbolCount){   // 換到最後一顆，準備進bounce
-                    ReelController.setListeningEffect(this.reelIndex)       // 設定下一輪的聽牌效果
-                    this.isListeningDone = true                             // 讓下一輪判斷，前一輪聽牌結束 ReelController.isPreviousListeningDone()
-                    this.isListening == eListeningState.special? this.specialListeningBounce(): this.spinBounce()
+                    ReelController.setListeningEffect(this.reelIndex)                           // 設定下一輪的聽牌效果
+                    if(this.isListening){
+                        this.isListeningDone = true                                             // 讓下一輪判斷，前一輪聽牌結束 ReelController.isPreviousListeningDone()
+                        this.toForceStop = true                                                 // 讓後面幾輪的 ReelController.isLastReelCanStop 可以判斷 ForceStop
+                        this.isListening == eListeningState.special? this.specialListeningBounce(): this.spinBounce()   // 判斷是否特殊聽牌的 bounce
+                    }else{
+                        this.spinBounce()
+                    }
                     return
                 }
 
@@ -176,7 +190,7 @@ export default class Reel{
                     this.setNextReelCanStopTween = gsap.delayedCall(this.isListening? 0: spinConfig.eachReelStop, ()=> this.nextReelCanStop = true)
                     // 接回正確的滾輪表
                     this.getCorrectDataIndex(this.resultArr)
-                    this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()])
+                    this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], eSymbolState.Blur)
                 }else{
                     this.correctIndex++
                 }
@@ -188,23 +202,31 @@ export default class Reel{
     private async spinBounce(){
         this.toBounce = true
 
-        const lastIndex: number = this.symbolArr.length - 1                                         // bounce 時最下面那顆的index
+        const {bounceDistance, bounceBackDuration, spinSpeed} = spinConfig
+        const lastIndex: number = this.symbolArr.length - 1                                                                      // bounce 時最下面那顆的index
         const overDistance: number = this.symbolArr[lastIndex].y - yOffsetArr[mapRowIndex(this.reelIndex)][lastIndex - 1]        // 超出規定的座標多少
 
-        const downDistance: number = spinConfig.bounceDistance - overDistance                       // 實際要bounce 下移的距離 (小於0就是 lag 或是 加速太快了，導致一幀就超過了 bounce 距離)
-        const downDuration: number = downDistance >= 0? (downDistance / this.dy / fps): 0           // 根據上一個spinEvent 決定這次要下移的時間
-        const upDistance: number = downDistance >= 0? spinConfig.bounceDistance: spinConfig.bounceDistance - downDistance       // 上移的距離，如果下移已經超過bounceDistance，則會補上超過的那一段
+        const downDistance: number = bounceDistance - overDistance                                  // 實際要bounce 下移的距離 (小於0就是 lag 或是 加速太快了，導致一幀就超過了 bounce 距離)
+        const downDuration: number = downDistance < 0? 0: (downDistance / this.dy / fps)            // 根據上一個spinEvent 決定這次要下移的時間 (this.dy * fps = 速度(每秒位移))
 
-        const bounceTimeline: gsap.core.Timeline = gsap.timeline()
-        .to(this.symbolArr, {ease: Power0.easeNone, y: `+=${downDistance >= 0? downDistance: 0}`, duration: downDuration})      // 下移
-        .call(()=>{
-            // 到底部
+        const upDistance: number = downDistance >= 0? bounceDistance: bounceDistance - downDistance       // 上移的距離，如果下移已經超過bounceDistance，則會補上超過的那一段
+        const upDuration: number = bounceBackDuration / (this.dy / spinSpeed )                            // 上移的時間，會跟著當下速度與一般滾輪的速度比率去設定
+
+        // 到底部的行為
+        const toBottomEvent: GSAPCallback = ()=>{
             this.stopReelExpect()
             this.playEndSpinAudio()
-        })
-        .to(this.symbolArr, {duration: spinConfig.bounceBackDuration, y: `-=${upDistance}`})        // 上移
+        }
 
-        await waitTweenComplete(bounceTimeline)
+        if(this.isListening == eListeningState.none){           // 沒聽牌
+            const bounceTimeline: GSAPTimeline = gsap.timeline()
+            .to(this.symbolArr, {ease: Power0.easeNone, y: `+=${downDistance >= 0? downDistance: 0}`, duration: downDuration})          // 下移
+            .call(toBottomEvent)                                                                                                        // 到達底部
+            .to(this.symbolArr, {ease: Power1.easeOut, duration: upDuration, y: `-=${upDistance}`})                                     // 上移
+            await waitTweenComplete(bounceTimeline)
+        }else{                                                  // 有聽牌
+            toBottomEvent()
+        }
 
         this.resetSymbol()            // 演完後歸位
         const allEndSpin: Array<Promise<void>> = this.DownSymbol.map(symbol => symbol.playEndSpinAnim())        // 演出落定動畫
@@ -283,6 +305,7 @@ export default class Reel{
         .eventCallback('onComplete', ()=> this.listeningSpeedUpDone = true)
 
         this.playReelExpect()
+        this.isFastRolling = false      // 若是在快速轉動模式下，關閉快速轉動
     }
 
     /** 播放期待框效果 */
@@ -301,7 +324,7 @@ export default class Reel{
             this.reelExpectAudio = GameAudioManager.stopAudioEffect(this.reelExpectAudio)
         }
     }
-    //#endregion
+    //#endregion 聽牌
 
     /**
      * 更新每一顆symbol的位置
@@ -322,7 +345,7 @@ export default class Reel{
         lastSymbol.y = this.symbolArr[0].y - eSymbolConfig.height
         // 換 index
         this.symbolArr.unshift(lastSymbol)
-        this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(symbolIndex))
+        // this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(symbolIndex))
     }
 
     /** 演出完畢後，重設symbol的位置和貼圖 */
@@ -332,7 +355,9 @@ export default class Reel{
         const yOffset: Array<number> = yOffsetArr[mapRowIndex(this.reelIndex)]
         this.symbolArr[0].y = yOffset[yOffset.length - 1]
         this.symbolArr.push(this.symbolArr.shift())
-        this.symbolArr.forEach((symbol, index) => symbol.setIndex(index))
+        // this.symbolArr.forEach((symbol, index) => symbol.setIndex(index))
+        // 恢復轉動階段時多計算的一顆
+        this.dataIndex == ++this.dataIndex % this.reelDatas.length
     }
 
     //#region 滾輪表
@@ -342,7 +367,8 @@ export default class Reel{
                 this.ReelDatas = strip[type][this.reelIndex]
                 if(GameSlotData.NGSpinData){    // 有上一把的資訊，就重新調整 dataIndex
                     this.getCorrectDataIndex(GameSlotData.NGSpinData.SpinInfo.ScreenOrg[this.reelIndex])
-                    this.nextDataIndex()
+                    // 根據額外多出來的顆數，去回復NG盤面
+                    Array(spinConfig.extraSymbolCount - 1).fill(1).map(_ => this.nextDataIndex())
                 }else{
                     this.dataIndex = 1 + reelSymbolCount[this.reelIndex]      // 最下面會預留一顆，所以初始的 滾輪表index為1 + 該輪的個數  (要使用最前面幾顆)
                 }

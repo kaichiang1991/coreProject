@@ -184,7 +184,7 @@ class StartSpin extends GameState{
         // FreeGameNumberManager.addCurrentTimes()                     // 增加目前場次
         FreeGameNumberManager.adjustRemainTimes(false)              // 減少剩餘場次
 
-        const allSpin: Promise<void> = ReelController.startSpin()
+        const allSpin: Promise<void> = ReelController.startSpin(SlotUIManager.IsAutoSpeed)
 
         // 接收server 資料 
         GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
@@ -193,10 +193,6 @@ class StartSpin extends GameState{
         const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
 
-        // if(SlotUIManager.IsAutoSpeed){
-        //     ReelController.StopNowEvent()
-        // }
-        
         ReelController.checkFGListening(SpinInfo)
         ReelController.stopSpin()
 
