@@ -102,7 +102,7 @@ export default class Symbol extends Container{
     }
 
     public setIndex(index: number){
-        // this.text.text = index + ''
+        this.text.text = index + ''
     }
 
     //#region 得獎動畫

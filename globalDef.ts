@@ -116,3 +116,5 @@ switch(window.reelType){
     break
     // #endregion 3x3 整輪
 }
+
+window.showReel = 0

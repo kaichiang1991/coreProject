@@ -190,7 +190,7 @@ export default class Reel{
                     this.setNextReelCanStopTween = gsap.delayedCall(this.isListening? 0: spinConfig.eachReelStop, ()=> this.nextReelCanStop = true)
                     // 接回正確的滾輪表
                     this.getCorrectDataIndex(this.resultArr)
-                    this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], eSymbolState.Blur, true)
+                    this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], eSymbolState.Blur)
                 }else{
                     this.correctIndex++
                 }
@@ -262,7 +262,7 @@ export default class Reel{
     /** 設定下一顆符號，並記錄目前最下面的符號 */
     private setNextSymbol(){
         this.lastBottomSymbolId = this.symbolArr[0].SymbolID
-        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop? eSymbolState.Normal: eSymbolState.Blur, this.toStop)
+        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop? eSymbolState.Normal: eSymbolState.Blur)
     }
 
     /**
@@ -345,7 +345,7 @@ export default class Reel{
         lastSymbol.y = this.symbolArr[0].y - eSymbolConfig.height
         // 換 index
         this.symbolArr.unshift(lastSymbol)
-        this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(this.reelIndex, symbolIndex))
+        // this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(symbolIndex))
     }
 
     /** 演出完畢後，重設symbol的位置和貼圖 */
@@ -355,7 +355,7 @@ export default class Reel{
         const yOffset: Array<number> = yOffsetArr[mapRowIndex(this.reelIndex)]
         this.symbolArr[0].y = yOffset[yOffset.length - 1]
         this.symbolArr.push(this.symbolArr.shift())
-        this.symbolArr.forEach((symbol, index) => symbol.setIndex(this.reelIndex, index))
+        // this.symbolArr.forEach((symbol, index) => symbol.setIndex(index))
         // 恢復轉動階段時多計算的一顆
         this.dataIndex == ++this.dataIndex % this.reelDatas.length
     }
