@@ -218,14 +218,17 @@ export default class Reel{
             this.playEndSpinAudio()
         }
 
-        if(this.isListening == eListeningState.none){           // 沒聽牌
+        if(this.isListening == eListeningState.none){               // 沒聽牌
             const bounceTimeline: GSAPTimeline = gsap.timeline()
             .to(this.symbolArr, {ease: Power0.easeNone, y: `+=${downDistance >= 0? downDistance: 0}`, duration: downDuration})          // 下移
             .call(toBottomEvent)                                                                                                        // 到達底部
             .to(this.symbolArr, {ease: Power1.easeOut, duration: upDuration, y: `-=${upDistance}`})                                     // 上移
             await waitTweenComplete(bounceTimeline)
-        }else{                                                  // 有聽牌
-            toBottomEvent()
+        }else{                                                      // 有聽牌
+            const revertTimeline: GSAPTimeline = gsap.timeline()    // 慢慢滾動可能會超過距離，這裡回復位置
+            .call(toBottomEvent)
+            .to(this.symbolArr, {duration: spinConfig.listeningRevertDuration, y: `-=${overDistance}`})
+            await waitTweenComplete(revertTimeline)
         }
 
         this.resetSymbol()            // 演完後歸位
@@ -301,7 +304,7 @@ export default class Reel{
     
     /** 設定聽牌效果(減速) */
     public setListeningEffect(){
-        this.listeningTween = gsap.to(this, {ease: Power2.easeOut, duration: spinConfig.listeningDelay, listeningSpeed: spinConfig.listeningSpeed})
+        this.listeningTween = gsap.to(this, {ease: Power0.easeNone, duration: spinConfig.listeningDelay, listeningSpeed: spinConfig.listeningSpeed})
         .eventCallback('onComplete', ()=> this.listeningSpeedUpDone = true)
 
         this.playReelExpect()

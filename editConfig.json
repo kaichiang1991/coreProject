@@ -10,6 +10,7 @@
         "fastSpinSpeed": 50,
         "listeningSpeed": 12,
         "listeningDelay": 1.8,
+        "listeningRevertDuration": 0.1,
         "bounceDistance": 36,
         "bounceBackDuration": 0.4,
         "eachReelStop": 0.45,

@@ -160,7 +160,7 @@ class EndSpin extends GameState{
 
         const {WinType, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0          // 判斷有沒有 FG
-        const isWin: boolean = false //(WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
+        const isWin: boolean = (WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
 
         if(isFreeGame){
             await this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0])
