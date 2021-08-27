@@ -1,20 +1,20 @@
 {
     "spin": {
-        "leastSpinDuration": 1,
-        "turboLeastDuration": 0,
-        "upDistance": 28,
-        "upDuration": 0.4,
+        "leastSpinDuration": 0.4,
+        "turboLeastDuration": 0.2,
+        "upDistance": 25,
+        "upDuration": 0.3,
         "turboUpDistance": 0,
         "turboUpDuration": 0.1,
-        "spinSpeed": 27,
+        "spinSpeed": 33,
         "fastSpinSpeed": 50,
-        "listeningSpeed": 12,
-        "listeningDelay": 1.8,
+        "listeningSpeed": 9,
+        "listeningDelay": 2.5,
         "listeningRevertDuration": 0.1,
-        "bounceDistance": 36,
-        "bounceBackDuration": 0.4,
-        "eachReelStop": 0.45,
-        "extraSymbolCount": 4
+        "bounceDistance": 50,
+        "bounceBackDuration": 0.5,
+        "eachReelStop": 0.425,
+        "extraSymbolCount": 3
     },
     "line": {
         "leastAllLineDuration": 0.8,
@@ -23,6 +23,6 @@
     },
     "game": {
         "FG_TitleAutoDelay": 10,
-        "noWinEachDelay": 0.3
+        "noWinEachDelay": 0.4
     }
 }
