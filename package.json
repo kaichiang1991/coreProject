@@ -1,6 +1,6 @@
 {
   "name": "coreProject",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "scripts": {
     "updateSubmodule": "git submodule update --recursive --remote",
