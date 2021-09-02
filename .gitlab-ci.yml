@@ -7,6 +7,10 @@ image: node:14
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
 cache:
