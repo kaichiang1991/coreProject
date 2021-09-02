@@ -98,5 +98,5 @@ push-to-remote:
     # push 回遠端 release
     - cd dist
     - git add .
-    - git commit -m [$CI_COMMIT_TAG] $CI_COMMIT_MESSAGE
+    - git commit -am "[$CI_COMMIT_TAG] $CI_COMMIT_MESSAGE"     # 註解寫下專案名稱 和 tag 版本
     - git push origin master
