@@ -51,6 +51,8 @@ build:
   dependencies:
     - pre_parse
 
+# 手動trigger
+# 推送至遠端 release
 push-to-remote:
   stage: deploy
   rules:
@@ -60,8 +62,6 @@ push-to-remote:
     - build
 
   script:
-    - export
-    - ls -l $CI_PROJECT_TITLE
     ##
     ## 準備 git 的環境
     ##
@@ -91,7 +91,12 @@ push-to-remote:
     # 設定 release 路徑
     - RELEASE_URL=git@$CI_SERVER_HOST:release/$CI_PROJECT_TITLE.git     # ProjectTitle = 'BNXX'
     - echo $RELEASE_URL
+    # 從遠端 release 拉回來
     - git clone $RELEASE_URL dist
     - rm -rf dist/*
     - mv $CI_PROJECT_TITLE/* dist         # 把產出的所有檔案移至目標資料夾
-    - ls -l dist
+    # push 回遠端 release
+    - cd dist
+    - git add .
+    - git commit -am '[$CI_COMMIT_TAG] $CI_COMMIT_MESSAGE'
+    - git push origin master
