@@ -96,7 +96,7 @@ push-to-remote:
     - git clone $RELEASE_URL dist
     - rm -rf dist/*
     - mv $CI_PROJECT_TITLE/* dist               # 把產出的所有檔案移至目標資料夾
-    - echo $CI_COMMIT_TAG >> dist/version.txt   # 產出對應版號的檔案
+    - touch "dist/version_$CI_COMMIT_TAG"       # 產出對應版號的檔案
     # push 回遠端 release
     - cd dist
     - git add .
