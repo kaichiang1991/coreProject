@@ -22,6 +22,7 @@ stages:
   - .pre
   - build
   - deploy
+  
 # build 之前，檔案的解析
 # 轉換 webp 格式
 pre_parse:
