@@ -10,6 +10,7 @@ variables:
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: $CI_COMMIT_TAG
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ee/ci/yaml/README.html#cache
@@ -37,10 +38,10 @@ pre_parse:
 # build 階段，打包程式
 build:
   stage: build
-  only:
-    refs:
-      - tags    # 有tag的時候
-      - web     # 在 gitlab 網頁  CI/CD -> Run Pipeline 可以手動觸發
+  # only:
+  #   refs:
+  #     - tags    # 有tag的時候
+  #     - web     # 在 gitlab 網頁  CI/CD -> Run Pipeline 可以手動觸發
   script:
     - ./node_modules/.bin/webpack --config webpack.prod.js
     - node buildTool/buildFileParse.js "$LOG"
