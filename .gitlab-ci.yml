@@ -16,7 +16,7 @@ cache:
 stages:
   - .pre
   - build
-
+  - deploy
 # build 之前，檔案的解析
 # 轉換 webp 格式
 pre_parse:
@@ -50,3 +50,15 @@ build:
   dependencies:
     - pre_parse
 
+push-to-remote:
+  stage: deploy
+  rules:
+    - when: manul
+  dependencies:
+    - build
+
+  script:
+    - export
+    - ls -l
+
+  
