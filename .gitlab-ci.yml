@@ -89,7 +89,7 @@ push-to-remote:
     - git config --global user.name $GITLAB_USER_NAME
 
     # 設定 release 路徑
-    - RELEASE_URL=$CI_SERVER_URL/release/$CI_PROJECT_TITLE     # ProjectTitle = 'BNXX'
+    - RELEASE_URL=$CI_SERVER_URL:release/$CI_PROJECT_TITLE.git     # ProjectTitle = 'BNXX'
     - echo $RELEASE_URL
     - git clone $RELEASE_URL dist
     - rm -rf dist/*
