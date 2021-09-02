@@ -3,6 +3,10 @@
 # https://hub.docker.com/r/library/node/tags/
 image: node:14
 
+# 設定 submodule 策略
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "web"'      # 在 gitlab 網頁  CI/CD -> Run Pipeline 手動觸發
@@ -24,7 +28,7 @@ pre_parse:
   stage: .pre
   script:
     - git submodule init
-    - git submodule update --remote
+    - git submodule update --recursive --remote
     - npm install
     - npm run prepareFile
   artifacts:
