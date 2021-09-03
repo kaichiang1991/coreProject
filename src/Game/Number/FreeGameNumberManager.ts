@@ -161,7 +161,7 @@ export default class FreeGameNumberManager{
         // 演出加場次
         const plus: number = newRemainTimes - this.remainTimes
         const font: BitmapText = this.numArr[eFGNumber.plus]
-        font.setParent(this.numArr[eFGNumber.remainTimes].parent)
+        this.numArr[eFGNumber.remainTimes].parent?.addChild(font)
         font.text = '+' + plus
 
         const timeline: GSAPTimeline = gsap.timeline()

@@ -217,46 +217,48 @@ export default class GameSpineManager{
     }
     //#endregion Character
 
-    //#region FG_Odds
-    private static FG_Odds: Spine
-    private static currentIndex: number
-    private static readonly ODDS_ARR: Array<number> = [1, 2, 3, 5, 10]
+    // #region FG_Odds
+    // private static FG_Odds: Spine
+    // private static currentIndex: number
+    // private static readonly ODDS_ARR: Array<number> = [1, 2, 3, 5, 10]
     
-    /**
-     * 播放 FG 的倍數
-     * @param {Container} parent 父節點
-     */
-    public static playFG_Odds(parent: Container){
-        [this.FG_Odds] = Spine.playSpine(eSpineName.FG_Odds, 'X1_Enable', true)
-        parent?.addChild(this.FG_Odds)
-        this.FG_Odds.position.set(215, 40)
-        this.currentIndex = 0
-        // 其他乘數初始化
-        this.ODDS_ARR.slice(1).map(num => this.FG_Odds.setAnimationWithIndex(this.ODDS_ARR.indexOf(num), `X${num}_Disable`, true))
-    }
+    // /**
+    //  * 播放 FG 的倍數
+    //  * @param {Container} parent 父節點
+    //  */
+    // public static playFG_Odds(parent: Container){
+    //     [this.FG_Odds] = Spine.playSpine(eSpineName.FG_Odds, 'X1_Enable', true)
+    //     parent?.addChild(this.FG_Odds)
+    //     this.FG_Odds.position.set(215, 40)
+    //     this.currentIndex = 0
+    //     // 其他乘數初始化
+    //     this.ODDS_ARR.slice(1).map(num => this.FG_Odds.setAnimationWithIndex(this.ODDS_ARR.indexOf(num), `X${num}_Disable`, true))
+    // }
 
-    /** 清除 FG 的倍數 */
-    public static clearFG_Odds(){
-        this.FG_Odds.setEmptyAnimations()
-        this.FG_Odds.parent?.removeChild(this.FG_Odds)
-    }
+    // /** 清除 FG 的倍數 */
+    // public static clearFG_Odds(){
+    //     if(this.FG_Odds){
+    //         this.FG_Odds.setEmptyAnimations()
+    //         this.FG_Odds.parent?.removeChild(this.FG_Odds)
+    //     }
+    // }
 
-    /**
-     * 播放下一個 FG 的倍數
-     * 會自動判斷是不是到最後的倍數
-     */
-    public static async playNextFG_Odds(){
-        if(this.currentIndex == this.ODDS_ARR.length - 1)
-            return
+    // /**
+    //  * 播放下一個 FG 的倍數
+    //  * 會自動判斷是不是到最後的倍數
+    //  */
+    // public static async playNextFG_Odds(){
+    //     if(this.currentIndex == this.ODDS_ARR.length - 1)
+    //         return
 
-        this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Disable`)       // 取消focus目前的倍數
-        this.currentIndex++
+    //     this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Disable`)       // 取消focus目前的倍數
+    //     this.currentIndex++
 
-        GameAudioManager.playAudioEffect(eAudioName.FG_OddsEffect)
-        const track = this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Win`)           // 強調下一個倍數的動畫
-        this.FG_Odds.addAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)  // focue 在下一個倍數的 loop
+    //     GameAudioManager.playAudioEffect(eAudioName.FG_OddsEffect)
+    //     const track = this.FG_Odds.setAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Win`)           // 強調下一個倍數的動畫
+    //     this.FG_Odds.addAnimationWithIndex(this.currentIndex, `X${this.ODDS_ARR[this.currentIndex]}_Enable`, true)  // focue 在下一個倍數的 loop
 
-        await waitTrackComplete(track)
-    }
+    //     await waitTrackComplete(track)
+    // }
     //#endregion FG_Odds
 }

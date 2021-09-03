@@ -118,8 +118,11 @@ class StartSpin extends GameState{
         const {ScreenOrg, ScreenOutput, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)     // 設定結果，要看數學資料格式
 
+        //#region 停輪前階段
         await leastSpinDelay                    // 等待最少滾動時間
-
+        // feature 遊戲規則 e.g. 熊貓 / 宙斯2 的stick symbol
+        
+        //#endregion 停輪前階段
         this.stopEvent = EventHandler.once(eEventName.startSpin, ()=> {     // 收到點擊後的行為，增加播音效的動作
             GameAudioManager.playAudioEffect(eAudioName.spinButton)
             ReelController.StopNowEvent()
@@ -221,7 +224,8 @@ class RoundEnd extends GameState{
     async enter(){
         // 跟 server 要資料
         const roundEnd: IGtoCRoundEnd = await GameDataRequest.roundEnd()
-        // ToDo  測試分數有沒有一致
+        // 測試分數有沒有一致
+        // 正式上線後不一致是正常，因為會多遊戲一起開
         if(BetModel.getInstance().credit != roundEnd.Balance){
             Debug.log('round end 分數不同', 
             `Balance: ${roundEnd.Balance}, 目前餘額: ${BetModel.getInstance().credit}, 目前贏分: ${BetModel.getInstance().Win}`)

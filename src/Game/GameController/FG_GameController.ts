@@ -136,9 +136,9 @@ class GameInit extends GameState{
         // 滾輪
         ReelController.reset(eReelGameType.freeGame)
         // 場次
-        const {RemainTimesBottom, MultipleTimesBottom} = GameSceneManager.context.getCurrent()
-        FreeGameNumberManager.playRemainTimes(FGTotalTimes, RemainTimesBottom)
-        GameSpineManager.playFG_Odds(MultipleTimesBottom)
+        // const {RemainTimesBottom, MultipleTimesBottom} = GameSceneManager.context.getCurrent()
+        // FreeGameNumberManager.playRemainTimes(FGTotalTimes, RemainTimesBottom)
+        // GameSpineManager.playFG_Odds(MultipleTimesBottom)
 
         // NG 盤面分數
         const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // 統計NG盤面的所有贏分
@@ -146,9 +146,9 @@ class GameInit extends GameState{
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
         //#endregion FG場景
 
-        await SymbolController.playFGStick()        // 播放 FG Stick
+        // await SymbolController.playFGStick()        // 播放 FG Stick
+        // await Sleep(.5)                              // 如果沒有前置動作，這裡等待一下再開始
 
-        // await Sleep(1)
         GameSlotData.FGSpinData = null              // 清空上一局盤面，避免 GameStart 判斷到上一次 FG 結果
         this.context.changeState(eFG_GameState.start)
     }
@@ -158,9 +158,9 @@ class GameStart extends GameState{
 
     async enter(){
         // 增加 FG 倍數
-        if(GameSlotData.FGSpinData?.SpinInfo.WinType & eWinType.normal){        // 上一局有得分
-            await GameSpineManager.playNextFG_Odds()                            // 播放 FG 增加倍率的動畫
-        }
+        // if(GameSlotData.FGSpinData?.SpinInfo.WinType & eWinType.normal){        // 上一局有得分
+        //     await GameSpineManager.playNextFG_Odds()                            // 播放 FG 增加倍率的動畫
+        // }
 
         this.change() 
     }
@@ -190,9 +190,12 @@ class StartSpin extends GameState{
         const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
         ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
 
+        //#region 停輪前階段
         await leastSpinDelay                    // 等待最少滾動時間
-
-        ReelController.checkFGListening(SpinInfo)
+        // feature 遊戲規則 e.g. 熊貓 / 宙斯2 的stick symbol
+        //#endregion 停輪前階段
+ 
+        ReelController.checkFGListening(SpinInfo)                   // 檢查 FG 聽牌
         ReelController.stopSpin()
 
         await allSpin
@@ -329,7 +332,7 @@ class GameEnd extends GameState{
         // 清除場次
         // FreeGameNumberManager.clearCurrentTimes()
         FreeGameNumberManager.clearRemainTimes()
-        GameSpineManager.clearFG_Odds()
+        // GameSpineManager.clearFG_Odds()
 
         // 清除 FG 特色
         StickSymbolController.clearAll()

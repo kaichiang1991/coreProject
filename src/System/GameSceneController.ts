@@ -230,12 +230,12 @@ class FreeGame extends GameScene{
         this.UI_Bottom = new Sprite()
         this.UI_Bottom.zIndex = eFGLayer.UI_Bottom
 
-        // 底板
-        this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
-        this.multipleTimesBottom = new Sprite('Feature_TopPlate.png')
-        // 底板文字
-        this.remainTimesText = this.remainTimesBottom.addChild(new Sprite('Feature_RemainWord.png'))
-        this.remainTimesText.position.set(30, 15)
+        // // 底板
+        // this.remainTimesBottom = new Sprite('Feature_TopPlate.png')
+        // this.multipleTimesBottom = new Sprite('Feature_TopPlate.png')
+        // // 底板文字
+        // this.remainTimesText = this.remainTimesBottom.addChild(new Sprite('Feature_RemainWord.png'))
+        // this.remainTimesText.position.set(30, 15)
     }
 
     enter(){
@@ -243,7 +243,7 @@ class FreeGame extends GameScene{
         this.cont.addChild(this.bg, this.UI_Bottom)
         this.cont.interactive = this.cont.sortableChildren = true
 
-        ReelController.ReelContainer.addChild(this.remainTimesBottom, this.multipleTimesBottom)
+        // ReelController.ReelContainer.addChild(this.remainTimesBottom, this.multipleTimesBottom)
         
         GameSpineManager.playFGScene(this.cont)
         GameSpineManager.playFGCharacter(this.cont)
@@ -255,10 +255,10 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
                 
-                this.remainTimesBottom.position.set(-95, -145)
-                this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom1
-                this.multipleTimesBottom.position.set(-95, -80)
-                this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom2
+                // this.remainTimesBottom.position.set(-95, -145)
+                // this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom1
+                // this.multipleTimesBottom.position.set(-95, -80)
+                // this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom2
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
 
@@ -267,10 +267,10 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
                 this.UI_Bottom.position.set(0, 600)
 
-                this.remainTimesBottom.position.set(-305, -80)
-                this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom2
-                this.multipleTimesBottom.position.set(115, -80)
-                this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom1
+                // this.remainTimesBottom.position.set(-305, -80)
+                // this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom2
+                // this.multipleTimesBottom.position.set(115, -80)
+                // this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom1
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
@@ -281,9 +281,9 @@ class FreeGame extends GameScene{
     exit(){
         this.bg.destroy()
         this.UI_Bottom.destroy()
-        this.remainTimesText.destroy()
-        this.remainTimesBottom.destroy()
-        this.multipleTimesBottom.destroy()
+        this.remainTimesText?.destroy()
+        this.remainTimesBottom?.destroy()
+        this.multipleTimesBottom?.destroy()
         GameSpineManager.clearScene()
 
         this.cont.parent?.removeChild(this.cont)        // 把使用外的容器從畫面上移開
