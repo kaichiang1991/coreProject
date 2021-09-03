@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "",
   "scripts": {
-    "updateSubmodule": "git submodule update --init --recursive",
+    "updateSubmodule": "git submodule update --init --recursive --remote",
     "crlfConvert": "node buildTool/crlfConvert.js",
     "fileParse": "node buildTool/fileParse.js",
     "prepareFile": "npm run crlfConvert && npm run fileParse",
