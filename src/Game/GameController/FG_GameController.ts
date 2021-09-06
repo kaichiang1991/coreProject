@@ -28,7 +28,7 @@ const {Container, Graphics, Sprite} = PixiAsset
 export default class FG_GameController{
     private static instance: FG_GameController
     public static getInstance(): FG_GameController{
-        return this.instance || new FG_GameController()
+        return this.instance || (this.instance = new FG_GameController())
     }
 
     public async init(){

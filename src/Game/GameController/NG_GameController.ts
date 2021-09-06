@@ -22,7 +22,7 @@ const {GameStateContext, createState, GameState} = StateModule
 export default class NG_GameController{
     private static instance: NG_GameController
     public static getInstance(): NG_GameController{
-        return this.instance || new NG_GameController()
+        return this.instance || (this.instance = new NG_GameController())
     }
 
     public init(){
