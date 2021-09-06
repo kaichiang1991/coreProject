@@ -46,7 +46,7 @@ enum eSymbolState{
 
 const type: string = eReelType[window.reelType]
 enum eSymbolConfig{
-    width = /3x5/.test(type)? 168: 230,
+    width = /3x5/.test(type)? 170: 230,
     height = /3x5/.test(type)? 160: 170
 }
 
@@ -89,10 +89,10 @@ switch(window.reelType){
         defaultStopOrder = Array(reelCount).fill(1).map((_, index) => index)      // [0, 1, 2, 3, 4]
 
         reelContPivot = new Point(width / 2, height / 2)
-        reelContPos_land = new Point(674, 357)
-        reelContPos_port = new Point(360, 704)
-        xOffsetArr = Array(reelCount).fill(reelContPivot.x).map((x, index) => x + (index - 2) * eSymbolConfig.width + (index - 2) * 5)
-        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(reelContPivot.y).map((y, index) => y + (index - 2) * eSymbolConfig.height)]
+        reelContPos_land = new Point(852, 302)
+        reelContPos_port = new Point(505, 655)
+        xOffsetArr = Array(reelCount).fill(-96.5).map((x, index) => x + index * eSymbolConfig.width + index * 6)
+        yOffsetArr = [Array(reelSymbolCount[0] + 2).fill(-30).map((y, index) => y + index * eSymbolConfig.height)]
 
         mapRowIndex = (reelIndex): number =>{
             return 0

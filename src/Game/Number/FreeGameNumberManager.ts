@@ -1,5 +1,6 @@
 import GameFontManager from "@root/src/System/Assets/GameFontManager"
 import { Container } from "pixi.js-legacy"
+import config from '@root/config'
 
 export enum eFGNumber{
     titleTimes,
@@ -8,6 +9,10 @@ export enum eFGNumber{
     totalTimes,
     plus,
     totalWin
+}
+
+export enum eFGNumberPortrait{
+    base = eFGNumber.totalWin,      // 以eFGNumber 最後一個當基準，避免 index 重複
 }
 
 export default class FreeGameNumberManager{
@@ -19,6 +24,9 @@ export default class FreeGameNumberManager{
     private static totalTimes: number
     private static remainTimes: number
     public static get RemainTimes(): number {return this.remainTimes}
+
+    private static resizeFn: IEventCallback
+    public static get ResizeFn(): IEventCallback {return this.resizeFn}
 
     /** 初始化 FG 用的數字 */
     public static init(){
@@ -32,6 +40,16 @@ export default class FreeGameNumberManager{
         this.numArr[eFGNumber.remainTimes] = GameFontManager.drawFreeGameRoundNumber('remainTimes', remain.pos, null, 16)  // 剩餘場次
         this.numArr[eFGNumber.totalWin] = GameFontManager.drawFreeGameTotalWinNumber('totalWin', totalWin.pos)             // 總贏分
         this.numArr[eFGNumber.plus] = GameFontManager.drawFreeGamePlusNumber('plusTimes', plus.pos, null, 16)              // 加場次
+    
+        // this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
+        //     // 這邊做直橫式數字的自適應 可參考BN80
+        //     const {portrait} = config
+        //     if(portrait){
+
+        //     }else{
+
+        //     }
+        // })
     }
 
     //#region 獲得總場次

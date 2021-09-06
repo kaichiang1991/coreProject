@@ -240,6 +240,9 @@ export class LineManager{
      * @param {number} lineNo 第幾線
      */
     private static playLine(lineNo: number){
+        if(!gameConfig.LineGame)        // Way Game 不顯示線
+            return
+
         if(lineNo == 0)     // FG 不播線圖
             return
         const line = this.lineContainer.addChild(new Sprite(this.getLineTextureName(lineNo)))

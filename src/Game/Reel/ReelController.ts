@@ -98,6 +98,7 @@ export default class ReelController{
         this.reelBackground = this.reelContainer.addChild(new Sprite('Reel_Back.png'))
         this.reelBackground.zIndex = eReelContainerLayer.reelBg
         this.reelBackground.position.copyFrom(window.reelBgPos)
+        this.reelBackground.name = 'reelBackground'
         // 點擊事件寫在底板上
         this.reelBackground.buttonMode = this.reelBackground.interactive = true
         this.reelBackground.on('pointerdown', ()=> EventHandler.dispatch(eEventName.startSpin))
@@ -108,31 +109,15 @@ export default class ReelController{
         this.reelFrame = this.reelContainer.addChild(new Sprite('Reel_Frame.png'))
         this.reelFrame.zIndex = eReelContainerLayer.reelFrame
         this.reelFrame.position.copyFrom(window.reelFramePos)
+        this.reelFrame.name = 'reelFrame'
     }
 
     /** 初始化滾輪的遮罩 */
     private static initMask(){
-        // ToDo 之後會直接拿滾輪底圖做遮罩大小
-        switch(window.reelType){
-            case eReelType._3x5_reel:
-                // this.mask = this.reelContainer.addChild(new Graphics()
-                //     .beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 480).endFill()
-                // )
-            break
-
-            case eReelType._3x5_single:
-                // this.mask = [
-                //     new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 0, 950, 160).endFill(),     // 第一列
-                //     new Graphics().beginFill(0xFFFFFF, .5).drawRect(-40, 160, 950, 160).endFill(),     // 第一列
-                //     new Graphics().beginFill(0xFF3333, .5).drawRect(-40, 320, 950, 160).endFill(),     // 第二列
-                // ]
-            break
-
-            case eReelType._3x3_reel:
-                this.mask = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
-                this.mask.position.copyFrom(window.reelMaskPos)
-            break
-        } 
+        // ToDo 之後單格的要再處理
+        this.mask = this.reelContainer.addChild(new Sprite('Reel_Mask.png'))
+        this.mask.position.copyFrom(window.reelMaskPos)
+        this.mask.name = 'reelMask'
     }
 
     /** 初始化得分時，蓋住沒得獎symbol 黑色的遮罩 */

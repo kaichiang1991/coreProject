@@ -139,6 +139,7 @@ class GameInit extends GameState{
         // const {RemainTimesBottom, MultipleTimesBottom} = GameSceneManager.context.getCurrent()
         // FreeGameNumberManager.playRemainTimes(FGTotalTimes, RemainTimesBottom)
         // GameSpineManager.playFG_Odds(MultipleTimesBottom)
+        // FreeGameNumberManager.ResizeFn()
 
         // NG 盤面分數
         const win: number = WinLineInfos.reduce((pre, curr) => pre + curr.Win, 0)       // 統計NG盤面的所有贏分
