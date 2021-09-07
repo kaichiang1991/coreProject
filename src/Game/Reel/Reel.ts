@@ -265,7 +265,7 @@ export default class Reel{
     /** 設定下一顆符號，並記錄目前最下面的符號 */
     private setNextSymbol(){
         this.lastBottomSymbolId = this.symbolArr[0].SymbolID
-        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop? eSymbolState.Normal: eSymbolState.Blur)
+        this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop && this.toSetStop? eSymbolState.Normal: eSymbolState.Blur)
     }
 
     /**

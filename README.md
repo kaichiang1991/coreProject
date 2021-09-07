@@ -16,7 +16,7 @@
 
 ### npm script
     - updateSubmodule: 更新遠端最新的 Lib/types 
-
+    - setStripTab: 設定 strip.json 的空格，方便搜尋
     - crlfConvert: 轉換 assets 內部檔案的換行字元
     - fileParse: 解析並產出 webp 的檔案
     - prepareFile: 轉換字尾 並 解析檔案
