@@ -76,7 +76,7 @@ export default class LineNumberManager{
      */
     public static playLineWinMultNumber(parent: Container, value: number){
         const font: BitmapText = this.numArr[eLineNumber.multiply]
-        font.x = this.numArr[eLineNumber.lineWin].width
+        font.x = this.numArr[eLineNumber.lineWin].width + 20        // 新增一點間隔
         parent.addChild(font)
         font.text = 'X' + value
     }
