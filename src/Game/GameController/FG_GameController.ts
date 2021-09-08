@@ -72,11 +72,14 @@ class GameInit extends GameState{
 
         // 展開文字
         const titleWord: Sprite = new Sprite('Transition_RoundWord.png')
-        titleWord.anchor.set(.5)
-        titleWord.position.set(0, -60)
+        const {pos, anchor} = window.FG_titleWord
+        pos.copyTo(titleWord.position)
+        anchor.copyTo(titleWord.anchor)
 
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
             const {portrait} = config
+            // spine 動畫出來不會自動對齊，由程式去調整座標、大小
+            // 先對齊宣告動畫，再調整文字跟數字
             if(portrait){
                 transitionCont.scale.set(.9)
                 transitionCont.position.set(360, 640)
@@ -291,8 +294,9 @@ class GameEnd extends GameState{
 
         // 展開文字
         const titleWord: Sprite = new Sprite('Transition_WinWord.png')
-        titleWord.anchor.set(.5)
-        titleWord.position.set(0, -85)
+        const {pos, anchor} = window.FG_winWord
+        pos.copyTo(titleWord.position)
+        anchor.copyTo(titleWord.anchor)
 
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
             const {portrait} = config

@@ -87,6 +87,7 @@ interface IGameConfig{
 interface IDefConfig{
     pos?: PIXI.Point
     anchor?: PIXI.Point
+    scale?: PIXI.Point
 }
 
 // windows 結構
@@ -97,11 +98,14 @@ interface Window{
     reelType: number
     App: PIXI.Application
     AppDebug: any
+    logoDef: {[key: number]: IDefConfig}        // logo 的設定
+    FG_titleWord: IDefConfig                    // 進 FG 轉場文字的設定
+    FG_winWord: IDefConfig                      // 出 FG 得分文字的設定
+
     FG_NumberDef: {[key: string]: {
         [key: number]: IDefConfig
     }}
     LineNumberDef: {[key: number]: IDefConfig}
-    logoPos: PIXI.Point
     reelContScale: number
     reelFramePos: PIXI.Point
     reelBgPos: PIXI.Point

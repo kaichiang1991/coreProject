@@ -78,7 +78,7 @@ export default class LineNumberManager{
         const font: BitmapText = this.numArr[eLineNumber.multiply]
         font.x = this.numArr[eLineNumber.lineWin].width + 20        // 新增一點間隔
         parent.addChild(font)
-        font.text = 'X' + value
+        font.text = '*' + value
     }
 
     /** 清除倍率數字 */

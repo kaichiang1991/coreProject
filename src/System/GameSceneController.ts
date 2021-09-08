@@ -4,6 +4,7 @@ import { eAppLayer, eFGLayer, eNGLayer, eReelContainerLayer } from "./LayerDef";
 import config from '@root/config'
 import ReelController from "../Game/Reel/ReelController";
 import GameSpineManager from "./Assets/GameSpineManager";
+import { eDirection } from "@root/globalDef";
 
 export enum eGameScene{
     loading     = 'loading',
@@ -162,9 +163,12 @@ class NormalGame extends GameScene{
 
     pre(){
         this.logo = new Sprite('Logo.png')
-        this.logo.anchor.set(.5)
         this.logo.zIndex = eReelContainerLayer.logo
-        window.logoPos.copyTo(this.logo.position)
+        const {[eDirection.common]: {anchor, pos, scale}} = window.logoDef
+
+        anchor?.copyTo(this.logo.anchor)
+        pos?.copyTo(this.logo.position)
+        scale?.copyTo(this.logo.scale)
 
         this.bg = new Sprite('Scene_NG')
         this.bg.zIndex = eNGLayer.background
@@ -182,8 +186,11 @@ class NormalGame extends GameScene{
         GameSpineManager.playNGCharacter(this.cont)
 
         ReelController.ReelContainer.addChild(this.logo)
+
+        const {[eDirection.landscape]: logo_W, [eDirection.portrait]: logo_M} = window.logoDef       // 讀取 logo 設定
+
         ;(this.resizeFn = EventHandler.on(eEventName.orientationChange, ()=>{
-            const {portrait} = config
+            const {portrait} = config, logoUse: IDefConfig = portrait? logo_M: logo_W
             if(portrait){
                 this.bg.position.set(360, 640)
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
@@ -196,6 +203,11 @@ class NormalGame extends GameScene{
                 GameSpineManager.setCharacter(eNGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
             GameSpineManager.setScene(portrait, true)                                       // 場景特效
+            // 調整 logo 設定
+            if(logoUse){
+                logoUse.pos?.copyTo(this.logo.position)
+                logoUse.scale?.copyTo(this.logo.scale)
+            }
         }))()
     }
 
@@ -255,10 +267,7 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_M.png')
                 this.UI_Bottom.position.set(0, 895)
                 
-                // this.remainTimesBottom.position.set(-95, -145)
-                // this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom1
-                // this.multipleTimesBottom.position.set(-95, -80)
-                // this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom2
+                // ToDo FG 特色底板的自適應調整
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(360, 245), new Point().set(1))                // 主視覺角色
 
@@ -267,10 +276,7 @@ class FreeGame extends GameScene{
                 this.UI_Bottom.texture = AssetLoader.getTexture('UI_Bottom_W.png')
                 this.UI_Bottom.position.set(0, 600)
 
-                // this.remainTimesBottom.position.set(-305, -80)
-                // this.remainTimesBottom.zIndex = eReelContainerLayer.featureBottom2
-                // this.multipleTimesBottom.position.set(115, -80)
-                // this.multipleTimesBottom.zIndex = eReelContainerLayer.featureBottom1
+                // ToDo FG 特色底板的自適應調整
 
                 GameSpineManager.setCharacter(eFGLayer.character, new Point(140, 500), new Point().set(.6))                // 主視覺角色
             }
