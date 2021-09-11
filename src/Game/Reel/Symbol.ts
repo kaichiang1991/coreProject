@@ -109,7 +109,7 @@ export default class Symbol extends Container{
      * 取得 模糊/一般 狀態的圖層
      * @returns 
      */
-     private getNormalLayer(): number{
+    private getNormalLayer(): number{
         return this.state == eSymbolState.Blur? eReelContainerLayer.normalSymbol + this.symbolIndex:    // 模糊
         eReelContainerLayer.normalSymbol + 
         (this.symbolId == eSymbolName.FG? eSymbolLayer.FG:

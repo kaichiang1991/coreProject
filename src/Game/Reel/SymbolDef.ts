@@ -50,7 +50,6 @@ const upperStickSymbolArr: Array<eSymbolName> = []
 
 var reelCount: number,                              // 輪數
     reelSymbolCount: Array<number>,                 // 每一輪 symbol 的個數
-    maxReelSymbolCount: number,                     // 每輪最大的 symbol 個數 (計算圖層用)
     defaultStopOrder: Array<number>,                // 預設的停輪順序
     xOffsetArr: Array<number>,                      // x 軸座標陣列
     yOffsetArr: Array<Array<number>>,               // y 軸座標陣列
@@ -143,5 +142,4 @@ switch(window.reelType){
 
 }
 
-maxReelSymbolCount = Math.max(...reelSymbolCount)
 export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, upperStickSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, reelContPos_land, reelContPos_port, mapRowIndex, mapColumnIndex}
