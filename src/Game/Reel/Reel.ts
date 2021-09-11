@@ -266,6 +266,7 @@ export default class Reel{
     private setNextSymbol(){
         this.lastBottomSymbolId = this.symbolArr[0].SymbolID
         this.symbolArr[0].setTexture(this.reelDatas[this.nextDataIndex()], this.toStop && this.toSetStop? eSymbolState.Normal: eSymbolState.Blur)
+        this.symbolArr[1].setLayer()            // 更改上一顆的圖層，讓新進來的圖標不會總在上面
     }
 
     /**
@@ -348,7 +349,7 @@ export default class Reel{
         lastSymbol.y = this.symbolArr[0].y - eSymbolConfig.height
         // 換 index
         this.symbolArr.unshift(lastSymbol)
-        // this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(symbolIndex))
+        this.symbolArr.map((symbol, symbolIndex) => symbol.setIndex(symbolIndex))
     }
 
     /** 演出完畢後，重設symbol的位置和貼圖 */
@@ -358,7 +359,10 @@ export default class Reel{
         const yOffset: Array<number> = yOffsetArr[mapRowIndex(this.reelIndex)]
         this.symbolArr[0].y = yOffset[yOffset.length - 1]
         this.symbolArr.push(this.symbolArr.shift())
-        // this.symbolArr.forEach((symbol, index) => symbol.setIndex(index))
+        this.symbolArr.forEach((symbol, index) => {
+            symbol.setIndex(index)
+            symbol.setLayer()
+        })
         // 恢復轉動階段時多計算的一顆
         this.dataIndex == ++this.dataIndex % this.reelDatas.length
     }

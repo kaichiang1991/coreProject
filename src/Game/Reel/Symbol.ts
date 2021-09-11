@@ -6,6 +6,9 @@ const {AssetLoader, Sprite, Spine} = PixiAsset
 
 export default class Symbol extends Container{
 
+    private reelIndex: number
+    private symbolIndex: number     // 在 symbolArr 中是第幾顆
+
     private text: Text
     protected sprite: Sprite
     protected animSpine: Spine
@@ -46,6 +49,7 @@ export default class Symbol extends Container{
     public init(reelIndex: number, symbolIndex: number): Symbol{
         this.setIndex(symbolIndex)
         this.position.set(xOffsetArr[mapColumnIndex(reelIndex)], yOffsetArr[mapRowIndex(reelIndex)][symbolIndex])
+        this.reelIndex = reelIndex
         return this
     }
 
@@ -93,15 +97,28 @@ export default class Symbol extends Container{
     }
 
     /** 根據狀態設定圖層 */
-    protected setLayer(){
+    public setLayer(){
         this.zIndex = 
             this.state == eSymbolState.Win? eReelContainerLayer.winAnimation:                   // 得獎演出
             this.state == eSymbolState.EndSpin? eReelContainerLayer.endSpinAnim:                // 落定演出
             upperStickSymbolArr.includes(this.symbolId)? eReelContainerLayer.upperStickSymbol:  // 滾動中要在 stick 上面的符號 (一般來說是 FG)
-            eReelContainerLayer.normalSymbol + eSymbolLayer[eSymbolName[this.symbolId]]         // 一般 / 模糊 
+            this.getNormalLayer()                                                               // 一般 / 模糊 
+    }
+
+    /**
+     * 取得 模糊/一般 狀態的圖層
+     * @returns 
+     */
+     private getNormalLayer(): number{
+        return this.state == eSymbolState.Blur? eReelContainerLayer.normalSymbol + this.symbolIndex:    // 模糊
+        eReelContainerLayer.normalSymbol + 
+        (this.symbolId == eSymbolName.FG? eSymbolLayer.FG:
+        this.symbolId == eSymbolName.WD? eSymbolLayer.WD:
+        eSymbolLayer.others) * this.reelIndex + this.symbolIndex
     }
 
     public setIndex(index: number){
+        this.symbolIndex = index
         // this.text.text = index + ''
     }
 

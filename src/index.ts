@@ -113,7 +113,7 @@ const gameEntry: Function = async ()=>{
         EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, url: url.resolve(href, `../GameCommon/GameInfo/${dispatchObj['gameCode']}.html`)})
     })
     EventHandler.on(eEventName.openHistory, ()=>{
-        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, gameToken: ParameterParse.UrlParser.token, betQuery: ParameterParse.UrlParser.betQuery, url: url.resolve(href, '../GameCommon/GameResult/index.html')})
+        EventHandler.dispatch(eEventName.popupWindow, {...dispatchObj, gameToken: ParameterParse.UrlParser.token, betQuery: ParameterParse.UrlParser.betQuery, url: url.resolve(href, `../GameCommon/GameResult/${'BN' + gameConfig.GameID}.html`)})
     })
     //#endregion 註冊遊戲內事件
 

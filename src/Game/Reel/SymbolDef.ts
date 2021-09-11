@@ -20,18 +20,9 @@ enum eSymbolName{
 
 /** 定義 symbol 圖層 */
 enum eSymbolLayer{
-    N1,
-    N2,
-    N3,
-    N4,
-
-    H1,
-    H2,
-    H3,
-    H4,
-
+    others,
+    WD = 3 * 5,         // 這邊要算盤面上限是幾顆
     FG,
-    WD,
 
     total
 }
@@ -55,10 +46,11 @@ const endSpinSymbolArr: Array<eSymbolName> = []
 // 不要模糊的 symbol
 const noBlurSymbolArr: Array<eSymbolName> = []
 // 要在 StickSymbol 上面的 symbol
-const upperStickSymbolArr: Array<eSymbolName> = [eSymbolName.FG]
+const upperStickSymbolArr: Array<eSymbolName> = []
 
 var reelCount: number,                              // 輪數
     reelSymbolCount: Array<number>,                 // 每一輪 symbol 的個數
+    maxReelSymbolCount: number,                     // 每輪最大的 symbol 個數 (計算圖層用)
     defaultStopOrder: Array<number>,                // 預設的停輪順序
     xOffsetArr: Array<number>,                      // x 軸座標陣列
     yOffsetArr: Array<Array<number>>,               // y 軸座標陣列
@@ -151,4 +143,5 @@ switch(window.reelType){
 
 }
 
+maxReelSymbolCount = Math.max(...reelSymbolCount)
 export {eSymbolName, eSymbolLayer, eSymbolState, eSymbolConfig, endSpinSymbolArr, noBlurSymbolArr, upperStickSymbolArr, reelCount, reelSymbolCount, defaultStopOrder, xOffsetArr, yOffsetArr, reelContPivot, reelContPos_land, reelContPos_port, mapRowIndex, mapColumnIndex}
