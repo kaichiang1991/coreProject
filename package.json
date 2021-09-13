@@ -3,11 +3,11 @@
   "version": "0.1.2",
   "description": "",
   "scripts": {
-    "updateSubmodule": "git submodule update --init --recursive --remote",
     "setStripTab": "sed -e 's/\t/\\ /g' strip.json > tmp && mv tmp strip.json",
+    "updateSubmodule": "git submodule update --init --recursive --remote",
     "crlfConvert": "node buildTool/crlfConvert.js",
     "fileParse": "node buildTool/fileParse.js",
-    "prepareFile": "npm run crlfConvert && npm run setStripTab && npm run fileParse",
+    "prepareFile": "npm run crlfConvert && npm run fileParse",
     "build:dev": "npm run prepareFile && webpack --config webpack.dev.js",
     "serve": "live-server ./dist/Debug",
     "start": "concurrently 'npm:build:dev' 'npm:serve'",
