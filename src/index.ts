@@ -84,7 +84,7 @@ const gameEntry: Function = async ()=>{
     ParameterParse.init(process.env.NODE_ENV == 'production'? 'wss://gsvr1.msgaming.one': 'ws://192.168.1.116:12201')
     // ParameterParse.init('wss://gsvr1.msgaming.one')
     GSAPManager.init()
-    LocalizationManager.init()
+    await LocalizationManager.init()
     GameAssetManager.init()
     GameSceneManager.init()
     StateModule.init()

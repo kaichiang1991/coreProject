@@ -150,7 +150,7 @@ export class NetworkManager{
             //#endregion
             //#region PlayerBalance
             case eCommand.GtoCPlayerBalance:        // Server 廣播更新餘額
-                if(!BetModel.getInstance().BetInterval)
+                if(!BetModel.getInstance()?.BetInterval)
                     return
                 BetModel.getInstance().credit = data.Balance
                 EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
