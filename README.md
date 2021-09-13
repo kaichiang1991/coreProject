@@ -15,8 +15,8 @@
     - 預防萬一最好本地在測試時也會先更新 Lib submodule
 
 ### npm script
+    - setStripTab: 設定 strip.json 的格式(把tab換成" ")，方便搜尋滾輪表，用不到可以不用執行
     - updateSubmodule: 更新遠端最新的 Lib/types 
-    - setStripTab: 設定 strip.json 的空格，方便搜尋
     - crlfConvert: 轉換 assets 內部檔案的換行字元
     - fileParse: 解析並產出 webp 的檔案
     - prepareFile: 轉換字尾 並 解析檔案
@@ -32,4 +32,4 @@
     postbuild: 解析build後的檔案，並加上 hash
     
     註: 正式要釋出時都會直接從 gitlab CI 下去做
-    並不會在本地執行到 build
+    可以先在本地跑過build，確保程式沒問題
