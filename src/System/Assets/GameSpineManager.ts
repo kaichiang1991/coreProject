@@ -201,6 +201,12 @@ export default class GameSpineManager{
         this.character.setAnimation('NG_Loop', true)
     }
 
+    /** 播放 NG 主視覺角色得獎演出 */
+    // public static playNGCharacterWin(){
+    //     this.character.setAnimation('FG_Win')               // 只播一次
+    //     this.character.addAnimation('FG_Loop', true)
+    // }
+    
     /**
      * 播放 FG 主視覺角色loop
      * @param parent 

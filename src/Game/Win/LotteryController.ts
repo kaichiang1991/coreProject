@@ -1,4 +1,5 @@
 import { App, eGameEventName } from "@root/src"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSlotData from "../GameSlotData"
 import { LineManager } from "./LineManager"
 
@@ -60,6 +61,7 @@ class LotteryAnim extends GameState{
         
         // 壓暗
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
+        // GameSpineManager.playNGCharacterWin()        // 播放主視覺得分演出
         BetModel.getInstance().addWin(win)
         BetModel.getInstance().addCredit(win)
 

@@ -57,8 +57,8 @@ class LotteryAnim extends GameState{
         
         // 壓暗
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
-        
         GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
+        
         const {Multiplier} = GameSlotData.FGSpinData.SpinInfo
         BetModel.getInstance().addWin(win)
         await LineManager.playAllLineWin(winlineInfos, Multiplier)

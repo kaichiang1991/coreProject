@@ -1,5 +1,6 @@
 import { App, editConfig, eGameEventName } from "@root/src"
 import GameAudioManager, { eAudioName } from "@root/src/System/Assets/GameAudioManager"
+import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
@@ -208,6 +209,7 @@ class EndSpin extends GameState{
     private async playSpecialSymbol(winline: ISSlotWinLineInfo){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
 
+        // GameSpineManager.playNGCharacterWin()        // 播放主視覺得分演出
         const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
         const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
 
