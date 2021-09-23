@@ -42,7 +42,7 @@ enum eReelContainerLayer{
     endSpinAnim,
     winAnimation,
 
-    line,
+    line = winAnimation + eSymbolLayer.total,
     lineNumber
 }
 

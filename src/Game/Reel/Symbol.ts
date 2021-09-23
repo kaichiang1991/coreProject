@@ -1,7 +1,7 @@
 import { eSpineName } from "@root/src/System/Assets/GameSpineManager";
 import { eReelContainerLayer } from "@root/src/System/LayerDef";
-import { Container, Text, TextStyle } from "pixi.js-legacy";
-import { endSpinSymbolArr, eSymbolConfig, eSymbolLayer, eSymbolName, eSymbolState, mapColumnIndex, mapRowIndex, noBlurSymbolArr, upperStickSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
+import { Container, Text } from "pixi.js-legacy";
+import { endSpinSymbolArr, eSymbolLayer, eSymbolName, eSymbolState, mapColumnIndex, mapRowIndex, noBlurSymbolArr, upperStickSymbolArr, xOffsetArr, yOffsetArr } from "./SymbolDef";
 const {AssetLoader, Sprite, Spine} = PixiAsset
 
 export default class Symbol extends Container{
@@ -99,10 +99,19 @@ export default class Symbol extends Container{
     /** 根據狀態設定圖層 */
     public setLayer(){
         this.zIndex = 
-            this.state == eSymbolState.Win? eReelContainerLayer.winAnimation:                   // 得獎演出
+            this.state == eSymbolState.Win? this.getWinLayer():                                 // 得獎演出
             this.state == eSymbolState.EndSpin? eReelContainerLayer.endSpinAnim:                // 落定演出
             upperStickSymbolArr.includes(this.symbolId)? eReelContainerLayer.upperStickSymbol:  // 滾動中要在 stick 上面的符號 (一般來說是 FG)
             this.getNormalLayer()                                                               // 一般 / 模糊 
+    }
+
+    /**
+     * 取得得獎動畫的圖層
+     * @returns 
+     */
+    private getWinLayer(): number{
+        return eReelContainerLayer.winAnimation +
+        eReelContainerLayer.normalSymbol + this.getLayerOffset()
     }
 
     /**
@@ -111,10 +120,17 @@ export default class Symbol extends Container{
      */
     private getNormalLayer(): number{
         return this.state == eSymbolState.Blur? eReelContainerLayer.normalSymbol + this.symbolIndex:    // 模糊
-        eReelContainerLayer.normalSymbol + 
-        (this.symbolId == eSymbolName.FG? eSymbolLayer.FG:
-        this.symbolId == eSymbolName.WD? eSymbolLayer.WD:
-        eSymbolLayer.others) * this.reelIndex + this.symbolIndex
+        eReelContainerLayer.normalSymbol + this.getLayerOffset()
+    }
+
+    /**
+     * 取得圖層根據位置 / symbol ID 的相對圖層
+     * @returns 
+     */
+    private getLayerOffset(): number{
+        return (this.symbolId == eSymbolName.FG? eSymbolLayer.FG:
+            this.symbolId == eSymbolName.WD? eSymbolLayer.WD:
+            eSymbolLayer.others) * this.reelIndex + this.symbolIndex
     }
 
     public setIndex(index: number){
