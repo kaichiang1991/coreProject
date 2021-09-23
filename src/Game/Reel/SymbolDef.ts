@@ -24,7 +24,7 @@ enum eSymbolLayer{
     WD = 3 * 5,         // 這邊要算盤面上限是幾顆
     FG,
 
-    total
+    total = 150         // ToDo 可以設大一點  
 }
 
 /** 定義 symbol 狀態 */

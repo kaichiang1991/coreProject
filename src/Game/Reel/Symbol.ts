@@ -110,8 +110,7 @@ export default class Symbol extends Container{
      * @returns 
      */
     private getWinLayer(): number{
-        return eReelContainerLayer.winAnimation +
-        eReelContainerLayer.normalSymbol + this.getLayerOffset()
+        return eReelContainerLayer.winAnimation + this.getLayerOffset()
     }
 
     /**

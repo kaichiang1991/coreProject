@@ -30,7 +30,7 @@ enum eReelContainerLayer{
     normalSymbol,
     stickSymbol = normalSymbol + eSymbolLayer.total,
     upperStickSymbol,
-    black = 1000,
+    black = upperStickSymbol + 100,     // 預留一個範圍
     reelFrame,
     reelExpect,
     logo,
