@@ -28,8 +28,10 @@ stages:
 pre_parse:
   stage: .pre
   script:
+    # 更新 submodule
     - git submodule init
     - git submodule update --recursive --remote
+
     - npm install
     - npm run prepareFile
   artifacts:
@@ -53,8 +55,32 @@ build:
     - pre_parse
 
 # 手動trigger
+# 同步至環境 mstest
+deploy-to-mstest:
+  stage: deploy
+  variables:
+    PASSWORD: $MSTEST_PASSWORD      # 避免腳本把密碼的$符號，誤認為跳脫字元
+
+  rules:
+    - when: manual
+
+  dependencies:
+    - build
+    
+  script:
+    ## 安裝環境
+    - apt-get update -y
+    - apt-get install -y rsync sshpass
+    ## 創造使用者及權限，並設定
+    - addgroup --system de_us --gid 2001 && adduser --system de_us --gid 2001 --uid 2001
+    - chown -R de_us.de_us $CI_PROJECT_TITLE  
+    - chmod -R 2775 $CI_PROJECT_TITLE
+    ## 同步至 mstest
+    - sshpass -p $PASSWORD rsync -avz --delete $CI_PROJECT_TITLE root@$MSTEST_HOST::mstest
+
+# 手動trigger
 # 推送至遠端 release
-push-to-remote:
+push-to-relese:
   stage: deploy
   rules:
     - when: manual
