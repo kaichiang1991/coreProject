@@ -8,7 +8,7 @@ import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import {Point} from "pixi.js-legacy"
 import GameSlotData, { eWinType } from "../GameSlotData"
 import FreeGameNumberManager from "../Number/FreeGameNumberManager"
-import ReelController, { eReelGameType, spinConfig, SymbolController } from "../Reel/ReelController"
+import ReelController, { eGameState, spinConfig, SymbolController } from "../Reel/ReelController"
 import StickSymbolController from '../Reel/StickSymbolController'
 import { eSymbolName } from '../Reel/SymbolDef'
 import FGLotteryController from "../Win/FGLotteryController"
@@ -137,7 +137,7 @@ class GameInit extends GameState{
         //#region FG場景
         const {FGTotalTimes, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
         // 滾輪
-        ReelController.reset(eReelGameType.freeGame)
+        ReelController.reset(eGameState.freeGame)
         // 場次
         // const {RemainTimesBottom, MultipleTimesBottom} = GameSceneManager.context.getCurrent()
         // FreeGameNumberManager.playRemainTimes(FGTotalTimes, RemainTimesBottom)
@@ -165,7 +165,6 @@ class GameStart extends GameState{
         // if(GameSlotData.FGSpinData?.SpinInfo.WinType & eWinType.normal){        // 上一局有得分
         //     await GameSpineManager.playNextFG_Odds()                            // 播放 FG 增加倍率的動畫
         // }
-
         this.change() 
     }
 
@@ -191,8 +190,10 @@ class StartSpin extends GameState{
         GameSlotData.FGSpinData = await GameDataRequest.FGSpin()
 
         const {SpinInfo} = GameSlotData.FGSpinData
-        const {ScreenOutput, ScreenOrg, SymbolResult} = SpinInfo
-        ReelController.setResult(ScreenOrg)                         // 設定結果，看數學資料
+        const {ScreenOutput, ScreenOrg, SymbolResult, GameState, RndNum} = SpinInfo
+        
+        ReelController.gameState = GameState            // 設定該輪的狀態 (對應 strip 的編號)
+        ReelController.setResult(ScreenOrg, RndNum)     // 設定結果，要看數學資料格式
 
         //#region 停輪前階段
         await leastSpinDelay                    // 等待最少滾動時間

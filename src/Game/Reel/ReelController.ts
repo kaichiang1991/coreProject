@@ -10,7 +10,7 @@ import Symbol from './Symbol'
 import StickSymbolController from "./StickSymbolController";
 import StickSymbol from "./StickSymbol";
 
-export enum eReelGameType{
+export enum eGameState{
     normalGame = 0,
     freeGame = 50
 }
@@ -21,7 +21,7 @@ const {Container, Graphics, Sprite} = PixiAsset
 
 export default class ReelController{
 
-    private static gameType: eReelGameType      // 目前遊戲的型態
+    public static gameState: eGameState      // 目前遊戲的型態   
 
     private static reelContainer: Container
     public static get ReelContainer(): Container {return this.reelContainer}
@@ -145,13 +145,14 @@ export default class ReelController{
      * 2. 滾輪表
      * 3. 遮罩, symbol
      * 4. 父節點
-     * @param {eReelGameType} type 遊戲類型
+     * @param {eGameState} state 遊戲類型
      */
-    public static reset(type: eReelGameType){
-        this.gameType = type
-        this.reelContainer.zIndex = type == eReelGameType.normalGame? eNGLayer.reelContainer: eFGLayer.reelContainer
-        this.setReelData(type)
-        this.reelArr.map(reel => reel.reset())
+    public static reset(state: eGameState, spinInfo?: ISSlotSpinInfo){
+        this.gameState = state
+
+        this.reelContainer.zIndex = state == eGameState.normalGame? eNGLayer.reelContainer: eFGLayer.reelContainer
+        this.setReelData(state)
+        this.reelArr.map((reel, index) => reel.reset(spinInfo?.RndNum[index]))
 
         GameSceneManager.getSceneContainer().addChild(this.reelContainer)
         const maskArr: Array<Sprite> = !Array.isArray(this.mask)? [this.mask]: this.mask
@@ -192,8 +193,8 @@ export default class ReelController{
      * 設定盤面結果
      * @param result 
      */
-    public static setResult(result: Array<Array<number>>){
-        this.reelArr.map((reel, index) => reel.setResult(result[index]))
+    public static setResult(result: Array<Array<number>>, randomNum: Array<number>){
+        this.reelArr.map((reel, index) => reel.setResult(result[index], randomNum[index]))
     }
 
     /** 正常停輪 */
@@ -240,9 +241,10 @@ export default class ReelController{
 
     /**
      * 設定滾輪表
+     * @param {eGameState} state 遊戲狀態
      */
-    public static setReelData(type: eReelGameType){
-        this.reelArr.map(reel => reel.setReelData(type))
+    public static setReelData(state: eGameState){
+        this.reelArr.map(reel => reel.setReelData(state))
     }
 
     //#region 聽牌

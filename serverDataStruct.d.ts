@@ -55,6 +55,7 @@ interface ISSlotSpinInfo{
     Stage?: number,
     Collection?: number
     DemoModeRound?: number
+    RndNum: Array<number>
 }
 
 interface ISSlotWinLineInfo{

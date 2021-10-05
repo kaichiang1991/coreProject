@@ -4,7 +4,7 @@ import GameSpineManager from "@root/src/System/Assets/GameSpineManager"
 import GameSceneManager, { eGameScene } from "@root/src/System/GameSceneController"
 import GameDataRequest from "@root/src/System/Network/GameDataRequest"
 import GameSlotData, { eWinType } from "../GameSlotData"
-import ReelController, { eReelGameType, spinConfig, SymbolController } from "../Reel/ReelController"
+import ReelController, { eGameState, spinConfig, SymbolController } from "../Reel/ReelController"
 import { eSymbolName } from "../Reel/SymbolDef"
 import { LineManager } from "../Win/LineManager"
 import LotteryController from "../Win/LotteryController"
@@ -44,7 +44,7 @@ class GameInit extends GameState{
     enter(){
         GameAudioManager.playAudioMusic(eAudioName.NG_BGM)
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
-        ReelController.reset(eReelGameType.normalGame)          // 初始化滾輪
+        ReelController.reset(eGameState.normalGame)          // 初始化滾輪
         this.change()
     }
 
@@ -116,8 +116,9 @@ class StartSpin extends GameState{
         BetModel.getInstance().roundCode = RoundCode
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})
 
-        const {ScreenOrg, ScreenOutput, SymbolResult} = SpinInfo
-        ReelController.setResult(ScreenOrg)     // 設定結果，要看數學資料格式
+        const {ScreenOrg, ScreenOutput, SymbolResult, GameState, RndNum} = SpinInfo
+        ReelController.gameState = GameState            // 設定該輪的狀態 (對應 strip 的編號)
+        ReelController.setResult(ScreenOrg, RndNum)     // 設定結果，要看數學資料格式
 
         //#region 停輪前階段
         await leastSpinDelay                    // 等待最少滾動時間
@@ -162,7 +163,7 @@ class EndSpin extends GameState{
 
     async enter(){
 
-        const {WinType, WinLineInfos} = GameSlotData.NGSpinData.SpinInfo
+        const {SpinInfo} = GameSlotData.NGSpinData, {WinType, WinLineInfos} = SpinInfo
         const isFreeGame: boolean = (WinType & eWinType.freeGame) != 0          // 判斷有沒有 FG
         const isWin: boolean = (WinType & eWinType.normal) != 0                 // 判斷有沒有一般得分
 
@@ -172,7 +173,7 @@ class EndSpin extends GameState{
             await FG_GameController.getInstance().init()
             SlotUIManager.activeAutoSpeed(true)            // 恢復 turbo 模式
             GameSceneManager.switchGameScene(eGameScene.normalGame)
-            ReelController.reset(eReelGameType.normalGame)
+            ReelController.reset(eGameState.normalGame, SpinInfo)
             await BigWinManager.playBigWin(App.stage, BetModel.getInstance().TotalBet, BetModel.getInstance().Win)
 
             EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})
