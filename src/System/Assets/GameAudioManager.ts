@@ -45,6 +45,7 @@ const {PixiSound} = PixiAsset
 export default class GameAudioManager{
 
     private static audioList: ISoundList = {}
+    private static usedAudioList: Array<string> = new Array<string>()       // 呼叫過的音效清單 (包含已結束的)
 
     public static async init(){
         Object.values(eAudioName).map(name => this.audioList[name] = 'audio/' + name)
@@ -160,6 +161,7 @@ export default class GameAudioManager{
             }
         })
         const instance: IMediaInstance = PixiSound.play(name, option)
+        !this.usedAudioList.includes(name) && this.usedAudioList.push(name)         // 紀錄有使用過的音效名稱 (為了之後setVolume)
         return [instance, audioDone]
     }
 
@@ -204,7 +206,7 @@ export default class GameAudioManager{
         }
 
         // 因為setVolume只會找到第一個同名的音效，所以同時有兩個以上的音效會有一個不會設定到音量 (看之後要不要修)
-        Object.values(eAudioName).map(name => !musicList.includes(name) && PixiSound.setVolumeByName(name, this.audioEffectVolume))
+        this.usedAudioList.map(name => !musicList.includes(name as eAudioName) && PixiSound.setVolumeByName(name, this.audioEffectVolume))
     }
     //#endregion 遊戲音效 effect
 }
