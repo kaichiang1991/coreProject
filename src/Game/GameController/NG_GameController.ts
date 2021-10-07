@@ -179,7 +179,7 @@ class EndSpin extends GameState{
 
             // 跑全線時顯示加過的credit
             BetModel.getInstance().addCredit(BetModel.getInstance().Win)
-            await LineManager.playFG_AllLineWin(WinLineInfos, BetModel.getInstance().Win)
+            await LineManager.palyAllLineWinFromFG(WinLineInfos, BetModel.getInstance().Win)
             await LineManager.playFG_EachLine()
         }else if(isWin){            
             await LotteryController.init()

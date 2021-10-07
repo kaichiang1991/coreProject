@@ -55,16 +55,22 @@ export class LineManager{
      */
     public static async playAllLineWin(winlineArr: Array<ISSlotWinLineInfo>, multiple?: number){      
         this.winlineArr = winlineArr.slice()
-        
         this.multiple = multiple
 
-        this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線
-        const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)       // 計算總得分
+        this.winlineArr.map(winline => winline.LineNo != 0 && this.playLine(winline.LineNo))        // 播放線
+        const win: number = this.winlineArr.reduce((pre, curr) => plus(pre, curr.Win), 0)           // 計算總得分
 
         EventHandler.dispatch(eEventName.betModelChange, {betModel: BetModel.getInstance()})        // UI 直接顯示目前總分
 
+        // 找出所有 scatter 的得獎位置 (之後演出那個位置，不論有沒有stick，都要直接演 scatter)
+        const scatter: eSymbolName = eSymbolName.FG
+        const scatterPos: Array<string> = this.winlineArr.find(winline => winline.SymbolID == scatter)?.WinPosition.map(pos => pos.join())        
         const [allLineAudio] = GameAudioManager.playAudioEffect(eAudioName.AllLine)
-        const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => SymbolController.playWinAnimation(pos.x, pos.y))     // 撥放全部得獎動畫
+        const allPromise: Array<Promise<void>> = this.getAllWinPos(this.winlineArr).map(pos => {
+            const {x, y} = pos, posStr: string = [x, y].join()
+            return SymbolController.playWinAnimation(x, y, 1, scatterPos?.includes(posStr))         // 排除有FG的得獎symbol
+        })     // 撥放全部得獎動畫
+
         allPromise.push(
             Sleep(this.lineConfig.leastAllLineDuration),                                              // 最少演出時間
             LineNumberManager.playLineNumberAnim(this.lineNumberContainer, win, this.multiple),       // 線獎跑分
@@ -77,11 +83,11 @@ export class LineManager{
     }
 
     /**
-     * 播放 FG 回來後的全線
+     * 播放從 FG 回來後的全線
      * @param {Array<ISSlotWinLineInfo>} winlineArr NG盤面的線
      * @param {number} totalWin 總分
      */
-    public static async playFG_AllLineWin(winlineArr: Array<ISSlotWinLineInfo>, totalWin: number){
+    public static async palyAllLineWinFromFG(winlineArr: Array<ISSlotWinLineInfo>, totalWin: number){
         this.winlineArr = winlineArr.slice()
         
         this.winlineArr.map(winline => this.playLine(winline.LineNo))        // 播放線

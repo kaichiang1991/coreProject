@@ -38,8 +38,8 @@ class LotteryInit extends GameState{
     enter(){
         // 整理數據
         const {WinLineInfos, Multiplier} = GameSlotData.FGSpinData.SpinInfo
-        FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + (curr.LineNo == 0? 0: curr.Win * Multiplier), 0)     // 不計算FG連線贏分，並乘上整盤的倍數
-        FGLotteryController.winlineInfos = WinLineInfos.filter(winline => winline.LineNo != 0)                                  // 濾掉 FG 的線
+        FGLotteryController.win = WinLineInfos.reduce((pre, curr) => pre + curr.Win * Multiplier, 0)     // 計算連線贏分，並乘上整盤的倍數 ( 包含 FG )
+        FGLotteryController.winlineInfos = WinLineInfos.slice()                                          // 紀錄包含 FG 的所有縣獎資訊
         this.change()
     }
 

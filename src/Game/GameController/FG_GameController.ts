@@ -221,19 +221,17 @@ class EndSpin extends GameState{
 
         // 演加場次
         const plus: number = FGRemainTimes - FreeGameNumberManager.RemainTimes
-        if(isFreeGame){               // 用 WinType 判斷，超出上限就演 +0
-            GameAudioManager.playAudioEffect(eAudioName.FG_PlusTimes)
-            await Promise.all([
-                this.playSpecialSymbol(this.getWinlineBySymbol(WinLineInfos, eSymbolName.FG)[0]),
-                FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
-            ])
-            FreeGameNumberManager.adjustRemainTimes(true, plus)
-            await Sleep(.5)
-        }else if(isWin){
+        if(isFreeGame || isWin){
             await FGLotteryController.init()
+            if(isFreeGame){                     // 用 WinType 判斷，超出上限就演 +0
+                GameAudioManager.playAudioEffect(eAudioName.FG_PlusTimes)
+                await FreeGameNumberManager.playPlusTotalTimes(FGRemainTimes)
+                FreeGameNumberManager.adjustRemainTimes(true, plus)
+            }
         }else{
             await Sleep(editConfig.game.noWinEachDelay)
         }
+
         this.change()
     }
 
@@ -244,31 +242,6 @@ class EndSpin extends GameState{
     exit(){
         EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
         LineManager.StopEachLineFn()
-    }
-
-    /**
-     * 取得包含某個symbol的winline
-     * @param symbol 要包含的symbol
-     * @returns {ISSlotWinLineInfo}
-     */
-    private getWinlineBySymbol(winlineInfos: Array<ISSlotWinLineInfo>, symbol: eSymbolName): Array<ISSlotWinLineInfo>{
-        return winlineInfos.filter(winline => winline.SymbolID == symbol)
-    }
-
-    /**
-     * 播放 FG 或 BG 得獎符號
-     */
-    private async playSpecialSymbol(winline: ISSlotWinLineInfo){
-        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: true})        // 壓黑
-        
-        GameSpineManager.playFGCharacterWin()        // 播放主視覺得分演出
-        const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin, true)
-        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 1, true))        // 播放 symbol 得獎
-        
-        await Promise.all(allPromise)
-        GameAudioManager.stopAudioEffect(audio)
-        SymbolController.clearAllWinAnimation()        // 清除 symbol 得獎
-        EventHandler.dispatch(eGameEventName.activeBlackCover, {flag: false})
     }
 }
 
