@@ -264,7 +264,7 @@ class EndSpin extends GameState{
 
         // GameSpineManager.playNGCharacterWin()        // 播放主視覺得分演出
         const [audio] = GameAudioManager.playAudioEffect(eAudioName.FG_SymbolWin)
-        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2))        // 播放 symbol 得獎
+        const allPromise: Array<Promise<void>> = winline.WinPosition.map(pos => SymbolController.playWinAnimation(pos[0], pos[1], 2, true))        // 播放 symbol 得獎
 
         await Promise.all(allPromise)
 
